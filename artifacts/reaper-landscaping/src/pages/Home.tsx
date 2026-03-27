@@ -16,7 +16,7 @@ const SMS_LINK = "sms:9168472095";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.38, ease: "easeOut" } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.38, ease: "easeOut" as const } },
 };
 
 const stagger = {
