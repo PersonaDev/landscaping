@@ -40,9 +40,8 @@ export function SiteHeader() {
           <div className="bg-green-700 p-2 rounded-lg group-hover:bg-green-800 transition-colors">
             <PepperIcon className="w-5 h-5 text-white" />
           </div>
-          <span className="font-bold text-[17px] tracking-tight text-stone-900 leading-none">
-            Reaper Landscaping
-          </span>
+          <span className="font-bold text-[17px] tracking-tight text-stone-900 leading-none">EDH Landscaping
+</span>
         </Link>
 
         {/* Desktop nav */}
