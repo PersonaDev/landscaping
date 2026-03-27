@@ -5,10 +5,11 @@ import {
   Star,
   CheckCircle2,
   MapPin,
-  Leaf,
   ArrowRight,
 } from "lucide-react";
 import { SEO } from "@/components/SEO";
+import { SiteHeader } from "@/components/SiteHeader";
+import { PepperIcon } from "@/components/PepperIcon";
 
 const PHONE_NUMBER = "(916) 847-2095";
 const PHONE_LINK = "tel:9168472095";
@@ -114,51 +115,7 @@ export default function Home() {
   return (
     <div className="relative min-h-screen bg-white text-[#1a1208] md:pb-0 pb-24 font-sans">
       <SEO />
-
-      {/* ── HEADER ── */}
-      <header className="bg-white/95 backdrop-blur-sm border-b border-stone-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex items-center gap-3 group"
-            aria-label="Back to top"
-          >
-            <div className="bg-green-700 p-2 rounded-lg group-hover:bg-green-800 transition-colors">
-              <Leaf className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-bold text-[18px] tracking-tight text-stone-900">Reaper Landscaping</span>
-          </button>
-
-          <nav className="hidden md:flex items-center gap-8 text-[15px] font-medium text-stone-500">
-            {["services", "pricing", "reviews", "contact"].map((id) => (
-              <button
-                key={id}
-                onClick={() => scrollTo(id)}
-                className="capitalize hover:text-green-700 transition-colors relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-[2px] after:bg-green-700 after:transition-all hover:after:w-full"
-              >
-                {id}
-              </button>
-            ))}
-          </nav>
-
-          <div className="hidden md:flex items-center gap-3">
-            <a
-              href={PHONE_LINK}
-              className="btn-press flex items-center gap-2 bg-green-700 hover:bg-green-800 text-white font-semibold px-5 py-2.5 rounded-lg shadow-sm transition-colors"
-            >
-              <Phone className="w-4 h-4" />
-              Call
-            </a>
-            <a
-              href={SMS_LINK}
-              className="btn-press flex items-center gap-2 text-green-700 border-2 border-green-700 hover:bg-green-50 font-semibold px-5 py-2.5 rounded-lg transition-colors"
-            >
-              <MessageSquare className="w-4 h-4" />
-              Text
-            </a>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main>
         {/* ── HERO ── */}
@@ -589,7 +546,7 @@ export default function Home() {
             <div>
               <div className="flex items-center gap-2.5 mb-5">
                 <div className="bg-green-700 p-1.5 rounded-md">
-                  <Leaf className="w-4 h-4 text-white" />
+                  <PepperIcon className="w-4 h-4 text-white" />
                 </div>
                 <span className="font-bold text-white text-lg tracking-tight">Reaper Landscaping</span>
               </div>
