@@ -1,0 +1,13 @@
+packages:
+  "framer-motion": "For rugged, smooth scroll animations and entry reveals"
+  "react-helmet-async": "For managing SEO tags (title, meta, open graph)"
+
+images:
+  - path: "artifacts/reaper-landscaping/public/images/rugged-texture.png"
+    description: "A dark, subtle, rugged concrete or asphalt texture, almost black, used as a subtle background overlay for a landscaping website"
+    aspect_ratio: "16:9"
+
+notes:
+  - This is a single-page static marketing site, no backend required.
+  - All interactive CTAs link to tel:9168472095.
+  - Hidden SEO backlinks are placed in the Footer component.
