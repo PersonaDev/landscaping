@@ -1,0 +1,51 @@
+Here's the prompt:
+
+"Please audit this entire website and eliminate every pattern that makes it look AI-generated or templated. The goal is for this site to look like it was designed by a boutique agency and built by hand. Do the following:
+
+1. Typography — make it feel considered
+
+Replace any generic system font stack with a curated pairing from Google Fonts — use one serif or high-contrast display font for headings and one clean sans-serif for body (e.g. Fraunces + DM Sans, Playfair Display + Inter, or Cormorant + Nunito — pick what fits the brand)
+Add optical sizing, letter-spacing, and line-height values that feel intentional — headlines should feel editorial, not default
+Remove any instances of sentence case headings that feel like ChatGPT output — vary the heading rhythm
+2. Layout — break the grid intentionally
+
+Add at least one section that breaks out of the standard centered column — an asymmetric split, an overlapping element, a full-bleed image with text inset, or a staggered card layout
+Remove any section that is just: heading, subheading, three equal columns with icons, paragraph. That pattern is the fingerprint of AI-generated sites
+Add negative space deliberately — not every section needs a background color change
+Make the hero feel specific to this business, not a template — no stock-looking layouts
+3. Color & texture
+
+Audit the color palette — if it's just blue/white/grey with a teal accent, make it more specific. Pull a palette that feels ownable and intentional
+Add at least one subtle texture or grain overlay, a soft gradient, or a non-rectangular shape (diagonal section break, blob, or clipped element) to break up flat sections
+Ensure hover states on all buttons and links feel custom — not just opacity changes
+4. Copywriting — remove AI tells
+
+Find and replace every instance of the following words and phrases: 'comprehensive', 'cutting-edge', 'state-of-the-art', 'seamless', 'tailored', 'leverage', 'innovative', 'solutions', 'dedicated to', 'committed to', 'ensuring', 'we strive to', 'look no further', 'journey', 'transformative', 'passionate about'
+Rewrite any bullet list that starts with a gerund (Providing, Offering, Delivering, Ensuring) — these are AI copy fingerprints
+Add one piece of specific, concrete detail per service — something that could only be true about this specific practice, not a generic dental office
+Make the tone feel like a real person wrote it — conversational where appropriate, specific rather than broad
+5. Micro-details that signal craft
+
+Add subtle entrance animations on scroll (fade up, slight translate) using CSS or a lightweight library — but keep them fast (under 400ms) and purposeful, not decorative
+Add a custom focus style for accessibility that also looks intentional
+Make sure buttons have a distinct pressed/active state
+Add a subtle box-shadow or border treatment to cards that feels designed, not defaulted
+Check that all section padding is consistent and intentional — no section should feel cramped or accidentally spacious
+6. Images
+
+Add object-fit: cover and intentional object-position to all images so they feel art-directed
+If any images are generic stock photos of smiling people in dental chairs, flag them for replacement with more specific, editorial-feeling photography
+Add a subtle image treatment (slight desaturation, warm tone overlay, or vignette) to make photos feel cohesive rather than mismatched
+7. Footer & details
+
+Make the footer feel designed — not just a stack of links and a copyright line. Add a short brand statement, a visual element, or a layout that reflects the overall design language
+Ensure the 404 page is custom and on-brand, not the framework default
+When done, give me a list of every change made by file, flag anything that needs real photography or copy input from the client, and tell me if any third-party libraries were added so I know what's in the bundle."
+
+That last flag about third-party libraries matters for keeping the Vercel build clean — Replit occasionally pulls in heavy packages without flagging it.
+
+
+
+
+
+
