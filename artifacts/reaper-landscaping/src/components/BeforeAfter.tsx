@@ -1,11 +1,13 @@
 import { useState, useRef, useCallback } from "react";
 
 interface Props {
-  beforeLabel: string;
-  afterLabel: string;
+  beforeSrc: string;
+  afterSrc: string;
+  beforeAlt?: string;
+  afterAlt?: string;
 }
 
-export function BeforeAfter({ beforeLabel, afterLabel }: Props) {
+export function BeforeAfter({ beforeSrc, afterSrc, beforeAlt = "Before", afterAlt = "After" }: Props) {
   const [pos, setPos] = useState(50);
   const containerRef = useRef<HTMLDivElement>(null);
   const dragging = useRef(false);
@@ -27,17 +29,25 @@ export function BeforeAfter({ beforeLabel, afterLabel }: Props) {
       onTouchMove={(e) => updatePos(e.touches[0].clientX)}
       onTouchEnd={() => { dragging.current = false; }}
     >
-      {/* Before panel */}
-      <div className="absolute inset-0 bg-stone-300 flex items-center justify-center p-4">
-        <p className="text-stone-600 text-xs font-medium text-center leading-relaxed">{beforeLabel}</p>
-      </div>
+      {/* Before image — full width underneath */}
+      <img
+        src={beforeSrc}
+        alt={beforeAlt}
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        draggable={false}
+      />
 
-      {/* After panel — clipped to right of divider */}
+      {/* After image — clipped to the left of the divider */}
       <div
-        className="absolute inset-0 bg-green-100 flex items-center justify-center p-4 overflow-hidden"
+        className="absolute inset-0 overflow-hidden pointer-events-none"
         style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
       >
-        <p className="text-green-800 text-xs font-medium text-center leading-relaxed">{afterLabel}</p>
+        <img
+          src={afterSrc}
+          alt={afterAlt}
+          className="absolute inset-0 w-full h-full object-cover"
+          draggable={false}
+        />
       </div>
 
       {/* BEFORE badge */}

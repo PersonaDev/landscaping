@@ -63,14 +63,12 @@ export default function Home() {
 
         {/* ── HERO ──────────────────────────────────────────────── */}
         <section className="relative min-h-screen flex items-center">
-          <div
-            className="absolute inset-0 bg-stone-800 flex items-center justify-center"
+          <img
+            src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80"
+            alt="Manicured lawn in El Dorado Hills"
+            className="absolute inset-0 w-full h-full object-cover"
             aria-hidden="true"
-          >
-            <p className="text-stone-500 text-xs text-center px-8 max-w-sm leading-relaxed">
-              [HERO BACKGROUND PHOTO: aerial or wide shot of a maintained EDH backyard — NOT stock]
-            </p>
-          </div>
+          />
           <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
 
           <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-8 py-24">
@@ -165,16 +163,22 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
               <BeforeAfter
-                beforeLabel="[BEFORE PHOTO: overgrown backyard, El Dorado Hills]"
-                afterLabel="[AFTER PHOTO: same yard, cut clean and edged]"
+                beforeSrc="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80"
+                afterSrc="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80"
+                beforeAlt="Overgrown backyard before service"
+                afterAlt="Clean backyard after EDH Landscaping service"
               />
               <BeforeAfter
-                beforeLabel="[BEFORE PHOTO: weedy garden bed with overgrowth]"
-                afterLabel="[AFTER PHOTO: clean bed, crisp edged borders]"
+                beforeSrc="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=800&q=80"
+                afterSrc="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&q=80"
+                beforeAlt="Overgrown garden bed before service"
+                afterAlt="Clean garden bed after EDH Landscaping service"
               />
               <BeforeAfter
-                beforeLabel="[BEFORE PHOTO: unkempt front lawn]"
-                afterLabel="[AFTER PHOTO: crisp edged front yard, clean lines]"
+                beforeSrc="https://images.unsplash.com/photo-1590856029826-c7a73142bbf1?w=800&q=80"
+                afterSrc="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80"
+                beforeAlt="Rough front lawn before service"
+                afterAlt="Crisp front yard after EDH Landscaping service"
               />
             </div>
 
@@ -306,12 +310,12 @@ export default function Home() {
         {/* ── CREW SECTION ──────────────────────────────────────── */}
         <section className="py-20 px-5 sm:px-8" style={{ background: "#f5f3ee" }}>
           <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div
-              className="rounded-2xl bg-stone-300 flex items-center justify-center p-10 text-center text-stone-500 text-sm leading-relaxed"
+            <img
+              src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=800&q=80"
+              alt="EDH Landscaping crew at work"
+              className="rounded-2xl object-cover w-full"
               style={{ aspectRatio: "4/3" }}
-            >
-              [CREW PHOTO PLACEHOLDER — photo of the actual crew, ideally in front of their truck or at a job site in EDH. Candid, not posed.]
-            </div>
+            />
 
             <div>
               <p className="text-[#1a5c30] text-xs font-bold tracking-[0.2em] uppercase mb-3">Who we are</p>
