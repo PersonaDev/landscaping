@@ -1,0 +1,439 @@
+You are rebuilding a landscaping company website from scratch. The client is EDH Landscaping — a small, local crew operating in El Dorado Hills and the greater Sacramento foothills. The existing site is at greywhale.dev and was built in React + TypeScript/Vite. You are replacing it entirely with a higher-converting version using the same stack. Do not preserve any of the existing page structure — rebuild from zero based on this spec.
+
+---
+
+## THE BUSINESS
+
+Name: EDH Landscaping
+Phone: (916) 847-2095
+Location: El Dorado Hills, CA 95762
+Service area: El Dorado Hills, Folsom, Granite Bay, Roseville, Rocklin, Sacramento
+Tagline direction: "Your yard, handled." — outcome language only, never transactional
+Core service: Recurring lawn maintenance (bi-weekly is the bread and butter)
+Pricing: Starting at $60/mo for bi-weekly service
+Other services: Edging & trimming, driveway/walkway blowout, weed control, garden bed care, yard cleanup & haul-off, front yard service
+What makes them different: Small local crew (not a franchise), same team every visit, they pick up the phone, same-day response, El Dorado Hills is literally their backyard
+
+---
+
+## THE CORE DESIGN PHILOSOPHY
+
+This site has one job: get someone to contact EDH Landscaping. Every design and copy decision serves that goal. Not brand awareness. Not education. Not showcasing every service. Contact.
+
+The target customer is a homeowner in El Dorado Hills or Folsom who is tired of thinking about their yard. They are not shopping for features. They want it gone from their to-do list. The site must speak to that feeling, not to lawn care specs.
+
+**What builds trust for this customer, in order of importance:**
+1. Photos of real work — before/afters, not stock imagery (use placeholder divs with labels like [BEFORE/AFTER PHOTO: backyard, El Dorado Hills] so the client knows exactly what to shoot)
+2. Real reviews from real neighbors — name + city, not just stars
+3. The crew's face — a human being, not a logo (use [CREW PHOTO PLACEHOLDER])
+4. A real phone number, visible always
+5. Local specificity — mention El Dorado Hills, the heat, fescue grass, the hills, the foothills
+6. Simplicity — nothing complicated to figure out
+
+**What kills trust for this customer:**
+- Stock photography of perfect lawns
+- Jargon or service feature lists
+- Too many choices
+- Forms with more than 3 fields
+- Anything that feels like a big company
+
+---
+
+## TECH STACK & SETUP
+
+- React + TypeScript + Vite (same as existing)
+- Tailwind CSS for styling
+- No external UI component libraries
+- Single page application, smooth scroll between sections
+- Mobile-first — design for iPhone screen width first, then scale up
+- All phone number links use href="tel:9168472095"
+- All text CTAs open pre-filled SMS: href="sms:9168472095&body=Hey, I found you online and want to get my yard on the schedule."
+- No backend required — all CTAs are phone or text
+- Google Fonts: Playfair Display (headings) + DM Sans (body)
+- Color palette:
+  - Primary green: #1a5c30
+  - Light green accent: #7ddc9a  
+  - Off-white background: #f5f3ee
+  - Dark footer: #111810
+  - White: #ffffff
+  - Text primary: #1a1a1a
+  - Text muted: #6b7280
+
+---
+
+## PAGE STRUCTURE
+
+Build these sections in this exact order. Each section is described in full below.
+
+1. Sticky Nav
+2. Hero
+3. Trust Bar
+4. Before/After Gallery
+5. Reviews
+6. Interactive Quote Builder
+7. How It Works
+8. Crew Section
+9. Service Area
+10. FAQ
+11. Final CTA
+12. Footer
+
+---
+
+### 1. STICKY NAV
+
+Sticky top nav, white background, subtle bottom border.
+
+Left: Logo — green rounded square icon with a small leaf or lawn icon, "EDH Landscaping" in DM Sans 600 next to it.
+
+Center (desktop only): Navigation links — Services, Reviews, Pricing, Contact — smooth scroll anchors.
+
+Right: Two buttons always visible —
+- "Call" button: filled green, phone icon, href="tel:9168472095"  
+- "Text" button: outlined green, message icon, SMS link
+
+On mobile: hide center nav, keep both buttons. Make buttons compact but tappable (min 44px touch target).
+
+---
+
+### 2. HERO
+
+Full-viewport-height section. Background: real photo placeholder [HERO BACKGROUND PHOTO: aerial or wide shot of a maintained EDH backyard — NOT stock]. Apply a dark overlay (rgba 0,0,0,0.45) so text is readable.
+
+Layout: Content left-aligned, vertically centered, max-width 600px.
+
+Top micro-label (small caps, light green): "El Dorado Hills & Greater Sacramento"
+
+H1 (Playfair Display, large, white):
+Line 1: "Your yard,"
+Line 2 (italic, #7ddc9a): "handled."
+
+Subtext (DM Sans, white 75% opacity, 16px, max-width 420px):
+"Bi-weekly service starting at $60/mo. No contracts, no portals — call or text and we'll get you on the schedule."
+
+Two CTA buttons stacked on mobile, side by side on desktop:
+- Primary: Green filled — "Call (916) 847-2095" with phone icon
+- Secondary: Dark semi-transparent — "Send a Text" with message icon
+
+Below buttons, 3 trust pills in a row (small, pill-shaped, semi-transparent white):
+- ★★★★★ 5-star rated
+- $60/mo flat rate
+- No contracts
+- El Dorado Hills local
+
+---
+
+### 3. TRUST BAR
+
+Thin strip immediately below hero. Background: white. No padding excess.
+
+A horizontally scrolling (on mobile) or evenly spaced (on desktop) row of 5 trust signals, separated by dots or dividers:
+
+- ★★★★★ 5-star rated on Google
+- Serving EDH since [YEAR]
+- Same crew, every visit
+- We pick up the phone
+- Cancel anytime by text
+
+Simple, clean, no icons needed. DM Sans 13px, text muted color. This is a credibility strip, not a feature list.
+
+---
+
+### 4. BEFORE/AFTER GALLERY
+
+Section id="services". Background: #f5f3ee.
+
+Section label (small caps, green): "Our Work"
+H2 (Playfair Display): "What we leave behind."
+Subtext: "Every yard in El Dorado Hills. Every visit."
+
+Build a before/after slider component — a single image container with a draggable vertical divider. Left half shows "Before", right half shows "After". The divider has a circular handle the user drags.
+
+Create 3 of these side-by-side on desktop, stacked on mobile.
+
+Each placeholder:
+- Slot 1: [BEFORE PHOTO: overgrown backyard] / [AFTER PHOTO: same yard, clean]
+- Slot 2: [BEFORE PHOTO: weedy garden bed] / [AFTER PHOTO: clean bed, edged borders]
+- Slot 3: [BEFORE PHOTO: unkempt front lawn] / [AFTER PHOTO: crisp edged front yard]
+
+Below the sliders, a simple horizontally scrollable service chip list (pill buttons, not interactive — just display):
+Lawn mowing · Edging & trimming · Driveway blowout · Weed control · Garden bed care · Yard cleanup · Front yard service
+
+---
+
+### 5. REVIEWS
+
+Section id="reviews". Background: white.
+
+Section label (small caps, green): "Reviews"
+H2 (Playfair Display): "What the neighbors say."
+
+Display 3 review cards in a row on desktop, stacked on mobile. Each card:
+- White background
+- Subtle border
+- 5 gold stars (★★★★★)
+- Review text in quotes
+- Reviewer initial avatar (green circle, white letter)
+- Name + city below
+
+Reviews to use:
+1. "I've had three different lawn services over the years and EDH is by far the best. They show up every single time, on schedule, and my yard has never looked this good. Worth every penny of the $60." — Barbara M., El Dorado Hills
+2. "We were paying $120 a month with another company. Switched to EDH and honestly the work is better. Our neighbors keep asking who does our lawn." — Gary & Linda T., Folsom
+3. "I'm 72 and can't do the yard myself anymore. These guys are polite, professional, and reliable. I can call or text them and they always respond fast." — Richard K., El Dorado Hills
+
+Below reviews, a centered text link: "See all reviews on Google →" — link to Google Maps placeholder.
+
+---
+
+### 6. INTERACTIVE QUOTE BUILDER
+
+Section id="pricing". Background: #f5f3ee.
+
+This is the conversion centerpiece. Build it as a self-contained card (white, rounded-2xl, subtle shadow) centered on the page, max-width 540px.
+
+**Top of card (green background #1a5c30):**
+- Small label: "Build your plan"
+- Large price display: starts at "$0" in Playfair Display 72px white — animates to the real price as soon as the user touches a slider
+- Below price: dynamic label that updates (e.g. "Bi-weekly yard service · El Dorado Hills")
+
+**Body of card (white):**
+
+Two sliders, each with a label above and value display:
+
+Slider 1 — "How often?" 
+3 stops: Monthly ($45/mo) · Bi-weekly ($60/mo, default/recommended) · Weekly ($90/mo)
+Show tick labels below the slider track. Highlight the active stop.
+
+Slider 2 — "How much help?"
+3 stops: Basic · Full service · Total care
+Basic ($0 add): mowing + edging + blowout
+Full service (+$20): adds weed control + bed care
+Total care (+$40): adds haul-off + front yard
+
+Show a live-updating "What's included" list below the sliders. Services light up (full opacity) or dim (30% opacity) based on selections. Use dot bullets, not checkboxes. Never use the word "cut" — use "visit" or "service" instead.
+
+**Bottom of card:**
+
+One big CTA button. Label updates dynamically:
+"Text us about the [frequency] [scope] plan — $[price]/mo →"
+
+This button opens a pre-filled SMS with the plan details already typed:
+sms:9168472095&body=Hey, I'm interested in the [scope] [frequency] plan ($[price]/mo). Can you get me on the schedule?
+
+Below button, small text: "Or call (916) 847-2095 — we pick up" as a tel: link.
+
+Note below that in very small text: "No payment until your first visit. No contracts. Cancel anytime by text."
+
+---
+
+### 7. HOW IT WORKS
+
+Background: white.
+
+Section label (small caps, green): "The process"
+H2 (Playfair Display): "Three steps. Then forget about it."
+
+3 steps in a row on desktop, stacked on mobile. Each step has:
+- Large step number (Playfair Display, very large, light green, behind the content as a background element)
+- Short bold title
+- 1-2 sentence description
+
+Steps:
+1. "Call or text us" — Tell us where you are and what you need. We'll confirm your first visit within the hour.
+2. "We show up" — Same crew, same schedule. We handle everything — you don't need to be home.
+3. "Done." — Your yard is taken care of. We text when we're finished. That's it.
+
+---
+
+### 8. CREW SECTION
+
+Background: #f5f3ee.
+
+This section is about trust through humanity. No corporate language.
+
+Layout: Two-column on desktop (image left, text right). Stacked on mobile.
+
+Left: [CREW PHOTO PLACEHOLDER — photo of the actual crew, ideally in front of their truck or at a job site in EDH. Candid, not posed.]
+
+Right:
+Small label (small caps, green): "Who we are"
+H2 (Playfair Display): "We actually show up."
+
+Body text (write this in a direct, non-corporate voice):
+"We're a small local crew. El Dorado Hills is where we work and where we live. We know the hills, the heat, the grass types — fescue runs different out here than anywhere else in Sacramento. We're not dispatching whoever's available that week. You'll recognize the truck."
+
+4 bullet-style differentiators below (dot + text, no icons):
+- On-time, every time
+- Same crew each visit
+- Call or text — we answer same day
+- El Dorado Hills is our backyard
+
+CTA below: "Get on the schedule →" — SMS link
+
+---
+
+### 9. SERVICE AREA
+
+Background: white.
+
+Section label (small caps, green): "Where we work"
+H2 (Playfair Display): "Your neighborhood is our route."
+
+Short text: "We run routes through El Dorado Hills and the surrounding Sacramento foothills. If you're in one of these areas, we can almost certainly get you on the schedule this week."
+
+Display service area cities as pill/chip badges, not a list:
+El Dorado Hills · Folsom · Granite Bay · Roseville · Rocklin · Sacramento · Cameron Park · Shingle Springs
+
+Below chips: "Not sure if we cover your street? Text us — (916) 847-2095" as an SMS link.
+
+Optional: If you can embed a simple static map showing El Dorado Hills area, do so. Otherwise a styled div placeholder labeled [MAP PLACEHOLDER — Google Maps embed of EDH service area] is fine.
+
+---
+
+### 10. FAQ
+
+Background: #f5f3ee.
+
+Section label (small caps, green): "Questions"
+H2 (Playfair Display): "Stuff people ask."
+
+Accordion FAQ component. Each item: question in DM Sans 500, answer expands on click with a smooth height transition. Only one open at a time. Plus/minus toggle icon.
+
+Questions:
+1. How do I pay? — "Call or text after your first visit. We accept Venmo, Zelle, and check. No portal, no auto-billing you didn't set up."
+2. Do I need to be home? — "Nope. We let ourselves in through the side gate if you leave it unlocked. We'll text you when we're done."
+3. What if I need to skip a week? — "Text us. Done. No penalties, no questions."
+4. Do you do one-time cleanups? — "Sometimes. Call us and we'll tell you straight if it's something we can fit in."
+5. Is there a contract? — "No. Month to month. Cancel by text."
+6. What areas do you cover? — "El Dorado Hills, Folsom, Granite Bay, Roseville, Rocklin, Sacramento, Cameron Park, and Shingle Springs. Text us if you're unsure."
+7. What's included in the $60/mo plan? — "Two visits per month. Each visit: we mow, edge every border, and blow down all driveways and walkways. If you want more, we can add it."
+
+---
+
+### 11. FINAL CTA
+
+Full-width section. Background: #1a5c30 (dark green).
+
+Crosshatch or subtle plus-pattern texture overlay (CSS-only, light green, low opacity) — same as existing hero pattern for brand continuity.
+
+Center-aligned content:
+
+Small label (small caps, rgba white 55%): "Contact"
+
+H2 (Playfair Display, white, large):
+"Skip the form."
+Italic line below: "Just call."
+
+Subtext (white 70%):
+"We pick up. If we miss you, we call back same day. No automated systems, no hold music — just us."
+
+Phone number displayed huge (Playfair Display, white, 52px+):
+(916) 847-2095
+
+Two buttons:
+- "Call Now" — white filled, green text, phone icon
+- "Text Us" — outlined white, SMS link
+
+---
+
+### 12. FOOTER
+
+Background: #111810 (near black).
+
+Three columns on desktop, stacked on mobile:
+
+Left:
+- Logo (white version)
+- "A small local crew doing clean work in El Dorado Hills and the surrounding Sacramento foothills. We're not trying to be the biggest — just the most reliable."
+- Phone number in light green
+
+Center — "Navigate":
+Services · Pricing · Reviews · Contact
+
+Right — "Contact":
+- Location: El Dorado Hills, CA 95762
+- Phone: (916) 847-2095 (tel link)
+- "Text us anytime" (SMS link)
+
+Bottom strip: "© [YEAR] EDH Landscaping · El Dorado Hills, CA"
+
+---
+
+## COPY RULES — ENFORCE THESE EVERYWHERE
+
+1. Never say "cut" — say "visit", "service", or "we come out"
+2. Never say "lawn care" generically — say "your yard" or be specific about what's happening
+3. Never say "we provide quality service" or any variation — say what actually happens
+4. Never use the word "seamless", "robust", "leverage", "solutions", "comprehensive", or "ensure"
+5. Always use the homeowner's perspective — "your yard", "your schedule", "you don't need to be home"
+6. Keep sentences short. No sentence on this page should be more than 20 words.
+7. Phone number appears in: nav, hero, final CTA, footer. Minimum 4 times on the page.
+8. Every section must have at least one way to contact — phone, text, or both.
+9. Reviews use real names + cities. No anonymous testimonials.
+10. Placeholder labels for missing photos must be specific and actionable (tell the client exactly what to photograph).
+
+---
+
+## ANIMATION & INTERACTION RULES
+
+- Hero text fades in on load, staggered by line (150ms delay between lines)
+- Trust bar items fade in on scroll
+- Before/after sliders are draggable, with a clear visual handle
+- Quote builder price animates (count-up) when sliders change
+- FAQ accordion has smooth height transition (300ms ease)
+- All hover states on buttons: slightly darker background, subtle scale(1.02)
+- No parallax, no heavy scroll effects — keep it fast
+- Page must load and be interactive in under 2 seconds on a mid-range Android phone on 4G
+
+---
+
+## RESPONSIVE BREAKPOINTS
+
+- Mobile: < 640px — single column everything, large touch targets, phone/text buttons always visible
+- Tablet: 640–1024px — some two-column layouts, nav visible
+- Desktop: > 1024px — full three-column where specified, full nav
+
+---
+
+## PLACEHOLDER PHOTO STRATEGY
+
+Everywhere a real photo is needed, render a styled div placeholder that:
+- Has a dark green (#1a5c30 at 15% opacity) background
+- Contains centered white text describing exactly what to photograph
+- Has the same aspect ratio as the intended image
+- Is clearly labeled so the client knows what to shoot
+
+Example: a before/after slot renders as two divs side by side, left says "[BEFORE: Overgrown backyard, El Dorado Hills — shoot wide angle, show the full yard]", right says "[AFTER: Same yard after service — same angle as before shot]"
+
+This way the site is fully functional and deployable immediately, and the client can swap in real photos when ready.
+
+---
+
+## WHAT YOU ARE NOT BUILDING
+
+- No blog
+- No contact form (phone and text only)
+- No portfolio/gallery page (before/afters are embedded in the main page)
+- No about page
+- No service pages
+- No sitemap page
+- No animations that require a library (CSS only or React state only)
+- No authentication
+- No CMS
+- No analytics integration (client can add GA4 tag manually later)
+
+---
+
+## FINAL CHECK BEFORE YOU DELIVER
+
+Before considering this done, verify:
+- [ ] Phone number appears at least 4 times
+- [ ] "Cut" is not used anywhere in copy
+- [ ] Every section has a contact path
+- [ ] Before/after slider works on mobile touch
+- [ ] Quote builder updates price live on slider drag
+- [ ] All placeholder photo divs are labeled with specific shoot instructions
+- [ ] SMS links pre-fill message text
+- [ ] Page renders correctly at 375px width (iPhone SE)
+- [ ] No stock photo imports — only placeholder divs
+- [ ] Nav Call and Text buttons are always visible on mobile

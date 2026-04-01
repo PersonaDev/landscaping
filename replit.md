@@ -91,6 +91,42 @@ Generated Zod schemas from the OpenAPI spec (e.g. `HealthCheckResponse`). Used b
 
 Generated React Query hooks and fetch client from the OpenAPI spec (e.g. `useHealthCheck`, `healthCheck`).
 
+### `artifacts/reaper-landscaping` (`@workspace/reaper-landscaping`)
+
+React + Vite marketing website for **EDH Landscaping** (formerly Reaper Landscaping), a lawn care company in El Dorado Hills, CA.
+
+**Brand:** EDH Landscaping · Phone: (916) 847-2095 · Color: #1a5c30 · Fonts: Playfair Display (headings) + DM Sans (body)
+
+**Pages:**
+- `/` — Main single-page marketing site (all sections below in order)
+- `/testimonials` — Extended testimonials page (legacy, may be updated)
+- `/services` — Services detail page (legacy, may be updated)
+
+**Main page sections (Home.tsx):**
+1. Hero — full-viewport, photo placeholder, "Your yard, handled." headline, Call/Text CTAs, 4 trust pills
+2. Trust bar — horizontal scroll strip of 5 credibility signals
+3. Before/After gallery — 3 draggable slider components (`BeforeAfter.tsx`) with photo placeholders
+4. Reviews — 3 cards (Barbara M., Gary & Linda T., Richard K.)
+5. Interactive Quote Builder (`QuoteBuilder.tsx`) — frequency × scope pricing widget, lifted state to Home
+6. How It Works — 3 numbered steps
+7. Crew section — crew photo placeholder + copy
+8. Service area — city chips + map placeholder
+9. FAQ accordion (`FAQAccordion.tsx`) — one open at a time, smooth CSS grid transition
+10. Final CTA — dark green section
+11. Footer — dark (#111810), hidden SEO backlinks (greywhale.dev, bluedentist.greywhale.dev)
+
+**Key components:**
+- `SiteHeader.tsx` — sticky nav; desktop: nav links + Call/Text buttons; mobile: Call button only (no hamburger)
+- `BeforeAfter.tsx` — drag-to-compare slider using clipPath + mouse/touch events
+- `QuoteBuilder.tsx` — pricing card; receives frequency/scope state from Home; frequency [monthly=$45, biweekly=$60, weekly=$90], scope [basic=+$0, full=+$20, total=+$40]
+- `MobileSMSBar.tsx` — fixed bottom bar (mobile only, sm:hidden); syncs with quote builder state; animates in after first scroll + 1.5s delay
+- `FAQAccordion.tsx` — CSS grid-template-rows transition for smooth expand/collapse
+- `LawnIcon.tsx` — SVG leaf icon used in header logo
+- `SEO.tsx` — accepts optional title/description props; LocalBusiness structured data
+- `lib/quote.ts` — shared constants and helpers (FREQ, SCOPE, ALL_SERVICES, calcPrice, buildSMS)
+
+**SMS construction:** `buildSMS()` in `lib/quote.ts` detects iOS vs Android to set `&` or `?` body separator; uses `encodeURIComponent` on body.
+
 ### `scripts` (`@workspace/scripts`)
 
 Utility scripts package. Each script is a `.ts` file in `src/` with a corresponding npm script in `package.json`. Run scripts via `pnpm --filter @workspace/scripts run <script>`. Scripts can import any workspace package (e.g., `@workspace/db`) by adding it as a dependency in `scripts/package.json`.

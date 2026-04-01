@@ -1,0 +1,70 @@
+---
+
+### 6B. MOBILE SMS CONVERSION LAYER (MOBILE ONLY — display:none on desktop)
+
+This is the most important conversion element on mobile. It replaces the need for
+any form, any Stripe, any portal. The entire payment and booking flow happens
+through a single tap that opens a pre-written text message.
+
+On mobile only (< 640px), render a fixed bottom bar that is ALWAYS visible as the
+user scrolls — it sits above the browser chrome, pinned to the bottom of the
+viewport. It must never cover interactive elements; use padding-bottom on the page
+body equal to the bar height.
+
+**The fixed bar contains:**
+
+One full-width button. Green (#1a5c30). Bold DM Sans 16px. Height 56px. Safe area
+inset padding on bottom for iPhone notch (padding-bottom: env(safe-area-inset-bottom)).
+
+Default state (before quote builder is touched):
+  Button label: "Tap to text us — we'll figure out the rest →"
+  SMS href: sms:9168472095&body=Hey, I found EDH Landscaping online. Can you tell me
+  about your yard service and get me on the schedule?
+
+After quote builder sliders are moved, the button updates dynamically to reflect
+exactly what the user configured:
+  Button label: "Text us about the [scope] [frequency] plan →"
+  SMS href body updates to:
+  "Hey, I'm interested in the [Full service / Basic / Total care] [bi-weekly /
+  monthly / weekly] plan ($[price]/mo). Can you get me on the schedule?"
+
+The bar also shows one line of micro-text above the button (12px, white 60%):
+  "No forms. No payment upfront. Just a text."
+
+This micro-text line also updates after the quote builder is used:
+  "[Frequency] yard service · $[price]/mo · tap to confirm"
+
+**Implementation notes:**
+- Use React state lifted to the page level to share quote builder selections with
+  this component
+- The bar animates in from the bottom on first scroll (translateY from 100% to 0,
+  300ms ease-out), after a 1.5s delay — so it doesn't interrupt the initial hero
+  experience
+- When the user taps the button, briefly flash the button background to #155228
+  (darker green) for 200ms as tactile feedback before the SMS app opens
+- On Android, sms: links use & as the body separator. On iOS they use &. Use
+  JavaScript to detect the platform and construct the href accordingly:
+
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const sep = isIOS ? '&' : '?';
+  const smsHref = `sms:9168472095${sep}body=${encodeURIComponent(messageBody)}`;
+
+- The message body must be encodeURIComponent encoded
+- Keep the pre-filled message under 160 characters where possible so it sends as
+  a single SMS segment. The default message is fine. The configured message should
+  read: "Hi, interested in [scope] [frequency] yard service ($[price]/mo). Can you
+  add me to the schedule?" — keep it under 160 chars.
+- Do not show this bar on desktop (>= 640px). Use a CSS media query and/or a
+  React hook for window width.
+- The bar must not interfere with the FAQ accordion or any other interactive
+  element — test that tapping accordion items works with the bar present.
+
+**States summary:**
+1. Default (no interaction): generic "tap to text us" message
+2. After frequency slider moved: updates to reflect frequency only
+3. After both sliders moved: full configured message with price
+4. After button tap: brief green flash, then SMS app opens
+
+This bar is the single most important mobile conversion element on the page.
+Prioritize it over everything else if there are layout conflicts.
+---
