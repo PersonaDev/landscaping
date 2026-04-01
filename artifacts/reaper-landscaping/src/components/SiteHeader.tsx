@@ -36,12 +36,17 @@ export function SiteHeader() {
     <header className="bg-white/95 backdrop-blur-sm border-b border-stone-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-[68px] flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group" aria-label="Reaper Landscaping — home">
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 group"
+          aria-label="Reaper Landscaping — home"
+        >
           <div className="bg-green-700 p-2 rounded-lg group-hover:bg-green-800 transition-colors">
             <PepperIcon className="w-5 h-5 text-white" />
           </div>
-          <span className="font-bold text-[17px] tracking-tight text-stone-900 leading-none">EDH Landscaping
-</span>
+          <span className="font-serif font-bold text-[17px] tracking-tight text-stone-900 leading-none">
+            EDH Landscaping
+          </span>
         </Link>
 
         {/* Desktop nav */}
@@ -63,7 +68,7 @@ export function SiteHeader() {
               >
                 {item.label}
               </button>
-            )
+            ),
           )}
         </nav>
 
