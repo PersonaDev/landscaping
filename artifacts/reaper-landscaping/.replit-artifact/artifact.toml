@@ -17,15 +17,6 @@ localPort = 25775
 [services.development]
 run = "pnpm --filter @workspace/reaper-landscaping run dev"
 
-[services.production]
-build = [ "pnpm", "--filter", "@workspace/reaper-landscaping", "run", "build" ]
-publicDir = "artifacts/reaper-landscaping/dist/public"
-serve = "static"
-
-[[services.production.rewrites]]
-from = "/*"
-to = "/index.html"
-
 [services.env]
 PORT = "25775"
 BASE_PATH = "/"
