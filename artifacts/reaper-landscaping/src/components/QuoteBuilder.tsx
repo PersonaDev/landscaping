@@ -51,7 +51,7 @@ export function QuoteBuilder({ frequency, scope, interacted, setFrequency, setSc
         {/* Frequency selector */}
         <div>
           <p className="text-[13px] font-semibold text-stone-500 uppercase tracking-wider mb-3">How often?</p>
-          <div className="flex rounded-xl overflow-hidden border border-stone-200">
+          <div className="flex border border-stone-200 rounded-xl pt-3 mt-1">
             {FREQ.map((f, i) => (
               <button
                 key={i}
@@ -60,11 +60,13 @@ export function QuoteBuilder({ frequency, scope, interacted, setFrequency, setSc
                   frequency === i
                     ? "bg-[#1a5c30] text-white"
                     : "bg-white text-stone-500 hover:bg-stone-50"
-                } ${i > 0 ? "border-l border-stone-200" : ""}`}
+                } ${i > 0 ? "border-l border-stone-200" : ""} ${
+                  i === 0 ? "rounded-l-xl" : ""
+                } ${i === FREQ.length - 1 ? "rounded-r-xl" : ""}`}
               >
                 {f.label}
                 {"recommended" in f && f.recommended && frequency !== i && (
-                  <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 text-[10px] bg-[#7ddc9a] text-[#1a5c30] px-1.5 py-0.5 rounded font-bold leading-none">
+                  <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-[10px] bg-[#7ddc9a] text-[#1a5c30] px-1.5 py-0.5 rounded font-bold leading-none whitespace-nowrap">
                     Popular
                   </span>
                 )}
