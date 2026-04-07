@@ -7,12 +7,12 @@ import { MobileSMSBar } from "../components/MobileSMSBar";
 import { FAQAccordion } from "../components/FAQAccordion";
 import { SEO } from "../components/SEO";
 
-import beforeFront from "@assets/IMG_2564_1775597571204.jpeg";
-import afterFront from "@assets/IMG_2565_1775597571204.jpeg";
-import beforeSide from "@assets/30BC9125-6DD8-4E4E-B3F1-2814AA97F0B1_1775597571203.jpeg";
-import afterSide from "@assets/IMG_2665_1775597571202.jpeg";
-import beforeWalk from "@assets/IMG_2630_1775597571203.jpeg";
-import afterWalk from "@assets/IMG_2656_1775597571203.jpeg";
+import afterFront from "@assets/IMG_2564_1775597571204.jpeg";
+import beforeFront from "@assets/IMG_2565_1775597571204.jpeg";
+import afterSide from "@assets/30BC9125-6DD8-4E4E-B3F1-2814AA97F0B1_1775597571203.jpeg";
+import beforeSide from "@assets/IMG_2665_1775597571202.jpeg";
+import afterWalk from "@assets/IMG_2630_1775597571203.jpeg";
+import beforeWalk from "@assets/IMG_2656_1775597571203.jpeg";
 
 const PHONE = "(916) 847-2095";
 const PHONE_LINK = "tel:9168472095";
