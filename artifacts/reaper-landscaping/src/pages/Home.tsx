@@ -7,6 +7,13 @@ import { MobileSMSBar } from "../components/MobileSMSBar";
 import { FAQAccordion } from "../components/FAQAccordion";
 import { SEO } from "../components/SEO";
 
+import beforeFront from "@assets/IMG_2564_1775597571204.jpeg";
+import afterFront from "@assets/IMG_2565_1775597571204.jpeg";
+import beforeSide from "@assets/30BC9125-6DD8-4E4E-B3F1-2814AA97F0B1_1775597571203.jpeg";
+import afterSide from "@assets/IMG_2665_1775597571202.jpeg";
+import beforeWalk from "@assets/IMG_2630_1775597571203.jpeg";
+import afterWalk from "@assets/IMG_2656_1775597571203.jpeg";
+
 const PHONE = "(916) 847-2095";
 const PHONE_LINK = "tel:9168472095";
 const SMS_DEFAULT = "sms:9168472095&body=Hey%2C%20I%20found%20EDH%20Landscaping%20online%20and%20want%20to%20get%20my%20yard%20on%20the%20schedule.";
@@ -163,22 +170,22 @@ export default function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
               <BeforeAfter
-                beforeSrc="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80"
-                afterSrc="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80"
-                beforeAlt="Overgrown backyard before service"
-                afterAlt="Clean backyard after EDH Landscaping service"
+                beforeSrc={beforeFront}
+                afterSrc={afterFront}
+                beforeAlt="Overgrown front yard before EDH Landscaping"
+                afterAlt="Front yard after EDH Landscaping service"
               />
               <BeforeAfter
-                beforeSrc="https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=800&q=80"
-                afterSrc="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&q=80"
-                beforeAlt="Overgrown garden bed before service"
-                afterAlt="Clean garden bed after EDH Landscaping service"
+                beforeSrc={beforeSide}
+                afterSrc={afterSide}
+                beforeAlt="Overgrown side yard before EDH Landscaping"
+                afterAlt="Side yard after EDH Landscaping service"
               />
               <BeforeAfter
-                beforeSrc="https://images.unsplash.com/photo-1590856029826-c7a73142bbf1?w=800&q=80"
-                afterSrc="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&q=80"
-                beforeAlt="Rough front lawn before service"
-                afterAlt="Crisp front yard after EDH Landscaping service"
+                beforeSrc={beforeWalk}
+                afterSrc={afterWalk}
+                beforeAlt="Overgrown front walkway before EDH Landscaping"
+                afterAlt="Front walkway after EDH Landscaping service"
               />
             </div>
 

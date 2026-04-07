@@ -12,7 +12,7 @@ const ALL_REVIEWS = [
     location: "El Dorado Hills",
     since: "Customer since 2023",
     stars: 5,
-    text: "I've had three different lawn services over the years and Reaper is by far the best. They show up every single time, on schedule, and my yard has never looked this good. Worth every penny of the $60.",
+    text: "I've had three different lawn services over the years and EDH Landscaping is by far the best. They show up every single time, on schedule, and my yard has never looked this good. Worth every penny of the $60.",
     detail: "Barbara's backyard had been neglected by two previous services that kept skipping visits.",
   },
   {
@@ -20,7 +20,7 @@ const ALL_REVIEWS = [
     location: "Folsom",
     since: "Customer since 2023",
     stars: 5,
-    text: "We were paying $120 a month with another company. Switched to Reaper and honestly the work is better. Our neighbors keep asking who does our lawn. We've referred three families on our street already.",
+    text: "We were paying $120 a month with another company. Switched to EDH and honestly the work is better. Our neighbors keep asking who does our lawn. We've referred three families on our street already.",
     detail: null,
   },
   {
@@ -36,7 +36,7 @@ const ALL_REVIEWS = [
     location: "Granite Bay",
     since: "Customer since 2024",
     stars: 5,
-    text: "We have a corner lot with a big front yard and a back slope that nobody else wanted to touch. Reaper quoted it reasonably and has handled it every two weeks without fail. Couldn't ask for more.",
+    text: "We have a corner lot with a big front yard and a back slope that nobody else wanted to touch. EDH quoted it reasonably and has handled it every two weeks without fail. Couldn't ask for more.",
     detail: null,
   },
   {
@@ -52,7 +52,7 @@ const ALL_REVIEWS = [
     location: "Rocklin",
     since: "Customer since 2024",
     stars: 5,
-    text: "The edging alone is worth it. My previous service never did the borders clean — Reaper does it every single visit and it makes a huge difference. The yard looks manicured, not just mowed.",
+    text: "The edging alone is worth it. My previous service never did the borders clean — EDH Landscaping does it every single visit and it makes a huge difference. The yard looks manicured, not just mowed.",
     detail: null,
   },
   {

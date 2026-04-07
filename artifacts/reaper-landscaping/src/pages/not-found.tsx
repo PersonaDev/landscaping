@@ -12,7 +12,7 @@ export default function NotFound() {
           <Leaf className="w-4 h-4 text-white" />
         </div>
         <a href="/" className="font-bold text-stone-900 tracking-tight text-[17px]">
-          Reaper Landscaping
+          EDH Landscaping
         </a>
       </header>
 
