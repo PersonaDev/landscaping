@@ -7,6 +7,7 @@ import { MobileSMSBar } from "../components/MobileSMSBar";
 import { FAQAccordion } from "../components/FAQAccordion";
 import { SEO } from "../components/SEO";
 
+import coverPhoto from "@assets/Screenshot_2026-04-07_at_2.54.18_PM_1775598947924.png";
 import afterFront from "@assets/IMG_2564_1775597571204.jpeg";
 import beforeFront from "@assets/IMG_2565_1775597571204.jpeg";
 import afterSide from "@assets/30BC9125-6DD8-4E4E-B3F1-2814AA97F0B1_1775597571203.jpeg";
@@ -71,8 +72,8 @@ export default function Home() {
         {/* ── HERO ──────────────────────────────────────────────── */}
         <section className="relative min-h-screen flex items-center">
           <img
-            src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80"
-            alt="Manicured lawn in El Dorado Hills"
+            src={coverPhoto}
+            alt="El Dorado Hills hillside yard serviced by EDH Landscaping"
             className="absolute inset-0 w-full h-full object-cover"
             aria-hidden="true"
           />
