@@ -1,0 +1,42 @@
+I have an already existing website built with XHTML, CSS, React, and Node.js. 
+I need you to add a blog page to it. Do NOT rebuild the existing site or touch 
+any existing files unless absolutely necessary to integrate the blog.
+
+WHAT I NEED:
+Add a /blog route and a blog page to the existing site with the following:
+
+BLOG PAGE (frontend):
+- Mobile-first, fully responsive blog page that matches a clean and minimal aesthetic
+- Blog index page at /blog showing all posts as cards (title, date, short excerpt, thumbnail if available)
+- Individual blog post pages at /blog/[slug]
+- Clean typography, lots of white space, easy to read on mobile
+- Social share buttons on each post (Twitter/X, Facebook, copy link)
+- SEO meta tags and Open Graph tags on every post so links look good when shared on social media
+
+CMS (so the client can manage posts without touching code):
+- A simple password protected admin panel at /admin
+- Admin can write and publish blog posts using a simple rich text editor (use TipTap or Quill)
+- Posts have: title, body content, slug, date, excerpt, and optional cover image URL
+- Posts save to a JSON file or SQLite database — keep it simple, no external database needed
+- Admin can see all posts, edit them, and unpublish them
+
+BACKEND:
+- Node.js/Express API endpoints to:
+  - GET /api/posts (all published posts)
+  - GET /api/posts/:slug (single post)
+  - POST /api/posts (create post, protected)
+  - PUT /api/posts/:slug (edit post, protected)
+  - DELETE /api/posts/:slug (delete post, protected)
+- Simple JWT or session based auth for the admin panel
+- Keep it lightweight, no heavy dependencies
+
+STYLE:
+- Clean and minimal — white background, dark text, simple sans-serif font
+- Match the feel of the existing site, don't add anything flashy
+- Blog cards on index should have subtle hover effects
+- Post pages should be easy to read on mobile with proper font sizes and line spacing
+
+REPLIT SPECIFIC:
+- Make sure it runs on Replit without issues
+- Use environment variables for the admin password and JWT secret
+- Everything should work out of the box with npm install && npm start

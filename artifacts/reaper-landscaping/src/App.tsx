@@ -6,6 +6,9 @@ import { HelmetProvider } from "react-helmet-async";
 import Home from "@/pages/Home";
 import Testimonials from "@/pages/Testimonials";
 import ServicesPage from "@/pages/ServicesPage";
+import BlogIndex from "@/pages/BlogIndex";
+import BlogPost from "@/pages/BlogPost";
+import Admin from "@/pages/Admin";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient({
@@ -23,6 +26,9 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/testimonials" component={Testimonials} />
       <Route path="/services" component={ServicesPage} />
+      <Route path="/blog" component={BlogIndex} />
+      <Route path="/blog/:slug" component={BlogPost} />
+      <Route path="/admin" component={Admin} />
       <Route component={NotFound} />
     </Switch>
   );
