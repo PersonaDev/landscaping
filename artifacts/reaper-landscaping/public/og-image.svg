@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f3d20;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a5c30;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#7ddc9a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4fc870;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grassGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#22703a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f3d20;stop-opacity:1" />
+    </linearGradient>
+    <filter id="softBlur">
+      <feGaussianBlur stdDeviation="2" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)" />
+
+  <!-- Decorative circles / depth -->
+  <circle cx="980" cy="120" r="280" fill="#22703a" opacity="0.25" />
+  <circle cx="1100" cy="500" r="200" fill="#155228" opacity="0.3" />
+  <circle cx="80" cy="520" r="160" fill="#0f3d20" opacity="0.4" />
+
+  <!-- Grass wave at bottom -->
+  <path d="M0 520 Q60 480 120 510 Q180 540 240 500 Q300 460 360 495 Q420 530 480 500 Q540 470 600 505 Q660 540 720 505 Q780 470 840 500 Q900 530 960 498 Q1020 466 1080 495 Q1140 524 1200 495 L1200 630 L0 630 Z" fill="url(#grassGrad)" opacity="0.5" />
+  <path d="M0 555 Q80 520 160 548 Q240 576 320 545 Q400 514 480 548 Q560 582 640 548 Q720 514 800 545 Q880 576 960 545 Q1040 514 1120 542 Q1160 556 1200 540 L1200 630 L0 630 Z" fill="#0f3d20" opacity="0.7" />
+
+  <!-- Subtle grid texture -->
+  <rect width="1200" height="630" fill="none" stroke="#ffffff" stroke-width="0.3" opacity="0.03" />
+
+  <!-- Left accent bar -->
+  <rect x="72" y="160" width="4" height="120" rx="2" fill="url(#accentGrad)" />
+
+  <!-- Location badge -->
+  <rect x="72" y="110" width="230" height="34" rx="17" fill="#7ddc9a" opacity="0.15" />
+  <rect x="72" y="110" width="230" height="34" rx="17" fill="none" stroke="#7ddc9a" stroke-width="1" opacity="0.4" />
+  <circle cx="94" cy="127" r="5" fill="#7ddc9a" opacity="0.8" />
+  <line x1="94" y1="120" x2="94" y2="134" stroke="#7ddc9a" stroke-width="1.5" opacity="0.5" />
+  <text x="107" y="132" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#7ddc9a" letter-spacing="1.5" opacity="0.9">EL DORADO HILLS, CA</text>
+
+  <!-- Main headline -->
+  <text x="72" y="230" font-family="Georgia, 'Times New Roman', serif" font-size="78" font-weight="700" fill="#ffffff" letter-spacing="-1">EDH</text>
+  <text x="72" y="315" font-family="Georgia, 'Times New Roman', serif" font-size="78" font-weight="700" fill="#ffffff" letter-spacing="-1">Landscaping</text>
+
+  <!-- Tagline -->
+  <text x="80" y="370" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-style="italic" fill="#7ddc9a" opacity="0.95">Your yard, handled.</text>
+
+  <!-- Divider line -->
+  <rect x="72" y="398" width="440" height="1.5" rx="1" fill="#ffffff" opacity="0.12" />
+
+  <!-- Phone -->
+  <text x="76" y="435" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="500" fill="#ffffff" opacity="0.7">(916) 847-2095  ·  Call or Text</text>
+
+  <!-- Pills row -->
+  <rect x="72" y="460" width="148" height="38" rx="19" fill="#ffffff" opacity="0.1" />
+  <text x="146" y="484" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600" fill="#7ddc9a" text-anchor="middle">$60/mo flat rate</text>
+
+  <rect x="232" y="460" width="130" height="38" rx="19" fill="#ffffff" opacity="0.1" />
+  <text x="297" y="484" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600" fill="#ffffff" opacity="0.8" text-anchor="middle">No contracts</text>
+
+  <rect x="374" y="460" width="144" height="38" rx="19" fill="#ffffff" opacity="0.1" />
+  <text x="446" y="484" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600" fill="#ffffff" opacity="0.8" text-anchor="middle">5-star rated</text>
+
+  <!-- Right side: big decorative lawn icon -->
+  <!-- Lawn mower simplified icon -->
+  <g transform="translate(740, 160)" opacity="0.12">
+    <!-- Blade of grass shapes -->
+    <ellipse cx="200" cy="200" rx="180" ry="180" fill="#7ddc9a" />
+  </g>
+
+  <!-- Right side: large grass blades decoration -->
+  <g transform="translate(800, 80)" opacity="0.18">
+    <path d="M60 350 Q55 200 80 80 Q85 70 90 80 Q100 200 85 350 Z" fill="#7ddc9a" />
+    <path d="M120 350 Q100 180 140 50 Q147 38 154 50 Q165 180 140 350 Z" fill="#7ddc9a" />
+    <path d="M180 350 Q175 210 210 110 Q216 98 222 110 Q235 210 205 350 Z" fill="#7ddc9a" />
+    <path d="M240 350 Q250 195 275 95 Q281 82 287 95 Q300 195 265 350 Z" fill="#7ddc9a" />
+    <path d="M300 350 Q320 200 330 120 Q335 108 342 120 Q355 200 325 350 Z" fill="#7ddc9a" />
+    <path d="M30 350 Q10 220 30 130 Q36 118 42 130 Q55 220 45 350 Z" fill="#7ddc9a" />
+  </g>
+
+  <!-- Large number accent -->
+  <text x="820" y="420" font-family="Georgia, 'Times New Roman', serif" font-size="260" font-weight="700" fill="#ffffff" opacity="0.04">60</text>
+  <text x="1010" y="370" font-family="Georgia, 'Times New Roman', serif" font-size="64" font-weight="400" fill="#7ddc9a" opacity="0.2">/mo</text>
+
+  <!-- Domain watermark bottom right -->
+  <text x="1128" y="610" font-family="system-ui, sans-serif" font-size="14" fill="#ffffff" opacity="0.3" text-anchor="end">landscaping.greywhale.dev</text>
+</svg>
