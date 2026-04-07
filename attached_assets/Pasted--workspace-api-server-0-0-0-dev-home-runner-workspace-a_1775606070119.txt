@@ -1,0 +1,107 @@
+
+> @workspace/api-server@0.0.0 dev /home/runner/workspace/artifacts/api-server
+> export NODE_ENV=development && pnpm run build && pnpm run start
+
+
+> @workspace/api-server@0.0.0 build /home/runner/workspace/artifacts/api-server
+> node ./build.mjs
+
+
+  dist/index.mjs                       2.3mb ⚠️
+  dist/pino-worker.mjs               153.4kb
+  dist/pino-file.mjs                 142.1kb
+  dist/pino-pretty.mjs               114.6kb
+  dist/thread-stream-worker.mjs        7.3kb
+  dist/index.mjs.map                   3.9mb
+  dist/pino-worker.mjs.map           256.9kb
+  dist/pino-file.mjs.map             229.0kb
+  dist/pino-pretty.mjs.map           203.9kb
+  dist/thread-stream-worker.mjs.map   12.0kb
+
+⚡ Done in 214ms
+
+> @workspace/api-server@0.0.0 start /home/runner/workspace/artifacts/api-server
+> node --enable-source-maps ./dist/index.mjs
+
+[23:50:23.806] INFO (2717): Server listening
+    port: 8080
+[23:51:18.355] INFO (2717): request completed
+    req: {
+      "id": 1,
+      "method": "GET",
+      "url": "/api/healthz"
+    }
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 5
+[23:51:18.397] INFO (2717): request completed
+    req: {
+      "id": 2,
+      "method": "POST",
+      "url": "/api/auth/login"
+    }
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 7
+[23:51:27.221] INFO (2717): request completed
+    req: {
+      "id": 3,
+      "method": "GET",
+      "url": "/api/posts"
+    }
+    res: {
+      "statusCode": 200
+    }
+    responseTime: 21
+[23:52:39.483] INFO (2717): request completed
+    req: {
+      "id": 4,
+      "method": "GET",
+      "url": "/"
+    }
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 2
+[23:52:43.900] INFO (2717): request completed
+    req: {
+      "id": 5,
+      "method": "GET",
+      "url": "/"
+    }
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 1
+[23:53:49.156] INFO (2717): request completed
+    req: {
+      "id": 6,
+      "method": "GET",
+      "url": "/"
+    }
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 1
+[23:53:50.060] INFO (2717): request completed
+    req: {
+      "id": 7,
+      "method": "GET",
+      "url": "/"
+    }
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 1
+[23:54:05.844] INFO (2717): request completed
+    req: {
+      "id": 8,
+      "method": "GET",
+      "url": "/"
+    }
+    res: {
+      "statusCode": 404
+    }
+    responseTime: 1
