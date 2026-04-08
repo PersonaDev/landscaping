@@ -10,7 +10,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // ── DB ────────────────────────────────────────────────────────────────────────
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL?.includes("localhost") ? false : { rejectUnauthorized: false },
+});
 
 async function ensureSchema() {
   await pool.query(`
@@ -27,8 +30,9 @@ async function ensureSchema() {
       updated_at    TIMESTAMP NOT NULL DEFAULT NOW()
     )
   `);
+  console.log("[db] schema ready");
 }
-ensureSchema().catch(console.error);
+ensureSchema().catch((err) => console.error("[db] ensureSchema failed:", err.message));
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
 const JWT_SECRET = process.env.JWT_SECRET || "change-me-in-production";
@@ -72,8 +76,9 @@ app.get("/api/posts", async (_req, res) => {
        FROM posts WHERE published = true ORDER BY published_at DESC`
     );
     res.json(rows);
-  } catch {
-    res.status(500).json({ error: "Failed to fetch posts" });
+  } catch (err) {
+    console.error("[api] GET /api/posts error:", err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
@@ -87,8 +92,9 @@ app.get("/api/posts/all", requireAuth, async (_req, res) => {
        FROM posts ORDER BY created_at DESC`
     );
     res.json(rows);
-  } catch {
-    res.status(500).json({ error: "Failed to fetch posts" });
+  } catch (err) {
+    console.error("[api] GET /api/posts/all error:", err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
