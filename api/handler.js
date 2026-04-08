@@ -11,6 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // ── Startup env dump ──────────────────────────────────────────────────────────
 const ENV_KEYS = [
+  "DATA_DATABASE_URL", "DATA_POSTGRES_URL", "DATA_PGHOST",
   "DATABASE_URL", "DATA_URL", "POSTGRES_URL", "POSTGRES_URL_NON_POOLING",
   "DATABASE_URL_UNPOOLED", "PGHOST", "PGPORT", "PGUSER", "PGDATABASE",
   "ADMIN_PASSWORD", "JWT_SECRET",
@@ -27,6 +28,8 @@ for (const k of ENV_KEYS) {
 
 // ── DB ────────────────────────────────────────────────────────────────────────
 const connStr =
+  process.env.DATA_DATABASE_URL ||
+  process.env.DATA_POSTGRES_URL ||
   process.env.POSTGRES_URL ||
   process.env.DATABASE_URL ||
   process.env.DATA_URL ||
