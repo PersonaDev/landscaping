@@ -2,6 +2,7 @@ import express, { type Express, type Request, type Response, type NextFunction }
 import cors from "cors";
 import pinoHttp from "pino-http";
 import path from "path";
+import { createProxyMiddleware } from "http-proxy-middleware";
 import router from "./routes";
 import { logger } from "./lib/logger";
 
@@ -32,16 +33,15 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
 
-if (process.env.NODE_ENV === "production") {
-  // Serve the built React app for all non-API routes
+if (process.env.NODE_ENV === "production" && !process.env.VERCEL) {
+  // Self-hosted production: serve the built React app for all non-API routes
   const frontendDist = path.join(process.cwd(), "artifacts/reaper-landscaping/dist/public");
   app.use(express.static(frontendDist));
   app.get("*", (_req: Request, res: Response) => {
     res.sendFile(path.join(frontendDist, "index.html"));
   });
-} else {
+} else if (!process.env.VERCEL) {
   // In development, proxy non-API requests to the Vite dev server
-  const { createProxyMiddleware } = await import("http-proxy-middleware");
   const vitePort = process.env.VITE_PORT ?? "25775";
   app.use(
     createProxyMiddleware({

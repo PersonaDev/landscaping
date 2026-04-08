@@ -4,13 +4,14 @@
   "buildCommand": "pnpm run build:vercel",
   "outputDirectory": "artifacts/reaper-landscaping/dist/public",
   "framework": null,
-  "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+  "functions": {
+    "api/handler.ts": {
+      "memory": 512,
+      "maxDuration": 30
     }
+  },
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/handler" },
+    { "source": "/((?!api).*)", "destination": "/index.html" }
   ]
 }
