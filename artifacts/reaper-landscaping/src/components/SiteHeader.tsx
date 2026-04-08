@@ -47,6 +47,12 @@ export function SiteHeader() {
               {item.label}
             </button>
           ))}
+          <Link
+            href="/blog"
+            className="text-[14px] text-stone-500 hover:text-[#1a5c30] font-medium transition-colors"
+          >
+            Blog
+          </Link>
         </nav>
 
         {/* Desktop CTAs */}
