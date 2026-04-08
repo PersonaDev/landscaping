@@ -9,17 +9,46 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ── DB ────────────────────────────────────────────────────────────────────────
-// Support Vercel Postgres (POSTGRES_URL) and generic DATABASE_URL
-const connStr = process.env.POSTGRES_URL || process.env.DATABASE_URL || process.env.DATA_URL;
-if (!connStr) console.error("[db] No database URL found — set POSTGRES_URL or DATABASE_URL");
+// ── Startup env dump ──────────────────────────────────────────────────────────
+const ENV_KEYS = [
+  "DATABASE_URL", "DATA_URL", "POSTGRES_URL", "POSTGRES_URL_NON_POOLING",
+  "DATABASE_URL_UNPOOLED", "PGHOST", "PGPORT", "PGUSER", "PGDATABASE",
+  "ADMIN_PASSWORD", "JWT_SECRET",
+];
+console.log("[startup] env var presence check:");
+for (const k of ENV_KEYS) {
+  const v = process.env[k];
+  if (v) {
+    console.log(`  ${k} = SET (${v.length} chars, starts: ${v.slice(0, 20)}...)`);
+  } else {
+    console.log(`  ${k} = NOT SET`);
+  }
+}
 
-const pool = new Pool({
-  connectionString: connStr,
-  ssl: (connStr || "").includes("localhost") ? false : { rejectUnauthorized: false },
-});
+// ── DB ────────────────────────────────────────────────────────────────────────
+const connStr =
+  process.env.POSTGRES_URL ||
+  process.env.DATABASE_URL ||
+  process.env.DATA_URL ||
+  process.env.DATABASE_URL_UNPOOLED;
+
+console.log("[db] resolved connStr:", connStr ? `SET (${connStr.length} chars, starts: ${connStr.slice(0, 30)}...)` : "NOT SET — all DB env vars are missing");
+
+let pool;
+try {
+  pool = new Pool({
+    connectionString: connStr,
+    ssl: (connStr || "").includes("localhost") ? false : { rejectUnauthorized: false },
+    connectionTimeoutMillis: 10000,
+  });
+  console.log("[db] pool created");
+} catch (err) {
+  console.error("[db] pool creation failed:", err.message, err.stack);
+}
 
 async function ensureSchema() {
+  if (!pool) { console.error("[db] ensureSchema skipped — no pool"); return; }
+  console.log("[db] running ensureSchema...");
   await pool.query(`
     CREATE TABLE IF NOT EXISTS posts (
       id            SERIAL PRIMARY KEY,
@@ -36,7 +65,7 @@ async function ensureSchema() {
   `);
   console.log("[db] schema ready");
 }
-ensureSchema().catch((err) => console.error("[db] ensureSchema failed:", err.message));
+ensureSchema().catch((err) => console.error("[db] ensureSchema failed:", err.message, err.stack));
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
 const JWT_SECRET = process.env.JWT_SECRET || "change-me-in-production";
@@ -63,6 +92,33 @@ function requireAuth(req, res, next) {
 
 app.get("/api/healthz", (_req, res) => res.json({ status: "ok" }));
 
+// Debug endpoint — shows env presence and tests DB connectivity
+app.get("/api/debug", async (_req, res) => {
+  const envReport = {};
+  for (const k of ENV_KEYS) {
+    const v = process.env[k];
+    envReport[k] = v ? `SET (${v.length} chars)` : "NOT SET";
+  }
+  envReport._connStrResolved = connStr
+    ? `${connStr.slice(0, 35)}...`
+    : "NONE";
+
+  let dbTest = "not attempted";
+  if (pool) {
+    try {
+      const t0 = Date.now();
+      await pool.query("SELECT 1");
+      dbTest = `ok (${Date.now() - t0}ms)`;
+    } catch (err) {
+      dbTest = `FAILED: ${err.message}`;
+    }
+  } else {
+    dbTest = "FAILED: no pool";
+  }
+
+  res.json({ env: envReport, db: dbTest });
+});
+
 app.post("/api/auth/login", (req, res) => {
   const { password } = req.body;
   if (!password || password !== ADMIN_PASSWORD) {
@@ -73,21 +129,26 @@ app.post("/api/auth/login", (req, res) => {
 
 // Public: list published posts
 app.get("/api/posts", async (_req, res) => {
+  console.log("[api] GET /api/posts — pool exists:", !!pool, "connStr exists:", !!connStr);
+  if (!pool) return res.status(500).json({ error: "No database pool — check env vars" });
   try {
     const { rows } = await pool.query(
       `SELECT id, title, slug, excerpt, cover_image_url AS "coverImageUrl",
               published_at AS "publishedAt", created_at AS "createdAt"
        FROM posts WHERE published = true ORDER BY published_at DESC`
     );
+    console.log("[api] GET /api/posts — returned", rows.length, "rows");
     res.json(rows);
   } catch (err) {
-    console.error("[api] GET /api/posts error:", err.message);
-    res.status(500).json({ error: err.message });
+    console.error("[api] GET /api/posts error:", err.message, err.stack);
+    res.status(500).json({ error: err.message, stack: err.stack });
   }
 });
 
 // Admin: list all posts
 app.get("/api/posts/all", requireAuth, async (_req, res) => {
+  console.log("[api] GET /api/posts/all — pool exists:", !!pool, "connStr exists:", !!connStr);
+  if (!pool) return res.status(500).json({ error: "No database pool — check env vars" });
   try {
     const { rows } = await pool.query(
       `SELECT id, title, slug, excerpt, body, cover_image_url AS "coverImageUrl",
@@ -95,15 +156,17 @@ app.get("/api/posts/all", requireAuth, async (_req, res) => {
               created_at AS "createdAt", updated_at AS "updatedAt"
        FROM posts ORDER BY created_at DESC`
     );
+    console.log("[api] GET /api/posts/all — returned", rows.length, "rows");
     res.json(rows);
   } catch (err) {
-    console.error("[api] GET /api/posts/all error:", err.message);
-    res.status(500).json({ error: err.message });
+    console.error("[api] GET /api/posts/all error:", err.message, err.stack);
+    res.status(500).json({ error: err.message, stack: err.stack });
   }
 });
 
 // Public: single post by slug
 app.get("/api/posts/:slug", async (req, res) => {
+  if (!pool) return res.status(500).json({ error: "No database pool — check env vars" });
   try {
     const { rows } = await pool.query(
       `SELECT id, title, slug, excerpt, body, cover_image_url AS "coverImageUrl",
@@ -114,13 +177,16 @@ app.get("/api/posts/:slug", async (req, res) => {
     );
     if (!rows[0]) return res.status(404).json({ error: "Post not found" });
     res.json(rows[0]);
-  } catch {
-    res.status(500).json({ error: "Failed to fetch post" });
+  } catch (err) {
+    console.error("[api] GET /api/posts/:slug error:", err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
 // Admin: create post
 app.post("/api/posts", requireAuth, async (req, res) => {
+  console.log("[api] POST /api/posts — body keys:", Object.keys(req.body));
+  if (!pool) return res.status(500).json({ error: "No database pool — check env vars" });
   const { title, slug, excerpt, body, coverImageUrl, published } = req.body;
   if (!title || !slug) return res.status(400).json({ error: "Title and slug are required" });
   try {
@@ -136,13 +202,15 @@ app.post("/api/posts", requireAuth, async (req, res) => {
     );
     res.status(201).json(rows[0]);
   } catch (err) {
+    console.error("[api] POST /api/posts error:", err.message, err.stack);
     if (err.code === "23505") return res.status(409).json({ error: "A post with that slug already exists" });
-    res.status(500).json({ error: "Failed to create post" });
+    res.status(500).json({ error: err.message });
   }
 });
 
 // Admin: update post
 app.put("/api/posts/:slug", requireAuth, async (req, res) => {
+  if (!pool) return res.status(500).json({ error: "No database pool — check env vars" });
   const { title, slug: newSlug, excerpt, body, coverImageUrl, published } = req.body;
   try {
     const { rows: existing } = await pool.query(
@@ -166,28 +234,31 @@ app.put("/api/posts/:slug", requireAuth, async (req, res) => {
        nowPublished, publishedAt, req.params.slug]
     );
     res.json(rows[0]);
-  } catch {
-    res.status(500).json({ error: "Failed to update post" });
+  } catch (err) {
+    console.error("[api] PUT /api/posts/:slug error:", err.message, err.stack);
+    res.status(500).json({ error: err.message });
   }
 });
 
 // Admin: delete post
 app.delete("/api/posts/:slug", requireAuth, async (req, res) => {
+  if (!pool) return res.status(500).json({ error: "No database pool — check env vars" });
   try {
     const { rows } = await pool.query(
       "DELETE FROM posts WHERE slug = $1 RETURNING id", [req.params.slug]
     );
     if (!rows[0]) return res.status(404).json({ error: "Post not found" });
     res.json({ success: true });
-  } catch {
-    res.status(500).json({ error: "Failed to delete post" });
+  } catch (err) {
+    console.error("[api] DELETE /api/posts/:slug error:", err.message);
+    res.status(500).json({ error: err.message });
   }
 });
 
 // Global error handler
 app.use((err, _req, res, _next) => {
-  console.error(err);
-  res.status(500).json({ error: "Internal server error" });
+  console.error("[global error handler]", err.message, err.stack);
+  res.status(500).json({ error: err.message });
 });
 
 module.exports = app;
