@@ -4,8 +4,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { Helmet } from "react-helmet-async";
 import {
   LogOut, Plus, Edit2, Trash2, Eye, EyeOff,
-  Bold, Italic, List, ListOrdered, Heading2, Undo, Redo, Save, X,
-  BarChart2, ExternalLink
+  Bold, Italic, List, ListOrdered, Heading2, Undo, Redo, Save, X
 } from "lucide-react";
 
 interface Post {
@@ -415,25 +414,6 @@ export default function Admin() {
         </header>
 
         <main className="max-w-4xl mx-auto px-5 py-10">
-
-          {/* Analytics card */}
-          <a
-            href="/stats"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between bg-white border border-stone-200 rounded-2xl px-5 py-4 mb-8 hover:border-[#1a5c30] hover:shadow-sm transition-all group"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-[#f0f7f3] flex items-center justify-center">
-                <BarChart2 className="w-5 h-5 text-[#1a5c30]" />
-              </div>
-              <div>
-                <p className="font-semibold text-[#111810] text-sm leading-none">Client Stats</p>
-                <p className="text-stone-400 text-[12px] mt-0.5">Page views, top pages — share with your client</p>
-              </div>
-            </div>
-            <ExternalLink className="w-4 h-4 text-stone-400 group-hover:text-[#1a5c30] transition-colors" />
-          </a>
 
           <div className="flex items-center justify-between mb-8">
             <h1 className="font-serif text-2xl font-bold text-[#111810]">Posts</h1>

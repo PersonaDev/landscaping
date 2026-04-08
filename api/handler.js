@@ -66,17 +66,6 @@ async function ensureSchema() {
       updated_at    TIMESTAMP NOT NULL DEFAULT NOW()
     )
   `);
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS page_views (
-      id         SERIAL PRIMARY KEY,
-      path       TEXT NOT NULL,
-      referrer   TEXT,
-      recorded_at TIMESTAMP NOT NULL DEFAULT NOW()
-    )
-  `);
-  await pool.query(`
-    CREATE INDEX IF NOT EXISTS idx_page_views_recorded_at ON page_views (recorded_at)
-  `);
   console.log("[db] schema ready");
 }
 ensureSchema().catch((err) => console.error("[db] ensureSchema failed:", err.message, err.stack));
@@ -105,57 +94,6 @@ function requireAuth(req, res, next) {
 // ── Routes ────────────────────────────────────────────────────────────────────
 
 app.get("/api/healthz", (_req, res) => res.json({ status: "ok" }));
-
-// ── Analytics ─────────────────────────────────────────────────────────────────
-
-// Public: record a page view
-app.post("/api/track", async (req, res) => {
-  if (!pool) return res.status(500).json({ error: "No DB" });
-  const { path, referrer } = req.body;
-  if (!path) return res.status(400).json({ error: "path required" });
-  try {
-    await pool.query(
-      "INSERT INTO page_views (path, referrer) VALUES ($1, $2)",
-      [path.slice(0, 500), (referrer || "").slice(0, 500)]
-    );
-    res.json({ ok: true });
-  } catch (err) {
-    console.error("[api] POST /api/track error:", err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// Public: analytics summary
-app.get("/api/analytics", async (_req, res) => {
-  if (!pool) return res.status(500).json({ error: "No DB" });
-  try {
-    const [totalRes, monthRes, dailyRes, topRes] = await Promise.all([
-      pool.query("SELECT COUNT(*) AS count FROM page_views"),
-      pool.query("SELECT COUNT(*) AS count FROM page_views WHERE recorded_at >= NOW() - INTERVAL '30 days'"),
-      pool.query(`
-        SELECT TO_CHAR(recorded_at, 'YYYY-MM-DD') AS day, COUNT(*) AS count
-        FROM page_views
-        WHERE recorded_at >= NOW() - INTERVAL '14 days'
-        GROUP BY day ORDER BY day ASC
-      `),
-      pool.query(`
-        SELECT path, COUNT(*) AS count
-        FROM page_views
-        WHERE recorded_at >= NOW() - INTERVAL '30 days'
-        GROUP BY path ORDER BY count DESC LIMIT 10
-      `),
-    ]);
-    res.json({
-      total: parseInt(totalRes.rows[0].count, 10),
-      month: parseInt(monthRes.rows[0].count, 10),
-      daily: dailyRes.rows.map((r) => ({ day: r.day, count: parseInt(r.count, 10) })),
-      topPages: topRes.rows.map((r) => ({ path: r.path, count: parseInt(r.count, 10) })),
-    });
-  } catch (err) {
-    console.error("[api] GET /api/analytics error:", err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
 
 // Debug endpoint — shows env presence and tests DB connectivity
 app.get("/api/debug", async (_req, res) => {
