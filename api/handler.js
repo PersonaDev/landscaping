@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // ── DB ────────────────────────────────────────────────────────────────────────
 // Support Vercel Postgres (POSTGRES_URL) and generic DATABASE_URL
-const connStr = process.env.POSTGRES_URL || process.env.DATABASE_URL;
+const connStr = process.env.POSTGRES_URL || process.env.DATABASE_URL || process.env.DATA_URL;
 if (!connStr) console.error("[db] No database URL found — set POSTGRES_URL or DATABASE_URL");
 
 const pool = new Pool({
