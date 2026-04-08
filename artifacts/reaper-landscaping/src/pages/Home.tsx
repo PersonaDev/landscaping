@@ -7,7 +7,6 @@ import { MobileSMSBar } from "../components/MobileSMSBar";
 import { FAQAccordion } from "../components/FAQAccordion";
 import { SEO } from "../components/SEO";
 
-import coverPhoto from "@assets/Screenshot_2026-04-07_at_2.54.18_PM_1775598947924.png";
 import afterFront from "@assets/IMG_2564_1775597571204.jpeg";
 import beforeFront from "@assets/IMG_2565_1775597571204.jpeg";
 import afterSide from "@assets/30BC9125-6DD8-4E4E-B3F1-2814AA97F0B1_1775597571203.jpeg";
@@ -72,9 +71,11 @@ export default function Home() {
         {/* ── HERO ──────────────────────────────────────────────── */}
         <section className="relative min-h-screen flex items-center">
           <img
-            src={coverPhoto}
+            src="/hero.webp"
             alt="El Dorado Hills hillside yard serviced by EDH Landscaping"
             className="absolute inset-0 w-full h-full object-cover"
+            fetchPriority="high"
+            decoding="sync"
             aria-hidden="true"
           />
           <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
