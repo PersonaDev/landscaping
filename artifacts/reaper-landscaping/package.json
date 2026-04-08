@@ -78,6 +78,7 @@
     "@tiptap/pm": "^3.22.2",
     "@tiptap/react": "^3.22.2",
     "@tiptap/starter-kit": "^3.22.2",
+    "@vercel/analytics": "^2.0.1",
     "react-helmet-async": "^3.0.0"
   }
 }

@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { HelmetProvider } from "react-helmet-async";
+import { Analytics } from "@vercel/analytics/react";
 import Home from "@/pages/Home";
 import Testimonials from "@/pages/Testimonials";
 import ServicesPage from "@/pages/ServicesPage";
@@ -45,6 +46,7 @@ function App() {
           <Toaster />
         </TooltipProvider>
       </QueryClientProvider>
+      <Analytics />
     </HelmetProvider>
   );
 }
