@@ -1,0 +1,265 @@
+Skip to content
+VercelLogotype
+AI Cloud
+
+
+
+
+
+Core Platform
+
+
+
+
+Security
+
+
+
+
+Company
+
+
+
+
+
+Learn
+
+
+
+
+Open Source
+
+
+
+
+Use Cases
+
+
+
+
+
+Tools
+
+
+
+Users
+
+
+
+Search Documentation
+⌘ K
+Web Analytics
+Getting Started
+Getting started with Vercel Web Analytics
+Last updated March 11, 2026
+This guide will help you get started with using Vercel Web Analytics on your project, showing you how to enable it, add the package to your project, deploy your app to Vercel, and view your data in the dashboard.
+
+Select your framework to view instructions on using the Vercel Web Analytics in your project.
+
+AI Assistance
+Help me add Vercel Web Analytics to this project. First, make sure the Vercel CLI is installed (`npm i -g vercel`). If I'm using Claude Code or Cursor, install the Vercel Plugin (`npx plugins add vercel/vercel-plugin`). For other agents, install Vercel Skills (`npx skills add vercel-labs/agent-skills`). Then: 1. Install @vercel/analytics. 2. Add the Analytics component to my root layout. 3. Deploy with `vercel --prod` and verify analytics data appears in the Vercel dashboard.
+
+Prerequisites
+A Vercel account. If you don't have one, you can sign up for free.
+A Vercel project. If you don't have one, you can create a new project.
+The Vercel CLI installed. If you don't have it, you can install it using the following command:
+Terminal
+
+pnpm i -g vercel
+Version 2 package updates are available. For details, see What's new in version 2.
+
+Set up your project
+Enable Web Analytics in Vercel
+On the Vercel dashboard, navigate to Analytics in the sidebar and select a project. Or select the button below to go there.
+
+Then click the Enable button in the header.
+
+Enabling Web Analytics will add new routes (scoped at /_vercel/insights/* and /<unique-path>/*) after your next deployment.
+
+Add @vercel/analytics to your project
+Using the package manager of your choice, add the @vercel/analytics package to your project:
+
+Terminal
+
+pnpm i @vercel/analytics
+Add the Analytics component to your app
+The Analytics component is a wrapper around the tracking script, offering more seamless integration with Next.js, including route support.
+
+Add the following code to the root layout:
+
+app/layout.tsx
+Next.js (/app)
+
+Next.js (/app)
+TypeScript
+
+TypeScript
+import { Analytics } from '@vercel/analytics/next';
+ 
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      <head>
+        <title>Next.js</title>
+      </head>
+      <body>
+        {children}
+        <Analytics />
+      </body>
+    </html>
+  );
+}
+Deploy your app to Vercel
+Deploy your app using the following command:
+
+terminal
+vercel deploy
+If you haven't already, we also recommend connecting your project's Git repository, which will enable Vercel to deploy your latest commits to main without terminal commands.
+
+Once your app is deployed, it will start tracking visitors and page views.
+
+If everything is set up properly, you should be able to see a Fetch/XHR request in your browser's Network tab from /<unique-path>/view when you visit any page.
+
+View your data in the dashboard
+Once your app is deployed, and users have visited your site, you can view your data in the dashboard.
+
+To do so, go to your dashboard, select your project, and click Analytics in the sidebar.
+
+After a few days of visitors, you'll be able to start exploring your data by viewing and filtering the panels.
+
+Users on Pro and Enterprise plans can also add custom events to their data to track user interactions such as button clicks, form submissions, or purchases.
+
+Learn more about how Vercel supports privacy and data compliance standards with Vercel Web Analytics.
+
+Next steps
+Now that you have Vercel Web Analytics set up, you can explore the following topics to learn more:
+
+Explore your analytics dashboard
+Learn how to set up custom events
+Learn how to redact sensitive data
+Read about privacy and compliance
+Learn how to configure your client-side package
+Explore pricing
+Troubleshooting
+Previous
+Web Analytics
+Next
+Using Web Analytics
+Was this helpful?
+
+
+
+
+
+Your feedback...
+supported.
+Next.js (/app)
+On this page
+Prerequisites
+Set up your project
+Enable Web Analytics in Vercel
+Add @vercel/analytics to your project
+Add the Analytics component to your app
+Enable the Nuxt module
+Call the injectAnalytics function in your app
+Call the inject function in your app
+Add the script tag to your site
+Deploy your app to Vercel
+View your data in the dashboard
+Next steps
+
+Copy as Markdown
+
+Install Vercel Plugin
+
+Give feedback
+
+Ask AI about this page
+Get Started
+Templates
+Supported frameworks
+Marketplace
+Domains
+Build
+Next.js on Vercel
+Turborepo
+v0
+Scale
+Content delivery network
+Fluid compute
+CI/CD
+Observability
+AI Gateway
+New
+Vercel Agent
+New
+Secure
+Platform security
+Web Application Firewall
+Bot management
+BotID
+Sandbox
+New
+Resources
+Pricing
+Customers
+Enterprise
+Articles
+Startups
+Solution partners
+Learn
+Docs
+Blog
+Changelog
+Knowledge Base
+Academy
+Community
+Frameworks
+Next.js
+Nuxt
+Svelte
+Nitro
+Turbo
+SDKs
+AI SDK
+Workflow SDK
+New
+Flags SDK
+Chat SDK
+Streamdown AI
+New
+Use Cases
+Composable commerce
+Multi-tenant platforms
+Web apps
+Marketing sites
+Platform engineers
+Design engineers
+Company
+About
+Careers
+Help
+Press
+Legal
+Privacy Policy
+Community
+Open source program
+Events
+Shipped on Vercel
+GitHub
+LinkedIn
+X
+YouTube
+Loading status…
+
+Select a display theme:
+
+system
+
+light
+
+dark
