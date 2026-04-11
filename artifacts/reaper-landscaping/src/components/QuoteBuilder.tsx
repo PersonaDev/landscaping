@@ -129,7 +129,7 @@ export function QuoteBuilder({ frequency, scope, interacted, setFrequency, setSc
         <div>
           <a
             href={smsHref}
-            className="block w-full bg-[#f17c52] hover:bg-[#e06840] active:scale-[0.98] text-white text-center font-black py-4 rounded-xl transition-all text-[15px] leading-snug tracking-tight"
+            className="block w-full bg-[#006837] hover:bg-[#005030] active:scale-[0.98] text-white text-center font-bold py-4 rounded-xl transition-all text-[15px] leading-snug"
           >
             {btnLabel}
           </a>

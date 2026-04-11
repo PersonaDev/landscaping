@@ -56,7 +56,7 @@ export function SiteHeader() {
         <div className="hidden md:flex items-center gap-2">
           <a
             href={PHONE_LINK}
-            className="flex items-center gap-1.5 bg-[#f17c52] hover:bg-[#e06840] text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors"
+            className="flex items-center gap-1.5 bg-[#006837] hover:bg-[#005030] text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors"
           >
             <Phone className="w-3.5 h-3.5" />
             Call Now
@@ -73,7 +73,7 @@ export function SiteHeader() {
         {/* Mobile Call button */}
         <a
           href={PHONE_LINK}
-          className="md:hidden flex items-center gap-1.5 bg-[#f17c52] text-white text-sm font-bold px-3.5 py-2 rounded-lg"
+          className="md:hidden flex items-center gap-1.5 bg-[#006837] text-white text-sm font-bold px-3.5 py-2 rounded-lg"
         >
           <Phone className="w-3.5 h-3.5" />
           Call

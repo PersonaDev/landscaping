@@ -87,14 +87,17 @@ export default function Home() {
                 El Dorado Hills &amp; Greater Sacramento
               </p>
 
-              <h1 className="text-white leading-none mb-6">
-                <span className="block text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight">Your yard,</span>
-                <span
-                  className="block text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight"
-                  style={{ color: "#f17c52" }}
+              <h1
+                className="text-white leading-none mb-6"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                <span className="block text-5xl sm:text-6xl lg:text-7xl font-bold">Your yard,</span>
+                <em
+                  className="block text-5xl sm:text-6xl lg:text-7xl font-bold"
+                  style={{ color: "#f17c52", fontStyle: "italic" }}
                 >
                   handled.
-                </span>
+                </em>
               </h1>
 
               <p className="text-white/75 text-[16px] leading-relaxed max-w-[420px] mb-8">
@@ -104,7 +107,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-3 mb-8">
                 <a
                   href={PHONE_LINK}
-                  className="flex items-center justify-center gap-2 bg-[#f17c52] hover:bg-[#e06840] active:scale-95 text-white font-black px-6 py-4 rounded-xl text-[16px] transition-all tracking-tight"
+                  className="flex items-center justify-center gap-2 bg-[#006837] hover:bg-[#005030] active:scale-95 text-white font-bold px-6 py-4 rounded-xl text-[16px] transition-all"
                 >
                   <Phone className="w-5 h-5" />
                   Call {PHONE}
@@ -416,8 +419,8 @@ export default function Home() {
         <section className="py-24 px-5 sm:px-8 bg-[#006837] text-center">
           <div className="max-w-xl mx-auto">
             <h2
-              className="text-white font-black tracking-tight mb-4"
-              style={{ fontSize: "clamp(30px, 5vw, 48px)", lineHeight: 1.1 }}
+              className="text-white mb-4"
+              style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(30px, 5vw, 48px)", lineHeight: 1.15 }}
             >
               Ready to forget about your yard?
             </h2>
@@ -427,7 +430,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
                 href={PHONE_LINK}
-                className="flex items-center justify-center gap-2 bg-[#fbb03b] hover:bg-[#e6a020] active:scale-95 text-[#111111] font-black px-8 py-4 rounded-xl text-[16px] transition-all tracking-tight"
+                className="flex items-center justify-center gap-2 bg-[#fbb03b] hover:bg-[#e6a020] active:scale-95 text-[#111111] font-bold px-8 py-4 rounded-xl text-[16px] transition-all"
               >
                 <Phone className="w-5 h-5" />
                 Call {PHONE}
