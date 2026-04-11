@@ -45,10 +45,10 @@ export function FAQAccordion() {
             onClick={() => setOpen(open === i ? null : i)}
             aria-expanded={open === i}
           >
-            <span className="font-medium text-[#1a1a1a] text-[17px] group-hover:text-[#1a5c30] transition-colors">
+            <span className="font-medium text-[#1a1a1a] text-[17px] group-hover:text-[#006837] transition-colors">
               {item.q}
             </span>
-            <span className="shrink-0 text-[#1a5c30]">
+            <span className="shrink-0 text-[#006837]">
               {open === i ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
             </span>
           </button>

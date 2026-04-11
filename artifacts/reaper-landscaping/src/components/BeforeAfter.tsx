@@ -56,7 +56,7 @@ export function BeforeAfter({ beforeSrc, afterSrc, beforeAlt = "Before", afterAl
       </div>
 
       {/* AFTER badge */}
-      <div className="absolute top-3 right-3 bg-[#1a5c30]/80 backdrop-blur-sm text-white text-[11px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-md pointer-events-none">
+      <div className="absolute top-3 right-3 bg-[#006837]/80 backdrop-blur-sm text-white text-[11px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-md pointer-events-none">
         After
       </div>
 
@@ -73,7 +73,7 @@ export function BeforeAfter({ beforeSrc, afterSrc, beforeAlt = "Before", afterAl
         onMouseDown={(e) => { e.preventDefault(); dragging.current = true; }}
         onTouchStart={() => { dragging.current = true; }}
       >
-        <svg className="w-4 h-4 text-[#1a5c30]" viewBox="0 0 20 20" fill="none">
+        <svg className="w-4 h-4 text-[#006837]" viewBox="0 0 20 20" fill="none">
           <path d="M7 4L4 10L7 16M13 4L16 10L13 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>

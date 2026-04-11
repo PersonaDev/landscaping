@@ -107,7 +107,7 @@ export function SEO({ title, description }: SEOProps) {
 
       {/* Viewport */}
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-      <meta name="theme-color" content="#1a5c30" />
+      <meta name="theme-color" content="#006837" />
 
       {/* Structured Data */}
       <script type="application/ld+json">{JSON.stringify(structuredData)}</script>

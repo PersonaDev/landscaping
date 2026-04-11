@@ -7,11 +7,11 @@
 }
 
 :root {
-  --brand: #1a5c30;
-  --brand-hover: #155228;
-  --brand-light: #7ddc9a;
+  --brand: #006837;
+  --brand-hover: #005030;
+  --brand-light: #fbb03b;
   --bg-off: #f5f3ee;
-  --footer-dark: #111810;
+  --footer-dark: #111111;
   --text-primary: #1a1a1a;
   --text-muted: #6b7280;
 }

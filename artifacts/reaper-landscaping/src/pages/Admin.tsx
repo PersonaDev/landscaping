@@ -77,10 +77,10 @@ function LoginScreen({ onLogin }: { onLogin: (token: string) => void }) {
     <div className="min-h-screen bg-[#f5f3ee] flex items-center justify-center px-5">
       <div className="w-full max-w-sm bg-white rounded-2xl shadow-sm border border-stone-100 p-8">
         <div className="mb-7">
-          <div className="w-9 h-9 bg-[#1a5c30] rounded-lg flex items-center justify-center mb-4">
+          <div className="w-9 h-9 bg-[#006837] rounded-lg flex items-center justify-center mb-4">
             <span className="text-white text-sm font-bold">E</span>
           </div>
-          <h1 className="font-serif text-2xl font-bold text-[#111810]">Admin Login</h1>
+          <h1 className="font-serif text-2xl font-bold text-[#111111]">Admin Login</h1>
           <p className="text-stone-500 text-sm mt-1">EDH Landscaping blog admin</p>
         </div>
         <form onSubmit={submit} className="space-y-4">
@@ -89,14 +89,14 @@ function LoginScreen({ onLogin }: { onLogin: (token: string) => void }) {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#1a5c30] focus:border-transparent"
+            className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
             autoFocus
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#1a5c30] text-white font-semibold py-3 rounded-xl text-sm hover:bg-[#155228] transition-colors disabled:opacity-60"
+            className="w-full bg-[#006837] text-white font-semibold py-3 rounded-xl text-sm hover:bg-[#005030] transition-colors disabled:opacity-60"
           >
             {loading ? "Signing in…" : "Sign In"}
           </button>
@@ -114,7 +114,7 @@ function ToolbarButton({
       type="button"
       onMouseDown={(e) => { e.preventDefault(); onClick(); }}
       title={title}
-      className={`p-1.5 rounded transition-colors ${active ? "bg-[#1a5c30] text-white" : "text-stone-600 hover:bg-stone-100"}`}
+      className={`p-1.5 rounded transition-colors ${active ? "bg-[#006837] text-white" : "text-stone-600 hover:bg-stone-100"}`}
     >
       {children}
     </button>
@@ -194,7 +194,7 @@ function PostEditor({
     <div className="fixed inset-0 bg-white z-50 overflow-y-auto">
       <div className="max-w-3xl mx-auto px-5 py-8">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="font-serif text-xl font-bold text-[#111810]">
+          <h2 className="font-serif text-xl font-bold text-[#111111]">
             {initial ? "Edit Post" : "New Post"}
           </h2>
           <div className="flex items-center gap-3">
@@ -207,7 +207,7 @@ function PostEditor({
             <button
               onClick={save}
               disabled={saving}
-              className="flex items-center gap-1.5 bg-[#1a5c30] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#155228] transition-colors disabled:opacity-60"
+              className="flex items-center gap-1.5 bg-[#006837] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#005030] transition-colors disabled:opacity-60"
             >
               <Save className="w-4 h-4" />
               {saving ? "Saving…" : "Save"}
@@ -230,7 +230,7 @@ function PostEditor({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Post title"
-              className="w-full border border-stone-200 rounded-xl px-4 py-3 text-[15px] outline-none focus:ring-2 focus:ring-[#1a5c30] focus:border-transparent font-serif"
+              className="w-full border border-stone-200 rounded-xl px-4 py-3 text-[15px] outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent font-serif"
             />
           </div>
 
@@ -242,7 +242,7 @@ function PostEditor({
               value={slug}
               onChange={(e) => { setSlugEdited(true); setSlug(e.target.value); }}
               placeholder="post-url-slug"
-              className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm font-mono outline-none focus:ring-2 focus:ring-[#1a5c30] focus:border-transparent"
+              className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm font-mono outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
             />
           </div>
 
@@ -255,7 +255,7 @@ function PostEditor({
               onChange={(e) => setExcerpt(e.target.value)}
               placeholder="Short summary shown on the blog index…"
               rows={2}
-              className="w-full border border-stone-200 rounded-xl px-4 py-3 text-[14px] outline-none focus:ring-2 focus:ring-[#1a5c30] focus:border-transparent resize-none"
+              className="w-full border border-stone-200 rounded-xl px-4 py-3 text-[14px] outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent resize-none"
             />
           </div>
 
@@ -267,7 +267,7 @@ function PostEditor({
               value={coverImageUrl}
               onChange={(e) => setCoverImageUrl(e.target.value)}
               placeholder="https://example.com/image.jpg"
-              className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#1a5c30] focus:border-transparent"
+              className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
             />
           </div>
 
@@ -311,7 +311,7 @@ function PostEditor({
             <button
               type="button"
               onClick={() => setPublished(!published)}
-              className={`relative w-11 h-6 rounded-full transition-colors ${published ? "bg-[#1a5c30]" : "bg-stone-200"}`}
+              className={`relative w-11 h-6 rounded-full transition-colors ${published ? "bg-[#006837]" : "bg-stone-200"}`}
             >
               <span
                 className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${published ? "translate-x-5" : ""}`}
@@ -396,11 +396,11 @@ export default function Admin() {
         <header className="bg-white border-b border-stone-100 px-5 py-4">
           <div className="max-w-4xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-[#1a5c30] rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-[#006837] rounded-lg flex items-center justify-center">
                 <span className="text-white text-xs font-bold">E</span>
               </div>
               <div>
-                <p className="font-semibold text-[#111810] text-sm leading-none">EDH Landscaping</p>
+                <p className="font-semibold text-[#111111] text-sm leading-none">EDH Landscaping</p>
                 <p className="text-stone-400 text-[11px] leading-none mt-0.5">Blog Admin</p>
               </div>
             </div>
@@ -416,10 +416,10 @@ export default function Admin() {
         <main className="max-w-4xl mx-auto px-5 py-10">
 
           <div className="flex items-center justify-between mb-8">
-            <h1 className="font-serif text-2xl font-bold text-[#111810]">Posts</h1>
+            <h1 className="font-serif text-2xl font-bold text-[#111111]">Posts</h1>
             <button
               onClick={() => setEditing(null)}
-              className="flex items-center gap-2 bg-[#1a5c30] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#155228] transition-colors"
+              className="flex items-center gap-2 bg-[#006837] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#005030] transition-colors"
             >
               <Plus className="w-4 h-4" /> New post
             </button>
@@ -438,7 +438,7 @@ export default function Admin() {
               <p className="text-stone-400 text-[15px] mb-4">No posts yet</p>
               <button
                 onClick={() => setEditing(null)}
-                className="inline-flex items-center gap-2 bg-[#1a5c30] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#155228] transition-colors"
+                className="inline-flex items-center gap-2 bg-[#006837] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#005030] transition-colors"
               >
                 <Plus className="w-4 h-4" /> Write your first post
               </button>
@@ -459,21 +459,21 @@ export default function Admin() {
                         {post.published ? "Live" : "Draft"}
                       </span>
                     </div>
-                    <p className="font-medium text-[#111810] text-[15px] truncate">{post.title}</p>
+                    <p className="font-medium text-[#111111] text-[15px] truncate">{post.title}</p>
                     <p className="text-stone-400 text-[12px] mt-0.5">{formatDate(post.createdAt)}</p>
                   </div>
                   <div className="flex items-center gap-1 shrink-0">
                     <button
                       onClick={() => togglePublish(post)}
                       title={post.published ? "Unpublish" : "Publish"}
-                      className="p-2 text-stone-400 hover:text-[#1a5c30] transition-colors rounded-lg hover:bg-stone-100"
+                      className="p-2 text-stone-400 hover:text-[#006837] transition-colors rounded-lg hover:bg-stone-100"
                     >
                       {post.published ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                     <button
                       onClick={() => setEditing(post)}
                       title="Edit"
-                      className="p-2 text-stone-400 hover:text-[#1a5c30] transition-colors rounded-lg hover:bg-stone-100"
+                      className="p-2 text-stone-400 hover:text-[#006837] transition-colors rounded-lg hover:bg-stone-100"
                     >
                       <Edit2 className="w-4 h-4" />
                     </button>

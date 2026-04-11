@@ -50,7 +50,7 @@ export function MobileSMSBar({ frequency, scope, interacted }: Props) {
       <div
         className="px-4 pt-3 flex flex-col items-stretch"
         style={{
-          background: "#1a5c30",
+          background: "#006837",
           paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)",
         }}
       >
@@ -59,7 +59,7 @@ export function MobileSMSBar({ frequency, scope, interacted }: Props) {
           href={smsHref}
           onClick={handleClick}
           className="block w-full text-white font-bold text-[16px] text-center py-4 rounded-xl transition-colors duration-200 min-h-[56px] flex items-center justify-center"
-          style={{ background: flashing ? "#155228" : "transparent", border: "1.5px solid rgba(255,255,255,0.25)" }}
+          style={{ background: flashing ? "#005030" : "transparent", border: "1.5px solid rgba(255,255,255,0.25)" }}
         >
           {btnLabel}
         </a>

@@ -1,5 +1,4 @@
 import { Phone, MessageSquare } from "lucide-react";
-import { LawnIcon } from "./LawnIcon";
 import { Link, useLocation } from "wouter";
 
 const PHONE_LINK = "tel:9168472095";
@@ -25,15 +24,13 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-stone-100">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-[60px] flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 bg-white border-b border-stone-200">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-[64px] flex items-center justify-between gap-4">
 
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0" aria-label="EDH Landscaping — home">
-          <span className="w-8 h-8 rounded-lg bg-[#1a5c30] flex items-center justify-center">
-            <LawnIcon className="w-4 h-4 text-white" />
-          </span>
-          <span className="font-semibold text-[#1a1a1a] text-[15px]">EDH Landscaping</span>
+        <Link href="/" className="flex items-center gap-3 shrink-0" aria-label="EDH Landscaping — home">
+          <img src="/logo.svg" alt="EDH" className="h-8 w-auto" />
+          <span className="font-black text-[#111111] text-[17px] tracking-tight leading-none">Landscaping</span>
         </Link>
 
         {/* Desktop nav */}
@@ -42,14 +39,14 @@ export function SiteHeader() {
             <button
               key={item.label}
               onClick={() => scrollTo(item.id)}
-              className="text-[14px] text-stone-500 hover:text-[#1a5c30] font-medium transition-colors"
+              className="text-[14px] text-stone-500 hover:text-[#006837] font-semibold transition-colors"
             >
               {item.label}
             </button>
           ))}
           <Link
             href="/blog"
-            className="text-[14px] text-stone-500 hover:text-[#1a5c30] font-medium transition-colors"
+            className="text-[14px] text-stone-500 hover:text-[#006837] font-semibold transition-colors"
           >
             Blog
           </Link>
@@ -59,14 +56,14 @@ export function SiteHeader() {
         <div className="hidden md:flex items-center gap-2">
           <a
             href={PHONE_LINK}
-            className="flex items-center gap-1.5 bg-[#1a5c30] hover:bg-[#155228] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+            className="flex items-center gap-1.5 bg-[#f17c52] hover:bg-[#e06840] text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors"
           >
             <Phone className="w-3.5 h-3.5" />
-            Call
+            Call Now
           </a>
           <a
             href={SMS_LINK}
-            className="flex items-center gap-1.5 border border-[#1a5c30] text-[#1a5c30] hover:bg-green-50 text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+            className="flex items-center gap-1.5 border-2 border-[#006837] text-[#006837] hover:bg-[#006837] hover:text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors"
           >
             <MessageSquare className="w-3.5 h-3.5" />
             Text
@@ -76,7 +73,7 @@ export function SiteHeader() {
         {/* Mobile Call button */}
         <a
           href={PHONE_LINK}
-          className="md:hidden flex items-center gap-1.5 bg-[#1a5c30] text-white text-sm font-semibold px-3.5 py-2 rounded-lg"
+          className="md:hidden flex items-center gap-1.5 bg-[#f17c52] text-white text-sm font-bold px-3.5 py-2 rounded-lg"
         >
           <Phone className="w-3.5 h-3.5" />
           Call

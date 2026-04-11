@@ -82,22 +82,19 @@ export default function Home() {
 
           <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-8 py-24">
             <div className="max-w-[600px]">
-              <p className="text-[#7ddc9a] text-xs font-bold tracking-[0.2em] uppercase flex items-center gap-1.5 mb-6">
+              <p className="text-[#fbb03b] text-xs font-bold tracking-[0.2em] uppercase flex items-center gap-1.5 mb-6">
                 <MapPin className="w-3.5 h-3.5" />
                 El Dorado Hills &amp; Greater Sacramento
               </p>
 
-              <h1
-                className="text-white leading-none mb-6"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                <span className="block text-5xl sm:text-6xl lg:text-7xl font-bold">Your yard,</span>
-                <em
-                  className="block text-5xl sm:text-6xl lg:text-7xl font-bold"
-                  style={{ color: "#7ddc9a", fontStyle: "italic" }}
+              <h1 className="text-white leading-none mb-6">
+                <span className="block text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight">Your yard,</span>
+                <span
+                  className="block text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight"
+                  style={{ color: "#f17c52" }}
                 >
                   handled.
-                </em>
+                </span>
               </h1>
 
               <p className="text-white/75 text-[16px] leading-relaxed max-w-[420px] mb-8">
@@ -107,7 +104,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-3 mb-8">
                 <a
                   href={PHONE_LINK}
-                  className="flex items-center justify-center gap-2 bg-[#1a5c30] hover:bg-[#155228] active:scale-95 text-white font-bold px-6 py-4 rounded-xl text-[16px] transition-all"
+                  className="flex items-center justify-center gap-2 bg-[#f17c52] hover:bg-[#e06840] active:scale-95 text-white font-black px-6 py-4 rounded-xl text-[16px] transition-all tracking-tight"
                 >
                   <Phone className="w-5 h-5" />
                   Call {PHONE}
@@ -161,7 +158,7 @@ export default function Home() {
         {/* ── BEFORE / AFTER GALLERY ────────────────────────────── */}
         <section id="services" className="py-20 px-5 sm:px-8" style={{ background: "#f5f3ee" }}>
           <div className="max-w-6xl mx-auto">
-            <p className="text-[#1a5c30] text-xs font-bold tracking-[0.2em] uppercase mb-3">Our Work</p>
+            <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Our Work</p>
             <h2
               className="mb-3"
               style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
@@ -196,7 +193,7 @@ export default function Home() {
                 <span
                   key={chip}
                   className="text-[13px] font-medium px-4 py-2 rounded-full border bg-white"
-                  style={{ color: "#1a5c30", borderColor: "rgba(26,92,48,0.3)" }}
+                  style={{ color: "#006837", borderColor: "rgba(26,92,48,0.3)" }}
                 >
                   {chip}
                 </span>
@@ -208,7 +205,7 @@ export default function Home() {
         {/* ── REVIEWS ───────────────────────────────────────────── */}
         <section id="reviews" className="py-20 px-5 sm:px-8 bg-white">
           <div className="max-w-6xl mx-auto">
-            <p className="text-[#1a5c30] text-xs font-bold tracking-[0.2em] uppercase mb-3">Reviews</p>
+            <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Reviews</p>
             <h2
               className="mb-12"
               style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
@@ -222,7 +219,7 @@ export default function Home() {
                   <div className="text-amber-400 text-[18px] tracking-wide">★★★★★</div>
                   <p className="text-[#1a1a1a] leading-relaxed text-[15px] flex-1">"{r.text}"</p>
                   <div className="flex items-center gap-3 pt-3 border-t border-stone-100">
-                    <div className="w-9 h-9 rounded-full bg-[#1a5c30] flex items-center justify-center text-white font-bold text-sm shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-[#006837] flex items-center justify-center text-white font-bold text-sm shrink-0">
                       {r.initial}
                     </div>
                     <div>
@@ -239,7 +236,7 @@ export default function Home() {
                 href="https://maps.google.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#1a5c30] text-sm font-medium hover:underline inline-flex items-center gap-1"
+                className="text-[#006837] text-sm font-medium hover:underline inline-flex items-center gap-1"
               >
                 See all reviews on Google <ChevronRight className="w-4 h-4" />
               </a>
@@ -250,7 +247,7 @@ export default function Home() {
         {/* ── QUOTE BUILDER ─────────────────────────────────────── */}
         <section id="pricing" className="py-20 px-5 sm:px-8" style={{ background: "#f5f3ee" }}>
           <div className="max-w-6xl mx-auto">
-            <p className="text-[#1a5c30] text-xs font-bold tracking-[0.2em] uppercase mb-3">Pricing</p>
+            <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Pricing</p>
             <h2
               className="mb-3"
               style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
@@ -274,7 +271,7 @@ export default function Home() {
         {/* ── HOW IT WORKS ──────────────────────────────────────── */}
         <section className="py-20 px-5 sm:px-8 bg-white">
           <div className="max-w-6xl mx-auto">
-            <p className="text-[#1a5c30] text-xs font-bold tracking-[0.2em] uppercase mb-3">The process</p>
+            <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">The process</p>
             <h2
               className="mb-14"
               style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
@@ -302,7 +299,7 @@ export default function Home() {
                 <div key={step.n} className="relative pt-10">
                   <div
                     className="absolute top-0 left-0 text-[80px] font-bold leading-none select-none pointer-events-none"
-                    style={{ fontFamily: "'Playfair Display', serif", color: "#7ddc9a", opacity: 0.4 }}
+                    style={{ fontFamily: "'Playfair Display', serif", color: "#fbb03b", opacity: 0.4 }}
                   >
                     {step.n}
                   </div>
@@ -327,7 +324,7 @@ export default function Home() {
             />
 
             <div>
-              <p className="text-[#1a5c30] text-xs font-bold tracking-[0.2em] uppercase mb-3">Who we are</p>
+              <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Who we are</p>
               <h2
                 className="mb-5"
                 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(26px, 4vw, 38px)", lineHeight: 1.2 }}
@@ -345,14 +342,14 @@ export default function Home() {
                   "El Dorado Hills is our backyard",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-[15px] text-[#1a1a1a]">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#1a5c30] mt-[7px] shrink-0" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#006837] mt-[7px] shrink-0" />
                     {item}
                   </li>
                 ))}
               </ul>
               <a
                 href={SMS_DEFAULT}
-                className="inline-flex items-center gap-1.5 text-[#1a5c30] font-semibold text-[15px] hover:underline"
+                className="inline-flex items-center gap-1.5 text-[#006837] font-semibold text-[15px] hover:underline"
               >
                 Get on the schedule <ChevronRight className="w-4 h-4" />
               </a>
@@ -363,7 +360,7 @@ export default function Home() {
         {/* ── SERVICE AREA ──────────────────────────────────────── */}
         <section className="py-20 px-5 sm:px-8 bg-white">
           <div className="max-w-6xl mx-auto">
-            <p className="text-[#1a5c30] text-xs font-bold tracking-[0.2em] uppercase mb-3">Where we work</p>
+            <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Where we work</p>
             <h2
               className="mb-4"
               style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
@@ -394,7 +391,7 @@ export default function Home() {
 
             <p className="text-[#6b7280] text-[15px]">
               Not sure if we cover your street?{" "}
-              <a href={SMS_DEFAULT} className="text-[#1a5c30] font-medium hover:underline">
+              <a href={SMS_DEFAULT} className="text-[#006837] font-medium hover:underline">
                 Text us — {PHONE}
               </a>
             </p>
@@ -404,7 +401,7 @@ export default function Home() {
         {/* ── FAQ ───────────────────────────────────────────────── */}
         <section id="contact" className="py-20 px-5 sm:px-8" style={{ background: "#f5f3ee" }}>
           <div className="max-w-2xl mx-auto">
-            <p className="text-[#1a5c30] text-xs font-bold tracking-[0.2em] uppercase mb-3">Questions</p>
+            <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Questions</p>
             <h2
               className="mb-10"
               style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
@@ -416,11 +413,11 @@ export default function Home() {
         </section>
 
         {/* ── FINAL CTA ─────────────────────────────────────────── */}
-        <section className="py-24 px-5 sm:px-8 bg-[#1a5c30] text-center">
+        <section className="py-24 px-5 sm:px-8 bg-[#006837] text-center">
           <div className="max-w-xl mx-auto">
             <h2
-              className="text-white mb-4"
-              style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(30px, 5vw, 48px)", lineHeight: 1.15 }}
+              className="text-white font-black tracking-tight mb-4"
+              style={{ fontSize: "clamp(30px, 5vw, 48px)", lineHeight: 1.1 }}
             >
               Ready to forget about your yard?
             </h2>
@@ -430,7 +427,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
                 href={PHONE_LINK}
-                className="flex items-center justify-center gap-2 bg-[#7ddc9a] hover:bg-[#68cc88] active:scale-95 text-[#111810] font-bold px-8 py-4 rounded-xl text-[16px] transition-all"
+                className="flex items-center justify-center gap-2 bg-[#fbb03b] hover:bg-[#e6a020] active:scale-95 text-[#111111] font-black px-8 py-4 rounded-xl text-[16px] transition-all tracking-tight"
               >
                 <Phone className="w-5 h-5" />
                 Call {PHONE}
@@ -448,7 +445,7 @@ export default function Home() {
         </section>
 
         {/* ── FOOTER ────────────────────────────────────────────── */}
-        <footer className="py-12 px-5 sm:px-8" style={{ background: "#111810" }}>
+        <footer className="py-12 px-5 sm:px-8" style={{ background: "#111111" }}>
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
               <p className="font-semibold text-white text-[15px] mb-1">EDH Landscaping</p>
@@ -456,7 +453,7 @@ export default function Home() {
               <p className="text-stone-500 text-[13px]">Serving El Dorado Hills, Folsom &amp; Greater Sacramento</p>
             </div>
             <div className="flex flex-col gap-1.5 text-right">
-              <a href={PHONE_LINK} className="text-[#7ddc9a] text-sm font-medium hover:underline">
+              <a href={PHONE_LINK} className="text-[#fbb03b] text-sm font-medium hover:underline">
                 {PHONE}
               </a>
               <a href={SMS_DEFAULT} className="text-stone-400 text-[13px] hover:underline">

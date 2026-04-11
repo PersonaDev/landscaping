@@ -84,8 +84,8 @@ export default function BlogPost({ params }: Props) {
       <>
         <SiteHeader />
         <main className="max-w-2xl mx-auto px-5 py-20 text-center">
-          <h1 className="font-serif text-3xl font-bold text-[#111810] mb-4">Post not found</h1>
-          <Link href="/blog" className="text-[#1a5c30] hover:underline">
+          <h1 className="font-serif text-3xl font-bold text-[#111111] mb-4">Post not found</h1>
+          <Link href="/blog" className="text-[#006837] hover:underline">
             ← Back to blog
           </Link>
         </main>
@@ -112,7 +112,7 @@ export default function BlogPost({ params }: Props) {
       <main className="max-w-2xl mx-auto px-5 sm:px-8 py-16">
         <Link
           href="/blog"
-          className="inline-flex items-center gap-1.5 text-[#6b7280] text-[14px] hover:text-[#1a5c30] mb-10 transition-colors"
+          className="inline-flex items-center gap-1.5 text-[#6b7280] text-[14px] hover:text-[#006837] mb-10 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> All posts
         </Link>
@@ -122,11 +122,11 @@ export default function BlogPost({ params }: Props) {
             <Calendar className="w-3.5 h-3.5" />
             <time>{formatDate(post.publishedAt)}</time>
           </div>
-          <h1 className="font-serif text-[36px] sm:text-[46px] font-bold text-[#111810] leading-tight mb-5">
+          <h1 className="font-serif text-[36px] sm:text-[46px] font-bold text-[#111111] leading-tight mb-5">
             {post.title}
           </h1>
           {post.excerpt && (
-            <p className="text-[18px] text-[#6b7280] leading-relaxed border-l-4 border-[#7ddc9a] pl-4">
+            <p className="text-[18px] text-[#6b7280] leading-relaxed border-l-4 border-[#fbb03b] pl-4">
               {post.excerpt}
             </p>
           )}
@@ -141,7 +141,7 @@ export default function BlogPost({ params }: Props) {
         )}
 
         <div
-          className="prose prose-lg prose-stone max-w-none prose-headings:font-serif prose-headings:text-[#111810] prose-a:text-[#1a5c30] prose-strong:text-[#111810]"
+          className="prose prose-lg prose-stone max-w-none prose-headings:font-serif prose-headings:text-[#111111] prose-a:text-[#006837] prose-strong:text-[#111111]"
           dangerouslySetInnerHTML={{ __html: post.body }}
         />
 
@@ -171,7 +171,7 @@ export default function BlogPost({ params }: Props) {
               className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-stone-200 text-[13px] font-medium text-stone-700 hover:bg-stone-50 transition-colors"
             >
               {copied ? (
-                <><Check className="w-4 h-4 text-[#1a5c30]" /> Copied!</>
+                <><Check className="w-4 h-4 text-[#006837]" /> Copied!</>
               ) : (
                 <><Link2 className="w-4 h-4" /> Copy link</>
               )}
@@ -180,13 +180,13 @@ export default function BlogPost({ params }: Props) {
         </div>
 
         <div className="mt-12 bg-[#f5f3ee] rounded-2xl p-6">
-          <p className="font-semibold text-[#111810] mb-1">Need your yard handled?</p>
+          <p className="font-semibold text-[#111111] mb-1">Need your yard handled?</p>
           <p className="text-[#6b7280] text-[14px] mb-4">
             Bi-weekly service starting at $60/mo. No contracts, no portals.
           </p>
           <a
             href="tel:9168472095"
-            className="inline-flex items-center gap-2 bg-[#1a5c30] text-white font-semibold px-5 py-3 rounded-xl text-[14px] hover:bg-[#155228] transition-colors"
+            className="inline-flex items-center gap-2 bg-[#006837] text-white font-semibold px-5 py-3 rounded-xl text-[14px] hover:bg-[#005030] transition-colors"
           >
             Call (916) 847-2095
           </a>

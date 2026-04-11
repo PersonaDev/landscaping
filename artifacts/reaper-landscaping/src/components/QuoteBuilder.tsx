@@ -30,8 +30,8 @@ export function QuoteBuilder({ frequency, scope, interacted, setFrequency, setSc
     <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-stone-100 w-full max-w-[540px] mx-auto">
 
       {/* Card header — green */}
-      <div className="bg-[#1a5c30] px-6 py-8 text-center">
-        <p className="text-[#7ddc9a] text-xs font-semibold tracking-widest uppercase mb-3">Build your plan</p>
+      <div className="bg-[#006837] px-6 py-8 text-center">
+        <p className="text-[#fbb03b] text-xs font-semibold tracking-widest uppercase mb-3">Build your plan</p>
         <div className="text-white" style={{ fontFamily: "'Playfair Display', serif" }}>
           <span className="text-[72px] font-bold leading-none">
             {interacted ? `$${price}` : "$60"}
@@ -58,7 +58,7 @@ export function QuoteBuilder({ frequency, scope, interacted, setFrequency, setSc
                 onClick={() => handleFreq(i)}
                 className={`flex-1 py-3 text-sm font-medium transition-all relative ${
                   frequency === i
-                    ? "bg-[#1a5c30] text-white"
+                    ? "bg-[#006837] text-white"
                     : "bg-white text-stone-500 hover:bg-stone-50"
                 } ${i > 0 ? "border-l border-stone-200" : ""} ${
                   i === 0 ? "rounded-l-xl" : ""
@@ -66,7 +66,7 @@ export function QuoteBuilder({ frequency, scope, interacted, setFrequency, setSc
               >
                 {f.label}
                 {"recommended" in f && f.recommended && frequency !== i && (
-                  <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-10 text-[10px] bg-[#7ddc9a] text-[#1a5c30] px-1.5 py-0.5 rounded font-bold leading-none whitespace-nowrap">
+                  <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 z-10 text-[10px] bg-[#fbb03b] text-[#006837] px-1.5 py-0.5 rounded font-bold leading-none whitespace-nowrap">
                     Popular
                   </span>
                 )}
@@ -85,13 +85,13 @@ export function QuoteBuilder({ frequency, scope, interacted, setFrequency, setSc
                 onClick={() => handleScope(i)}
                 className={`flex-1 py-3 text-sm font-medium transition-all ${
                   scope === i
-                    ? "bg-[#1a5c30] text-white"
+                    ? "bg-[#006837] text-white"
                     : "bg-white text-stone-500 hover:bg-stone-50"
                 } ${i > 0 ? "border-l border-stone-200" : ""}`}
               >
                 <span className="block">{s.label}</span>
                 {i > 0 && (
-                  <span className={`text-[11px] ${scope === i ? "text-[#7ddc9a]" : "text-stone-400"}`}>
+                  <span className={`text-[11px] ${scope === i ? "text-[#fbb03b]" : "text-stone-400"}`}>
                     +${s.addon}/mo
                   </span>
                 )}
@@ -114,7 +114,7 @@ export function QuoteBuilder({ frequency, scope, interacted, setFrequency, setSc
                 >
                   <span
                     className="w-1.5 h-1.5 rounded-full shrink-0"
-                    style={{ background: included ? "#1a5c30" : "#9ca3af" }}
+                    style={{ background: included ? "#006837" : "#9ca3af" }}
                   />
                   <span className={`text-[15px] ${included ? "text-[#1a1a1a]" : "text-stone-400"}`}>
                     {svc.name}
@@ -129,14 +129,14 @@ export function QuoteBuilder({ frequency, scope, interacted, setFrequency, setSc
         <div>
           <a
             href={smsHref}
-            className="block w-full bg-[#1a5c30] hover:bg-[#155228] active:scale-[0.98] text-white text-center font-semibold py-4 rounded-xl transition-all text-[15px] leading-snug"
+            className="block w-full bg-[#f17c52] hover:bg-[#e06840] active:scale-[0.98] text-white text-center font-black py-4 rounded-xl transition-all text-[15px] leading-snug tracking-tight"
           >
             {btnLabel}
           </a>
           <p className="text-center mt-3">
             <a
               href="tel:9168472095"
-              className="text-[#1a5c30] text-sm hover:underline inline-flex items-center gap-1"
+              className="text-[#006837] text-sm hover:underline inline-flex items-center gap-1"
             >
               <Phone className="w-3.5 h-3.5" />
               Or call (916) 847-2095 — we pick up

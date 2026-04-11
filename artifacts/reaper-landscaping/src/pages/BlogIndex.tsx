@@ -49,10 +49,10 @@ export default function BlogIndex() {
 
       <main className="max-w-3xl mx-auto px-5 sm:px-8 py-20">
         <header className="mb-14">
-          <p className="text-[#1a5c30] text-[13px] font-semibold uppercase tracking-widest mb-3">
+          <p className="text-[#006837] text-[13px] font-semibold uppercase tracking-widest mb-3">
             EDH Landscaping
           </p>
-          <h1 className="font-serif text-[40px] sm:text-[52px] font-bold text-[#111810] leading-tight">
+          <h1 className="font-serif text-[40px] sm:text-[52px] font-bold text-[#111111] leading-tight">
             Lawn Care Blog
           </h1>
           <p className="mt-4 text-[#6b7280] text-[17px] leading-relaxed">
@@ -97,7 +97,7 @@ export default function BlogIndex() {
                   <time>{formatDate(post.publishedAt)}</time>
                 </div>
                 <Link href={`/blog/${post.slug}`}>
-                  <h2 className="font-serif text-[26px] font-bold text-[#111810] leading-snug mb-3 group-hover:text-[#1a5c30] transition-colors cursor-pointer">
+                  <h2 className="font-serif text-[26px] font-bold text-[#111111] leading-snug mb-3 group-hover:text-[#006837] transition-colors cursor-pointer">
                     {post.title}
                   </h2>
                 </Link>
@@ -108,7 +108,7 @@ export default function BlogIndex() {
                 )}
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="inline-flex items-center gap-1.5 text-[#1a5c30] text-[14px] font-semibold hover:gap-2.5 transition-all"
+                  className="inline-flex items-center gap-1.5 text-[#006837] text-[14px] font-semibold hover:gap-2.5 transition-all"
                 >
                   Read more <ArrowRight className="w-4 h-4" />
                 </Link>
@@ -121,7 +121,7 @@ export default function BlogIndex() {
       <footer className="border-t border-stone-100 py-10 text-center">
         <p className="text-stone-400 text-[13px]">
           &copy; {new Date().getFullYear()} EDH Landscaping ·{" "}
-          <a href="tel:9168472095" className="hover:text-[#1a5c30]">
+          <a href="tel:9168472095" className="hover:text-[#006837]">
             (916) 847-2095
           </a>
         </p>
