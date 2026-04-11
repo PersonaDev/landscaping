@@ -22,14 +22,13 @@ export function BeforeAfter({ beforeSrc, afterSrc, beforeAlt = "Before", afterAl
   return (
     <div
       ref={containerRef}
-      className="relative overflow-hidden rounded-2xl aspect-[4/3] select-none touch-none cursor-col-resize"
+      className="relative overflow-hidden rounded-2xl aspect-[4/3] select-none touch-none cursor-col-resize shadow-lg ring-1 ring-black/5"
       onMouseMove={(e) => { if (dragging.current) updatePos(e.clientX); }}
       onMouseUp={() => { dragging.current = false; }}
       onMouseLeave={() => { dragging.current = false; }}
       onTouchMove={(e) => updatePos(e.touches[0].clientX)}
       onTouchEnd={() => { dragging.current = false; }}
     >
-      {/* Before image — full width underneath */}
       <img
         src={beforeSrc}
         alt={beforeAlt}
@@ -37,7 +36,6 @@ export function BeforeAfter({ beforeSrc, afterSrc, beforeAlt = "Before", afterAl
         draggable={false}
       />
 
-      {/* After image — clipped to the left of the divider */}
       <div
         className="absolute inset-0 overflow-hidden pointer-events-none"
         style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}
@@ -50,32 +48,39 @@ export function BeforeAfter({ beforeSrc, afterSrc, beforeAlt = "Before", afterAl
         />
       </div>
 
-      {/* BEFORE badge */}
-      <div className="absolute top-3 left-3 bg-black/55 backdrop-blur-sm text-white text-[11px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-md pointer-events-none">
-        Before
+      <div className="absolute top-4 left-4 pointer-events-none">
+        <span className="bg-black/60 backdrop-blur-md text-white/90 text-[10px] font-semibold tracking-[0.15em] uppercase px-3 py-1.5 rounded-full">
+          Before
+        </span>
       </div>
 
-      {/* AFTER badge */}
-      <div className="absolute top-3 right-3 bg-[#006837]/80 backdrop-blur-sm text-white text-[11px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-md pointer-events-none">
-        After
+      <div className="absolute top-4 right-4 pointer-events-none">
+        <span className="bg-[#006837]/85 backdrop-blur-md text-white text-[10px] font-semibold tracking-[0.15em] uppercase px-3 py-1.5 rounded-full">
+          After
+        </span>
       </div>
 
-      {/* Divider line */}
       <div
-        className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_12px_rgba(0,0,0,0.4)] pointer-events-none"
-        style={{ left: `${pos}%` }}
+        className="absolute top-0 bottom-0 w-[2px] pointer-events-none"
+        style={{
+          left: `${pos}%`,
+          background: "linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0.5), rgba(255,255,255,0.9))",
+          boxShadow: "0 0 20px rgba(0,0,0,0.2)",
+        }}
       />
 
-      {/* Drag handle */}
       <div
-        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-10 h-10 bg-white rounded-full shadow-xl flex items-center justify-center cursor-col-resize z-10"
+        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 z-10 cursor-col-resize"
         style={{ left: `${pos}%` }}
         onMouseDown={(e) => { e.preventDefault(); dragging.current = true; }}
         onTouchStart={() => { dragging.current = true; }}
       >
-        <svg className="w-4 h-4 text-[#006837]" viewBox="0 0 20 20" fill="none">
-          <path d="M7 4L4 10L7 16M13 4L16 10L13 16" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+        <div className="w-11 h-11 bg-white rounded-full shadow-[0_2px_16px_rgba(0,0,0,0.25)] flex items-center justify-center ring-2 ring-white/50">
+          <svg className="w-5 h-5 text-[#006837]" viewBox="0 0 24 24" fill="none">
+            <path d="M8 5L5 12L8 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M16 5L19 12L16 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
       </div>
     </div>
   );

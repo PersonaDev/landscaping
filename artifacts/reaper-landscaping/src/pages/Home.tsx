@@ -39,9 +39,13 @@ const REVIEWS = [
   },
 ];
 
-const SERVICE_CHIPS = [
-  "Lawn mowing", "Edging & trimming", "Driveway blowout",
-  "Weed control", "Garden bed care", "Yard cleanup", "Front yard service",
+const SERVICES = [
+  { name: "Lawn Mowing", desc: "Clean, even cut every visit" },
+  { name: "Edging & Trimming", desc: "Crisp borders along walks & beds" },
+  { name: "Driveway Blowout", desc: "Clippings cleared, curb appeal intact" },
+  { name: "Weed Control", desc: "Beds and borders kept clean" },
+  { name: "Garden Bed Care", desc: "Mulching, shaping, seasonal touch-ups" },
+  { name: "Full Yard Cleanup", desc: "Leaves, debris, and overgrowth handled" },
 ];
 
 const CITIES = [
@@ -191,15 +195,19 @@ export default function Home() {
               />
             </div>
 
-            <div className="flex flex-wrap gap-2">
-              {SERVICE_CHIPS.map((chip) => (
-                <span
-                  key={chip}
-                  className="text-[13px] font-medium px-4 py-2 rounded-full border bg-white"
-                  style={{ color: "#006837", borderColor: "rgba(26,92,48,0.3)" }}
-                >
-                  {chip}
-                </span>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-5">
+              {SERVICES.map((s) => (
+                <div key={s.name} className="flex items-start gap-3">
+                  <div className="mt-0.5 w-5 h-5 rounded-full bg-[#006837]/10 flex items-center justify-center shrink-0">
+                    <svg className="w-3 h-3 text-[#006837]" viewBox="0 0 16 16" fill="none">
+                      <path d="M3 8.5L6.5 12L13 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-[14px] font-semibold text-[#1a1a1a] leading-tight">{s.name}</p>
+                    <p className="text-[13px] text-[#6b7280] leading-snug mt-0.5">{s.desc}</p>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
