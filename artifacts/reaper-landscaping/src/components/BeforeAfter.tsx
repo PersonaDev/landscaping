@@ -64,8 +64,8 @@ export function BeforeAfter({ beforeSrc, afterSrc, beforeAlt = "Before", afterAl
         className="absolute top-0 bottom-0 w-[2px] pointer-events-none"
         style={{
           left: `${pos}%`,
-          background: "linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0.5), rgba(255,255,255,0.9))",
-          boxShadow: "0 0 20px rgba(0,0,0,0.2)",
+          background: "rgba(255,255,255,0.85)",
+          boxShadow: "0 0 12px rgba(0,0,0,0.3)",
         }}
       />
 
@@ -75,10 +75,13 @@ export function BeforeAfter({ beforeSrc, afterSrc, beforeAlt = "Before", afterAl
         onMouseDown={(e) => { e.preventDefault(); dragging.current = true; }}
         onTouchStart={() => { dragging.current = true; }}
       >
-        <div className="w-11 h-11 bg-white rounded-full shadow-[0_2px_16px_rgba(0,0,0,0.25)] flex items-center justify-center ring-2 ring-white/50">
-          <svg className="w-5 h-5 text-[#006837]" viewBox="0 0 24 24" fill="none">
-            <path d="M8 5L5 12L8 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M16 5L19 12L16 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <div className="flex items-center gap-0">
+          <svg className="w-6 h-6 drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]" viewBox="0 0 24 24" fill="none">
+            <path d="M14 6L8 12L14 18" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <div className="w-[2px] h-8 bg-white rounded-full shadow-[0_0_8px_rgba(0,0,0,0.4)]" />
+          <svg className="w-6 h-6 drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]" viewBox="0 0 24 24" fill="none">
+            <path d="M10 6L16 12L10 18" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
       </div>
