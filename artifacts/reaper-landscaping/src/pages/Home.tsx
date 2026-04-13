@@ -396,7 +396,7 @@ export default function Home() {
             <div className="rounded-2xl overflow-hidden mb-6 shadow-sm ring-1 ring-black/5" style={{ height: "280px" }}>
               <iframe
                 title="EDH Landscaping service area — El Dorado Hills, CA"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d49790.82974089383!2d-121.10089565!3d38.6856899!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x809adf4c753a7cb1%3A0x37f1dca53f587380!2sEl%20Dorado%20Hills%2C%20CA!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d200000!2d-121.35!3d38.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
