@@ -164,14 +164,13 @@ export default function Home() {
         {/* ── BEFORE / AFTER GALLERY ────────────────────────────── */}
         <section id="services" className="py-20 px-5 sm:px-8" style={{ background: "#f5f3ee" }}>
           <div className="max-w-6xl mx-auto">
-            <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Our Work</p>
             <h2
-              className="mb-3"
-              style={{ fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
+              className="font-bold tracking-tight text-[#1a1a1a] mb-3"
+              style={{ fontSize: "clamp(32px, 5vw, 48px)", lineHeight: 1.1 }}
             >
-              What we leave behind.
+              See the <span className="text-[#006837]">difference.</span>
             </h2>
-            <p className="text-[#6b7280] text-[16px] mb-10">Every yard in El Dorado Hills. Every visit.</p>
+            <p className="text-[#6b7280] text-[17px] mb-12 max-w-md">Real yards in El Dorado Hills. Drag to compare before and after, every visit.</p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
               <BeforeAfter
@@ -215,13 +214,13 @@ export default function Home() {
         {/* ── REVIEWS ───────────────────────────────────────────── */}
         <section id="reviews" className="py-20 px-5 sm:px-8 bg-white">
           <div className="max-w-6xl mx-auto">
-            <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Reviews</p>
             <h2
-              className="mb-12"
-              style={{ fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
+              className="font-bold tracking-tight text-[#1a1a1a] mb-4"
+              style={{ fontSize: "clamp(32px, 5vw, 48px)", lineHeight: 1.1 }}
             >
-              What the neighbors say.
+              Trusted by your <span className="text-[#006837]">neighbors.</span>
             </h2>
+            <p className="text-[#6b7280] text-[17px] mb-12 max-w-md">Five-star reviews from homeowners across El Dorado Hills and Folsom.</p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
               {REVIEWS.map((r, i) => (
@@ -257,15 +256,14 @@ export default function Home() {
         {/* ── QUOTE BUILDER ─────────────────────────────────────── */}
         <section id="pricing" className="py-20 px-5 sm:px-8" style={{ background: "#f5f3ee" }}>
           <div className="max-w-6xl mx-auto">
-            <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Pricing</p>
             <h2
-              className="mb-3"
-              style={{ fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
+              className="font-bold tracking-tight text-[#1a1a1a] mb-3"
+              style={{ fontSize: "clamp(32px, 5vw, 48px)", lineHeight: 1.1 }}
             >
-              Build your plan.
+              Pick your <span className="text-[#006837]">plan.</span>
             </h2>
-            <p className="text-[#6b7280] text-[16px] mb-10">
-              Pick your frequency and how much coverage you want. Price updates live.
+            <p className="text-[#6b7280] text-[17px] mb-10 max-w-md mx-auto">
+              Choose your frequency and coverage. Price updates live, text us to lock it in.
             </p>
             <QuoteBuilder
               frequency={frequency}
@@ -281,13 +279,13 @@ export default function Home() {
         {/* ── HOW IT WORKS ──────────────────────────────────────── */}
         <section className="py-20 px-5 sm:px-8 bg-white">
           <div className="max-w-6xl mx-auto">
-            <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">The process</p>
             <h2
-              className="mb-14"
-              style={{ fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
+              className="font-bold tracking-tight text-[#1a1a1a] mb-4"
+              style={{ fontSize: "clamp(32px, 5vw, 48px)", lineHeight: 1.1 }}
             >
-              Three steps. Then forget about it.
+              How it <span className="text-[#006837]">works.</span>
             </h2>
+            <p className="text-[#6b7280] text-[17px] mb-14 max-w-md">Three steps, then forget about your yard.</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
               {[
                 {
@@ -334,12 +332,11 @@ export default function Home() {
             />
 
             <div>
-              <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Who we are</p>
               <h2
-                className="mb-5"
-                style={{ fontSize: "clamp(26px, 4vw, 38px)", lineHeight: 1.2 }}
+                className="font-bold tracking-tight text-[#1a1a1a] mb-5"
+                style={{ fontSize: "clamp(28px, 4vw, 42px)", lineHeight: 1.1 }}
               >
-                We actually show up.
+                We actually <span className="text-[#006837]">show up.</span>
               </h2>
               <p className="text-[#6b7280] leading-relaxed mb-8 text-[16px]">
                 We're a small local crew. El Dorado Hills is where we work and where we live. We know the hills, the heat, the grass types, fescue runs different out here than anywhere else in Sacramento. We're not dispatching whoever's available that week. You'll recognize the truck.
@@ -370,15 +367,14 @@ export default function Home() {
         {/* ── SERVICE AREA ──────────────────────────────────────── */}
         <section className="py-20 px-5 sm:px-8 bg-white">
           <div className="max-w-6xl mx-auto">
-            <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Where we work</p>
             <h2
-              className="mb-4"
-              style={{ fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
+              className="font-bold tracking-tight text-[#1a1a1a] mb-4"
+              style={{ fontSize: "clamp(32px, 5vw, 48px)", lineHeight: 1.1 }}
             >
-              Your neighborhood is our route.
+              Your neighborhood, <span className="text-[#006837]">our route.</span>
             </h2>
-            <p className="text-[#6b7280] text-[16px] max-w-lg mb-10 leading-relaxed">
-              We run routes through El Dorado Hills and the surrounding Sacramento foothills. If you're in one of these areas, we can almost certainly get you on the schedule this week.
+            <p className="text-[#6b7280] text-[17px] max-w-lg mb-10 leading-relaxed">
+              We run routes through El Dorado Hills and greater Sacramento. If you're in one of these areas, we can get you on the schedule this week.
             </p>
 
             <div className="flex flex-wrap gap-2.5 mb-10">
@@ -425,13 +421,13 @@ export default function Home() {
         <section className="py-24 px-5 sm:px-8 bg-[#006837] text-center">
           <div className="max-w-xl mx-auto">
             <h2
-              className="text-white mb-4"
-              style={{ fontSize: "clamp(30px, 5vw, 48px)", lineHeight: 1.15 }}
+              className="text-white font-bold tracking-tight mb-4"
+              style={{ fontSize: "clamp(32px, 5vw, 52px)", lineHeight: 1.1 }}
             >
-              Ready to forget about your yard?
+              Ready to forget<br className="sm:hidden" /> about your yard?
             </h2>
-            <p className="text-white/70 text-[16px] mb-10 leading-relaxed">
-              Service starting at $45/mo. Same crew, every visit. No contracts.
+            <p className="text-white/70 text-[17px] mb-10 leading-relaxed">
+              Starting at $45/mo. Same crew, every visit. No contracts, cancel anytime.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
