@@ -55,7 +55,7 @@ export function SEO({ title, description }: SEOProps) {
             name: "Bi-Weekly Yard Service",
             description: "Bi-weekly yard maintenance starting at $45/month. No contracts.",
           },
-          price: "60",
+          price: "45",
           priceCurrency: "USD",
         },
       ],
@@ -85,6 +85,9 @@ export function SEO({ title, description }: SEOProps) {
       <meta name="geo.position" content="38.6879;-121.0533" />
       <meta name="ICBM" content="38.6879, -121.0533" />
       <link rel="canonical" href={siteUrl} />
+      <link rel="icon" type="image/png" href="/favicon.png" />
+      <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
       {/* Open Graph */}
       <meta property="og:type" content="website" />
