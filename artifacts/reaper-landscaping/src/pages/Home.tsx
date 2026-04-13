@@ -5,6 +5,8 @@ import { BeforeAfter } from "../components/BeforeAfter";
 import { QuoteBuilder } from "../components/QuoteBuilder";
 import { MobileSMSBar } from "../components/MobileSMSBar";
 import { FAQAccordion } from "../components/FAQAccordion";
+import { lazy, Suspense } from "react";
+const ServiceAreaMap = lazy(() => import("../components/ServiceAreaMap").then(m => ({ default: m.ServiceAreaMap })));
 import { SEO } from "../components/SEO";
 
 import afterFront from "@assets/IMG_2564_1775597571204.jpeg";
@@ -393,17 +395,10 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="rounded-2xl overflow-hidden mb-6 shadow-sm ring-1 ring-black/5" style={{ height: "280px" }}>
-              <iframe
-                title="EDH Landscaping service area — El Dorado Hills, CA"
-                src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d200000!2d-121.35!3d38.6!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+            <div className="rounded-2xl overflow-hidden mb-6 shadow-sm ring-1 ring-black/5" style={{ height: "320px" }}>
+              <Suspense fallback={<div className="w-full h-full bg-stone-200 animate-pulse" />}>
+                <ServiceAreaMap />
+              </Suspense>
             </div>
 
             <p className="text-[#6b7280] text-[15px]">
