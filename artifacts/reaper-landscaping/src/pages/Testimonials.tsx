@@ -44,7 +44,7 @@ const ALL_REVIEWS = [
     location: "El Dorado Hills",
     since: "Customer since 2023",
     stars: 5,
-    text: "I travel a lot for work and I used to come home to an embarrassing yard. Not anymore. They don't need me home - they just show up, do the job right, and send me a text when they're done.",
+    text: "I travel a lot for work and I used to come home to an embarrassing yard. Not anymore. They don't need me home, they just show up, do the job right, and send me a text when they're done.",
     detail: null,
   },
   {
@@ -52,7 +52,7 @@ const ALL_REVIEWS = [
     location: "Rocklin",
     since: "Customer since 2024",
     stars: 5,
-    text: "The edging alone is worth it. My previous service never did the borders clean - EDH Landscaping does it every single visit and it makes a huge difference. The yard looks manicured, not just mowed.",
+    text: "The edging alone is worth it. My previous service never did the borders clean, EDH Landscaping does it every single visit and it makes a huge difference. The yard looks manicured, not just mowed.",
     detail: null,
   },
   {

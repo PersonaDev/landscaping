@@ -75,7 +75,7 @@ export default function BlogIndex() {
 
         {!loading && posts.length === 0 && (
           <div className="py-20 text-center">
-            <p className="text-[#6b7280] text-[17px]">No posts yet - check back soon.</p>
+            <p className="text-[#6b7280] text-[17px]">No posts yet, check back soon.</p>
           </div>
         )}
 

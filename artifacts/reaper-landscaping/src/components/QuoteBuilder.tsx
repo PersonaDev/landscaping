@@ -21,7 +21,7 @@ export function QuoteBuilder({ frequency, scope, interacted, setFrequency, setSc
   const handleScope = (i: number) => { setScope(i); setInteracted(true); };
 
   const btnLabel = interacted
-    ? `Text us about the ${FREQ[frequency].text} ${SCOPE[scope].text} plan - $${price}/mo`
+    ? `Text us about the ${FREQ[frequency].text} ${SCOPE[scope].text} plan, $${price}/mo`
     : "Text us to get started";
 
   return (

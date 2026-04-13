@@ -12,7 +12,7 @@ const CORE_SERVICES = [
     name: "Lawn Mowing",
     tag: "Included in $45/mo plan",
     tagColor: "bg-green-100 text-green-700",
-    desc: "We cut at 3.5 inches - the sweet spot for tall fescue in the Sacramento foothills to hold moisture and resist summer heat. Every cut includes a full pass with the weed trimmer along fences and structures.",
+    desc: "We cut at 3.5 inches, the sweet spot for tall fescue in the Sacramento foothills to hold moisture and resist summer heat. Every cut includes a full pass with the weed trimmer along fences and structures.",
     includes: [
       "Bi-weekly schedule (2x per month)",
       "Proper height calibrated for your grass type",
@@ -25,7 +25,7 @@ const CORE_SERVICES = [
     name: "Edging & Borders",
     tag: "Included in $45/mo plan",
     tagColor: "bg-green-100 text-green-700",
-    desc: "We use a stick edger on all concrete borders - not just a string trimmer held sideways. The difference is visible: a clean 1–2 inch cut line along every driveway edge, sidewalk, and garden bed curb.",
+    desc: "We use a stick edger on all concrete borders, not just a string trimmer held sideways. The difference is visible: a clean 1–2 inch cut line along every driveway edge, sidewalk, and garden bed curb.",
     includes: [
       "Steel-blade stick edger (not trimmer edging)",
       "All concrete borders per visit",
@@ -38,7 +38,7 @@ const CORE_SERVICES = [
     name: "Yard Cleanup",
     tag: "Add-on or seasonal",
     tagColor: "bg-amber-100 text-amber-700",
-    desc: "Leaf removal, seasonal debris clearing, and general yard cleanup. We bag everything and haul it off - no pile left at the curb for you to deal with. Common in fall after the oaks drop and spring after winter die-off.",
+    desc: "Leaf removal, seasonal debris clearing, and general yard cleanup. We bag everything and haul it off, no pile left at the curb for you to deal with. Common in fall after the oaks drop and spring after winter die-off.",
     includes: [
       "Full leaf and debris removal",
       "Haul-off included (no curbside piles)",
@@ -65,7 +65,7 @@ const ADVANCED_SERVICES = [
   {
     name: "Sprinkler & Drip System Repair",
     img: "https://images.unsplash.com/photo-1585320806297-9794b3e4aaae?w=800&q=80",
-    desc: "Broken heads, clogged drip emitters, timer issues - we diagnose and fix. We don't do full installs, but we handle most common repairs that keep your irrigation system from wasting water or leaving dry spots.",
+    desc: "Broken heads, clogged drip emitters, timer issues, we diagnose and fix. We don't do full installs, but we handle most common repairs that keep your irrigation system from wasting water or leaving dry spots.",
     details: [
       "Head replacement (pop-up and rotary)",
       "Zone pressure testing",
@@ -73,12 +73,12 @@ const ADVANCED_SERVICES = [
       "Timer programming and scheduling",
       "Valve box inspection",
     ],
-    callout: "Call first - we'll confirm it's in scope before scheduling.",
+    callout: "Call first, we'll confirm it's in scope before scheduling.",
   },
   {
     name: "Bark & Mulch Installation",
     img: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80",
-    desc: "Fresh mulch makes an immediate difference - it suppresses weeds, retains moisture, and gives beds a finished look. We install gorilla hair, shredded cedar, or walk-on bark depending on the application. We can also remove old mulch before installing.",
+    desc: "Fresh mulch makes an immediate difference, it suppresses weeds, retains moisture, and gives beds a finished look. We install gorilla hair, shredded cedar, or walk-on bark depending on the application. We can also remove old mulch before installing.",
     details: [
       "Gorilla hair, cedar, or wood chips",
       "Old mulch removal if needed",
@@ -104,7 +104,7 @@ const ADVANCED_SERVICES = [
   {
     name: "Shrub & Ornamental Trimming",
     img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
-    desc: "We shape boxwood, photinia, pittosporum, ornamental grasses, and most common shrubs found in El Dorado Hills neighborhoods. We don't top trees or do large palm work - but anything you can reach with a ladder, we handle.",
+    desc: "We shape boxwood, photinia, pittosporum, ornamental grasses, and most common shrubs found in El Dorado Hills neighborhoods. We don't top trees or do large palm work, but anything you can reach with a ladder, we handle.",
     details: [
       "All common ornamental shrubs",
       "Hedge shaping with power shears",
@@ -249,7 +249,7 @@ export default function ServicesPage() {
                 Advanced & one-time work
               </h2>
               <p className="text-stone-500 max-w-xl leading-relaxed">
-                These aren't on a fixed price list - every yard is different. Call and describe what you need. We'll take a look and give you a straight quote.
+                These aren't on a fixed price list, every yard is different. Call and describe what you need. We'll take a look and give you a straight quote.
               </p>
             </FadeUp>
 

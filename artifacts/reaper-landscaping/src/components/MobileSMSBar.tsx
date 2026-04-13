@@ -15,7 +15,7 @@ export function MobileSMSBar({ frequency, scope, interacted }: Props) {
 
   const btnLabel = interacted
     ? `Text us about the ${SCOPE[scope].text} ${FREQ[frequency].text} plan`
-    : "Text us - we'll handle the rest";
+    : "Text us, we'll handle the rest";
 
   const microText = interacted
     ? `${FREQ[frequency].label} · $${price}/mo · no contracts`

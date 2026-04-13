@@ -107,7 +107,7 @@ export default function Home() {
               </h1>
 
               <p className="text-white/75 text-[16px] leading-relaxed max-w-[420px] mb-8">
-                Service starting at $45/mo. No contracts, no portals - call or text and we'll get you on the schedule.
+                Service starting at $45/mo. No contracts, no portals, call or text and we'll get you on the schedule.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 mb-8">
@@ -301,7 +301,7 @@ export default function Home() {
                 {
                   n: "02",
                   title: "We show up",
-                  body: "Same crew, same schedule. We handle everything - you don't need to be home.",
+                  body: "Same crew, same schedule. We handle everything, you don't need to be home.",
                 },
                 {
                   n: "03",
@@ -345,13 +345,13 @@ export default function Home() {
                 We actually show up.
               </h2>
               <p className="text-[#6b7280] leading-relaxed mb-8 text-[16px]">
-                We're a small local crew. El Dorado Hills is where we work and where we live. We know the hills, the heat, the grass types - fescue runs different out here than anywhere else in Sacramento. We're not dispatching whoever's available that week. You'll recognize the truck.
+                We're a small local crew. El Dorado Hills is where we work and where we live. We know the hills, the heat, the grass types, fescue runs different out here than anywhere else in Sacramento. We're not dispatching whoever's available that week. You'll recognize the truck.
               </p>
               <ul className="space-y-3 mb-8">
                 {[
                   "On-time, every time",
                   "Same crew each visit",
-                  "Call or text - we answer same day",
+                  "Call or text, we answer same day",
                   "El Dorado Hills is our backyard",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-[15px] text-[#1a1a1a]">
@@ -404,7 +404,7 @@ export default function Home() {
             <p className="text-[#6b7280] text-[15px]">
               Not sure if we cover your street?{" "}
               <a href={SMS_DEFAULT} className="text-[#006837] font-medium hover:underline">
-                Text us - {PHONE}
+                Text us, {PHONE}
               </a>
             </p>
           </div>
