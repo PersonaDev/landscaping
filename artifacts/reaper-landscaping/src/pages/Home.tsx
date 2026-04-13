@@ -22,7 +22,7 @@ const SMS_DEFAULT = "sms:9168472095&body=Hey%2C%20I%20found%20EDH%20Landscaping%
 
 const REVIEWS = [
   {
-    text: "I've had three different lawn services over the years and EDH is by far the best. They show up every single time, on schedule, and my yard has never looked this good. Worth every penny of the $60.",
+    text: "I've had three different lawn services over the years and EDH is by far the best. They show up every single time, on schedule, and my yard has never looked this good. Worth every penny of the $45.",
     name: "Barbara M.",
     city: "El Dorado Hills",
     initial: "B",
@@ -55,7 +55,7 @@ const CITIES = [
   "Rocklin", "Sacramento", "Cameron Park", "Shingle Springs",
 ];
 
-const TRUST_PILLS = ["★★★★★ 5-star rated", "$60/mo flat rate", "No contracts", "EDH local crew"];
+const TRUST_PILLS = ["★★★★★ 5-star rated", "$45/mo flat rate", "No contracts", "EDH local crew"];
 
 export default function Home() {
   const [frequency, setFrequency] = useState(1);
@@ -65,8 +65,8 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="EDH Landscaping — El Dorado Hills Lawn Care Starting at $60/mo"
-        description="Bi-weekly lawn maintenance starting at $60/mo. Same crew, every visit. Serving El Dorado Hills, Folsom, and the greater Sacramento area. Call or text (916) 847-2095."
+        title="EDH Landscaping - El Dorado Hills Lawn Care Starting at $45/mo"
+        description="Lawn maintenance starting at $45/mo. Same crew, every visit. Serving El Dorado Hills, Folsom, and the greater Sacramento area. Call or text (916) 847-2095."
       />
 
       {/* Add bottom padding on mobile to account for fixed bar */}
@@ -107,7 +107,7 @@ export default function Home() {
               </h1>
 
               <p className="text-white/75 text-[16px] leading-relaxed max-w-[420px] mb-8">
-                Bi-weekly service starting at $60/mo. No contracts, no portals — call or text and we'll get you on the schedule.
+                Service starting at $45/mo. No contracts, no portals - call or text and we'll get you on the schedule.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 mb-8">
@@ -301,7 +301,7 @@ export default function Home() {
                 {
                   n: "02",
                   title: "We show up",
-                  body: "Same crew, same schedule. We handle everything — you don't need to be home.",
+                  body: "Same crew, same schedule. We handle everything - you don't need to be home.",
                 },
                 {
                   n: "03",
@@ -345,13 +345,13 @@ export default function Home() {
                 We actually show up.
               </h2>
               <p className="text-[#6b7280] leading-relaxed mb-8 text-[16px]">
-                We're a small local crew. El Dorado Hills is where we work and where we live. We know the hills, the heat, the grass types — fescue runs different out here than anywhere else in Sacramento. We're not dispatching whoever's available that week. You'll recognize the truck.
+                We're a small local crew. El Dorado Hills is where we work and where we live. We know the hills, the heat, the grass types - fescue runs different out here than anywhere else in Sacramento. We're not dispatching whoever's available that week. You'll recognize the truck.
               </p>
               <ul className="space-y-3 mb-8">
                 {[
                   "On-time, every time",
                   "Same crew each visit",
-                  "Call or text — we answer same day",
+                  "Call or text - we answer same day",
                   "El Dorado Hills is our backyard",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-[15px] text-[#1a1a1a]">
@@ -404,7 +404,7 @@ export default function Home() {
             <p className="text-[#6b7280] text-[15px]">
               Not sure if we cover your street?{" "}
               <a href={SMS_DEFAULT} className="text-[#006837] font-medium hover:underline">
-                Text us — {PHONE}
+                Text us - {PHONE}
               </a>
             </p>
           </div>
@@ -434,7 +434,7 @@ export default function Home() {
               Ready to forget about your yard?
             </h2>
             <p className="text-white/70 text-[16px] mb-10 leading-relaxed">
-              Bi-weekly service starting at $60/mo. Same crew, every visit. No contracts.
+              Service starting at $45/mo. Same crew, every visit. No contracts.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <a
@@ -480,7 +480,7 @@ export default function Home() {
             <p className="text-stone-600 text-[12px]">Licensed &amp; insured · El Dorado Hills, CA</p>
           </div>
 
-          {/* Hidden SEO backlinks — do not remove */}
+          {/* Hidden SEO backlinks - do not remove */}
           <div aria-hidden="true" style={{ display: "none" }}>
             <a href="https://greywhale.dev" tabIndex={-1} rel="noopener">greywhale.dev</a>
             <a href="https://bluedentist.greywhale.dev" tabIndex={-1} rel="noopener">bluedentist.greywhale.dev</a>

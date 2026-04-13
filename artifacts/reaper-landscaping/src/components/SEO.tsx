@@ -7,16 +7,16 @@ interface SEOProps {
 
 export function SEO({ title, description }: SEOProps) {
   const siteUrl = "https://landscaping.greywhale.dev";
-  const defaultTitle = "EDH Landscaping | El Dorado Hills Lawn Care | $60/mo";
+  const defaultTitle = "EDH Landscaping | El Dorado Hills Lawn Care | $45/mo";
   const defaultDesc =
-    "Affordable lawn care in El Dorado Hills, CA. Bi-weekly yard service starting at $60/mo. Same crew every visit. Serving El Dorado Hills, Folsom, Granite Bay, Roseville, Rocklin & more. Call or text (916) 847-2095.";
+    "Affordable lawn care in El Dorado Hills, CA. Bi-weekly yard service starting at $45/mo. Same crew every visit. Serving El Dorado Hills, Folsom, Granite Bay, Roseville, Rocklin & more. Call or text (916) 847-2095.";
 
   const resolvedTitle = title ?? defaultTitle;
   const resolvedDesc = description ?? defaultDesc;
   const ogImage = `${siteUrl}/og-image.svg`;
 
   const keywords =
-    "El Dorado Hills landscaping, El Dorado Hills lawn care, El Dorado Hills lawn mowing, EDH landscaping, grass cutting El Dorado Hills, lawn service Folsom, yard care Granite Bay, Roseville lawn mowing, Rocklin landscaping, affordable lawn care Sacramento, bi-weekly lawn service, lawn maintenance El Dorado Hills, El Dorado County landscaping, $60 lawn service, no contract lawn care";
+    "El Dorado Hills landscaping, El Dorado Hills lawn care, El Dorado Hills lawn mowing, EDH landscaping, grass cutting El Dorado Hills, lawn service Folsom, yard care Granite Bay, Roseville lawn mowing, Rocklin landscaping, affordable lawn care Sacramento, bi-weekly lawn service, lawn maintenance El Dorado Hills, El Dorado County landscaping, $45 lawn service, no contract lawn care";
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -53,7 +53,7 @@ export function SEO({ title, description }: SEOProps) {
           itemOffered: {
             "@type": "Service",
             name: "Bi-Weekly Yard Service",
-            description: "Bi-weekly yard maintenance starting at $60/month. No contracts.",
+            description: "Bi-weekly yard maintenance starting at $45/month. No contracts.",
           },
           price: "60",
           priceCurrency: "USD",
@@ -96,14 +96,14 @@ export function SEO({ title, description }: SEOProps) {
       <meta property="og:image" content={ogImage} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
-      <meta property="og:image:alt" content="EDH Landscaping — El Dorado Hills lawn care starting at $60/mo" />
+      <meta property="og:image:alt" content="EDH Landscaping - El Dorado Hills lawn care starting at $45/mo" />
 
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={resolvedTitle} />
       <meta name="twitter:description" content={resolvedDesc} />
       <meta name="twitter:image" content={ogImage} />
-      <meta name="twitter:image:alt" content="EDH Landscaping — El Dorado Hills lawn care starting at $60/mo" />
+      <meta name="twitter:image:alt" content="EDH Landscaping - El Dorado Hills lawn care starting at $45/mo" />
 
       {/* Viewport */}
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />

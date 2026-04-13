@@ -12,7 +12,7 @@ const ALL_REVIEWS = [
     location: "El Dorado Hills",
     since: "Customer since 2023",
     stars: 5,
-    text: "I've had three different lawn services over the years and EDH Landscaping is by far the best. They show up every single time, on schedule, and my yard has never looked this good. Worth every penny of the $60.",
+    text: "I've had three different lawn services over the years and EDH Landscaping is by far the best. They show up every single time, on schedule, and my yard has never looked this good. Worth every penny of the $45.",
     detail: "Barbara's backyard had been neglected by two previous services that kept skipping visits.",
   },
   {
@@ -44,7 +44,7 @@ const ALL_REVIEWS = [
     location: "El Dorado Hills",
     since: "Customer since 2023",
     stars: 5,
-    text: "I travel a lot for work and I used to come home to an embarrassing yard. Not anymore. They don't need me home — they just show up, do the job right, and send me a text when they're done.",
+    text: "I travel a lot for work and I used to come home to an embarrassing yard. Not anymore. They don't need me home - they just show up, do the job right, and send me a text when they're done.",
     detail: null,
   },
   {
@@ -52,7 +52,7 @@ const ALL_REVIEWS = [
     location: "Rocklin",
     since: "Customer since 2024",
     stars: 5,
-    text: "The edging alone is worth it. My previous service never did the borders clean — EDH Landscaping does it every single visit and it makes a huge difference. The yard looks manicured, not just mowed.",
+    text: "The edging alone is worth it. My previous service never did the borders clean - EDH Landscaping does it every single visit and it makes a huge difference. The yard looks manicured, not just mowed.",
     detail: null,
   },
   {

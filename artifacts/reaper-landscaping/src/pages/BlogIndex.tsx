@@ -39,7 +39,7 @@ export default function BlogIndex() {
   return (
     <>
       <Helmet>
-        <title>Blog | EDH Landscaping — El Dorado Hills Lawn Tips & Updates</title>
+        <title>Blog | EDH Landscaping - El Dorado Hills Lawn Tips & Updates</title>
         <meta
           name="description"
           content="Lawn care tips, seasonal advice, and updates from EDH Landscaping serving El Dorado Hills, Folsom, Granite Bay, and greater Sacramento."
@@ -75,7 +75,7 @@ export default function BlogIndex() {
 
         {!loading && posts.length === 0 && (
           <div className="py-20 text-center">
-            <p className="text-[#6b7280] text-[17px]">No posts yet — check back soon.</p>
+            <p className="text-[#6b7280] text-[17px]">No posts yet - check back soon.</p>
           </div>
         )}
 

@@ -28,7 +28,7 @@ export function SiteHeader() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-[64px] flex items-center justify-between gap-4">
 
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 shrink-0" aria-label="EDH Landscaping — home">
+        <Link href="/" className="flex items-center gap-3 shrink-0" aria-label="EDH Landscaping - home">
           <img src="/logo.svg" alt="EDH" className="h-8 w-auto" />
           <span className="font-black text-[#111111] text-[17px] tracking-tight leading-none">Landscaping</span>
         </Link>

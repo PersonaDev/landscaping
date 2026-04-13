@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { buildSMS, calcPrice, FREQ, SCOPE } from "../lib/quote";
 
 interface Props {
@@ -8,30 +8,14 @@ interface Props {
 }
 
 export function MobileSMSBar({ frequency, scope, interacted }: Props) {
-  const [visible, setVisible] = useState(false);
   const [flashing, setFlashing] = useState(false);
-
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout>;
-    const handleScroll = () => {
-      if (!visible && window.scrollY > 0) {
-        timer = setTimeout(() => setVisible(true), 1500);
-        window.removeEventListener("scroll", handleScroll);
-      }
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      clearTimeout(timer);
-    };
-  }, []);
 
   const price = calcPrice(frequency, scope);
   const smsHref = buildSMS(frequency, scope, interacted);
 
   const btnLabel = interacted
     ? `Text us about the ${SCOPE[scope].text} ${FREQ[frequency].text} plan`
-    : "Text us — we'll handle the rest";
+    : "Text us - we'll handle the rest";
 
   const microText = interacted
     ? `${FREQ[frequency].label} · $${price}/mo · no contracts`
@@ -43,25 +27,21 @@ export function MobileSMSBar({ frequency, scope, interacted }: Props) {
   };
 
   return (
-    <div
-      className="fixed bottom-0 left-0 right-0 z-[9999] sm:hidden transition-transform duration-300 ease-out"
-      style={{ transform: visible ? "translateY(0)" : "translateY(100%)" }}
-    >
+    <div className="fixed bottom-0 left-0 right-0 z-[9999] sm:hidden">
       <div
         style={{
-          background: "rgba(255,255,255,0.92)",
-          backdropFilter: "blur(20px) saturate(180%)",
-          WebkitBackdropFilter: "blur(20px) saturate(180%)",
-          borderTop: "1px solid rgba(0,0,0,0.08)",
+          background: "#ffffff",
+          borderTop: "1px solid rgba(0,0,0,0.1)",
           paddingBottom: "calc(env(safe-area-inset-bottom) + 12px)",
+          boxShadow: "0 -4px 20px rgba(0,0,0,0.06)",
         }}
         className="px-4 pt-3 flex flex-col items-stretch"
       >
-        <p className="text-center text-[#6b7280] text-[12px] mb-2 tracking-wide">{microText}</p>
+        <p className="text-center text-[#8e8e93] text-[12px] mb-2">{microText}</p>
         <a
           href={smsHref}
           onClick={handleClick}
-          className="block w-full font-semibold text-[16px] text-center py-3.5 rounded-[14px] transition-all duration-200 min-h-[52px] flex items-center justify-center"
+          className="block w-full font-semibold text-[16px] text-center py-3.5 rounded-[14px] transition-all duration-150 min-h-[52px] flex items-center justify-center"
           style={{
             background: flashing ? "#005030" : "#006837",
             color: "#fff",

@@ -182,7 +182,7 @@ export default function BlogPost({ params }: Props) {
         <div className="mt-12 bg-[#f5f3ee] rounded-2xl p-6">
           <p className="font-semibold text-[#111111] mb-1">Need your yard handled?</p>
           <p className="text-[#6b7280] text-[14px] mb-4">
-            Bi-weekly service starting at $60/mo. No contracts, no portals.
+            Service starting at $45/mo. No contracts, no portals.
           </p>
           <a
             href="tel:9168472095"
