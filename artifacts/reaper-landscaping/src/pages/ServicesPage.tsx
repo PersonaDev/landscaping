@@ -162,7 +162,7 @@ export default function ServicesPage() {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
               <p className="text-xs font-bold tracking-[0.18em] uppercase text-green-700 mb-4">What we offer</p>
               <h1
-                className="text-[clamp(2.2rem,5vw,3.5rem)] font-serif font-bold text-stone-900 leading-[1.1] mb-6"
+                className="text-[clamp(2.2rem,5vw,3.5rem)] font-sans font-bold text-stone-900 leading-[1.1] mb-6"
                 style={{ fontVariationSettings: '"opsz" 56' }}
               >
                 The $45 plan covers the basics.<br />
@@ -181,7 +181,7 @@ export default function ServicesPage() {
             <FadeUp className="mb-14">
               <p className="text-xs font-bold tracking-[0.18em] uppercase text-stone-400 mb-3">Recurring plan</p>
               <h2
-                className="text-[clamp(1.8rem,3.5vw,2.5rem)] font-serif font-bold text-stone-900 leading-[1.15]"
+                className="text-[clamp(1.8rem,3.5vw,2.5rem)] font-sans font-bold text-stone-900 leading-[1.15]"
                 style={{ fontVariationSettings: '"opsz" 40' }}
               >
                 What's in the $45/mo plan
@@ -243,7 +243,7 @@ export default function ServicesPage() {
             <FadeUp className="mb-14">
               <p className="text-xs font-bold tracking-[0.18em] uppercase text-stone-400 mb-3">Beyond the basics</p>
               <h2
-                className="text-[clamp(1.8rem,3.5vw,2.5rem)] font-serif font-bold text-stone-900 leading-[1.15] mb-4"
+                className="text-[clamp(1.8rem,3.5vw,2.5rem)] font-sans font-bold text-stone-900 leading-[1.15] mb-4"
                 style={{ fontVariationSettings: '"opsz" 40' }}
               >
                 Advanced & one-time work

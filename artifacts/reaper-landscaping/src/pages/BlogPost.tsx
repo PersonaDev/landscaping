@@ -84,7 +84,7 @@ export default function BlogPost({ params }: Props) {
       <>
         <SiteHeader />
         <main className="max-w-2xl mx-auto px-5 py-20 text-center">
-          <h1 className="font-serif text-3xl font-bold text-[#111111] mb-4">Post not found</h1>
+          <h1 className="font-sans text-3xl font-bold text-[#111111] mb-4">Post not found</h1>
           <Link href="/blog" className="text-[#006837] hover:underline">
             ← Back to blog
           </Link>
@@ -122,7 +122,7 @@ export default function BlogPost({ params }: Props) {
             <Calendar className="w-3.5 h-3.5" />
             <time>{formatDate(post.publishedAt)}</time>
           </div>
-          <h1 className="font-serif text-[36px] sm:text-[46px] font-bold text-[#111111] leading-tight mb-5">
+          <h1 className="font-sans text-[36px] sm:text-[46px] font-bold text-[#111111] leading-tight mb-5">
             {post.title}
           </h1>
           {post.excerpt && (
@@ -141,7 +141,7 @@ export default function BlogPost({ params }: Props) {
         )}
 
         <div
-          className="prose prose-lg prose-stone max-w-none prose-headings:font-serif prose-headings:text-[#111111] prose-a:text-[#006837] prose-strong:text-[#111111]"
+          className="prose prose-lg prose-stone max-w-none prose-headings:font-sans prose-headings:text-[#111111] prose-a:text-[#006837] prose-strong:text-[#111111]"
           dangerouslySetInnerHTML={{ __html: post.body }}
         />
 

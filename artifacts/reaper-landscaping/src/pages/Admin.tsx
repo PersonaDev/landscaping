@@ -80,7 +80,7 @@ function LoginScreen({ onLogin }: { onLogin: (token: string) => void }) {
           <div className="w-9 h-9 bg-[#006837] rounded-lg flex items-center justify-center mb-4">
             <span className="text-white text-sm font-bold">E</span>
           </div>
-          <h1 className="font-serif text-2xl font-bold text-[#111111]">Admin Login</h1>
+          <h1 className="font-sans text-2xl font-bold text-[#111111]">Admin Login</h1>
           <p className="text-stone-500 text-sm mt-1">EDH Landscaping blog admin</p>
         </div>
         <form onSubmit={submit} className="space-y-4">
@@ -194,7 +194,7 @@ function PostEditor({
     <div className="fixed inset-0 bg-white z-50 overflow-y-auto">
       <div className="max-w-3xl mx-auto px-5 py-8">
         <div className="flex items-center justify-between mb-8">
-          <h2 className="font-serif text-xl font-bold text-[#111111]">
+          <h2 className="font-sans text-xl font-bold text-[#111111]">
             {initial ? "Edit Post" : "New Post"}
           </h2>
           <div className="flex items-center gap-3">
@@ -230,7 +230,7 @@ function PostEditor({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Post title"
-              className="w-full border border-stone-200 rounded-xl px-4 py-3 text-[15px] outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent font-serif"
+              className="w-full border border-stone-200 rounded-xl px-4 py-3 text-[15px] outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent font-sans"
             />
           </div>
 
@@ -416,7 +416,7 @@ export default function Admin() {
         <main className="max-w-4xl mx-auto px-5 py-10">
 
           <div className="flex items-center justify-between mb-8">
-            <h1 className="font-serif text-2xl font-bold text-[#111111]">Posts</h1>
+            <h1 className="font-sans text-2xl font-bold text-[#111111]">Posts</h1>
             <button
               onClick={() => setEditing(null)}
               className="flex items-center gap-2 bg-[#006837] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#005030] transition-colors"

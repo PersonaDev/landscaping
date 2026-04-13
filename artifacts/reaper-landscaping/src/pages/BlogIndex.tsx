@@ -52,7 +52,7 @@ export default function BlogIndex() {
           <p className="text-[#006837] text-[13px] font-semibold uppercase tracking-widest mb-3">
             EDH Landscaping
           </p>
-          <h1 className="font-serif text-[40px] sm:text-[52px] font-bold text-[#111111] leading-tight">
+          <h1 className="font-sans text-[40px] sm:text-[52px] font-bold text-[#111111] leading-tight">
             Lawn Care Blog
           </h1>
           <p className="mt-4 text-[#6b7280] text-[17px] leading-relaxed">
@@ -97,7 +97,7 @@ export default function BlogIndex() {
                   <time>{formatDate(post.publishedAt)}</time>
                 </div>
                 <Link href={`/blog/${post.slug}`}>
-                  <h2 className="font-serif text-[26px] font-bold text-[#111111] leading-snug mb-3 group-hover:text-[#006837] transition-colors cursor-pointer">
+                  <h2 className="font-sans text-[26px] font-bold text-[#111111] leading-snug mb-3 group-hover:text-[#006837] transition-colors cursor-pointer">
                     {post.title}
                   </h2>
                 </Link>

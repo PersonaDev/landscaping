@@ -29,7 +29,7 @@ export function QuoteBuilder({ frequency, scope, interacted, setFrequency, setSc
 
       <div className="px-6 pt-10 pb-8 text-center">
         <p className="text-[#8e8e93] text-[13px] font-medium tracking-wide uppercase mb-4">Build your plan</p>
-        <div className="text-[#1a1a1a]" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <div className="text-[#1a1a1a]">
           <span className="text-[64px] font-bold leading-none tracking-tight">
             ${interacted ? price : 45}
           </span>

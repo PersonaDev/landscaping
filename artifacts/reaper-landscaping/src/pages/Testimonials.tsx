@@ -117,7 +117,7 @@ export default function Testimonials() {
             >
               <p className="text-xs font-bold tracking-[0.18em] uppercase text-green-700 mb-4">What people say</p>
               <h1
-                className="text-[clamp(2.2rem,5vw,3.5rem)] font-serif font-bold text-stone-900 leading-[1.1] mb-6"
+                className="text-[clamp(2.2rem,5vw,3.5rem)] font-sans font-bold text-stone-900 leading-[1.1] mb-6"
                 style={{ fontVariationSettings: '"opsz" 56' }}
               >
                 Every review is a neighbor<br />
@@ -196,7 +196,7 @@ export default function Testimonials() {
         <section className="bg-green-800 py-20 text-white text-center">
           <div className="max-w-2xl mx-auto px-6">
             <h2
-              className="text-[clamp(1.8rem,4vw,2.8rem)] font-serif font-bold mb-4 leading-[1.15]"
+              className="text-[clamp(1.8rem,4vw,2.8rem)] font-sans font-bold mb-4 leading-[1.15]"
               style={{ fontVariationSettings: '"opsz" 40' }}
             >
               Ready to join the list?

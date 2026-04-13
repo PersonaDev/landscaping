@@ -18,11 +18,11 @@ export default function NotFound() {
 
       {/* Content */}
       <main className="flex-1 flex flex-col items-center justify-center px-6 text-center pb-24">
-        <p className="text-[9rem] font-black font-serif text-green-800/10 leading-none select-none mb-0" aria-hidden="true">
+        <p className="text-[9rem] font-black font-sans text-green-800/10 leading-none select-none mb-0" aria-hidden="true">
           404
         </p>
         <div className="-mt-6">
-          <h1 className="text-[clamp(1.8rem,5vw,3rem)] font-serif font-bold text-stone-900 mb-4 leading-[1.15]">
+          <h1 className="text-[clamp(1.8rem,5vw,3rem)] font-sans font-bold text-stone-900 mb-4 leading-[1.15]">
             This page doesn't exist.
           </h1>
           <p className="text-stone-500 text-lg mb-10 max-w-sm mx-auto leading-relaxed">

@@ -93,17 +93,14 @@ export default function Home() {
                 El Dorado Hills &amp; Greater Sacramento
               </p>
 
-              <h1
-                className="text-white leading-none mb-6"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                <span className="block text-5xl sm:text-6xl lg:text-7xl font-bold">Your yard,</span>
-                <em
-                  className="block text-5xl sm:text-6xl lg:text-7xl font-bold"
-                  style={{ color: "#f17c52", fontStyle: "italic" }}
+              <h1 className="text-white leading-none mb-6">
+                <span className="block text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">Your yard,</span>
+                <span
+                  className="block text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight"
+                  style={{ color: "#f17c52" }}
                 >
                   handled.
-                </em>
+                </span>
               </h1>
 
               <p className="text-white/75 text-[16px] leading-relaxed max-w-[420px] mb-8">
@@ -170,7 +167,7 @@ export default function Home() {
             <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Our Work</p>
             <h2
               className="mb-3"
-              style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
+              style={{ fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
             >
               What we leave behind.
             </h2>
@@ -221,7 +218,7 @@ export default function Home() {
             <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Reviews</p>
             <h2
               className="mb-12"
-              style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
+              style={{ fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
             >
               What the neighbors say.
             </h2>
@@ -263,7 +260,7 @@ export default function Home() {
             <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Pricing</p>
             <h2
               className="mb-3"
-              style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
+              style={{ fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
             >
               Build your plan.
             </h2>
@@ -287,7 +284,7 @@ export default function Home() {
             <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">The process</p>
             <h2
               className="mb-14"
-              style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
+              style={{ fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
             >
               Three steps. Then forget about it.
             </h2>
@@ -312,7 +309,7 @@ export default function Home() {
                 <div key={step.n} className="relative pt-10">
                   <div
                     className="absolute top-0 left-0 text-[80px] font-bold leading-none select-none pointer-events-none"
-                    style={{ fontFamily: "'Playfair Display', serif", color: "#fbb03b", opacity: 0.4 }}
+                    style={{ color: "#fbb03b", opacity: 0.4 }}
                   >
                     {step.n}
                   </div>
@@ -340,7 +337,7 @@ export default function Home() {
               <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Who we are</p>
               <h2
                 className="mb-5"
-                style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(26px, 4vw, 38px)", lineHeight: 1.2 }}
+                style={{ fontSize: "clamp(26px, 4vw, 38px)", lineHeight: 1.2 }}
               >
                 We actually show up.
               </h2>
@@ -376,7 +373,7 @@ export default function Home() {
             <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Where we work</p>
             <h2
               className="mb-4"
-              style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
+              style={{ fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
             >
               Your neighborhood is our route.
             </h2>
@@ -416,7 +413,7 @@ export default function Home() {
             <p className="text-[#006837] text-xs font-bold tracking-[0.2em] uppercase mb-3">Questions</p>
             <h2
               className="mb-10"
-              style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
+              style={{ fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
             >
               Stuff people ask.
             </h2>
@@ -429,7 +426,7 @@ export default function Home() {
           <div className="max-w-xl mx-auto">
             <h2
               className="text-white mb-4"
-              style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(30px, 5vw, 48px)", lineHeight: 1.15 }}
+              style={{ fontSize: "clamp(30px, 5vw, 48px)", lineHeight: 1.15 }}
             >
               Ready to forget about your yard?
             </h2>
