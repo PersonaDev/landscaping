@@ -33,7 +33,7 @@ export function ServiceAreaMap() {
       center={CENTER}
       zoom={10}
       scrollWheelZoom={false}
-      style={{ width: "100%", height: "100%" }}
+      style={{ width: "100%", height: "100%", zIndex: 0 }}
       attributionControl={false}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
