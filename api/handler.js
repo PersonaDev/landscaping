@@ -66,6 +66,13 @@ async function ensureSchema() {
       updated_at    TIMESTAMP NOT NULL DEFAULT NOW()
     )
   `);
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS site_config (
+      key        TEXT PRIMARY KEY,
+      value      JSONB NOT NULL,
+      updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+    )
+  `);
   console.log("[db] schema ready");
 }
 ensureSchema().catch((err) => console.error("[db] ensureSchema failed:", err.message, err.stack));
@@ -128,6 +135,63 @@ app.post("/api/auth/login", (req, res) => {
     return res.status(401).json({ error: "Invalid password" });
   }
   res.json({ token: signToken() });
+});
+
+// ── Plan config ──────────────────────────────────────────────────────────────
+
+const DEFAULT_PLAN_CONFIG = {
+  frequencies: [
+    { label: "Monthly", price: 45, text: "monthly" },
+    { label: "Bi-weekly", price: 60, text: "bi-weekly", recommended: true },
+    { label: "Weekly", price: 90, text: "weekly" },
+  ],
+  scopes: [
+    { label: "Basic", addon: 0, text: "basic" },
+    { label: "Full service", addon: 20, text: "full service" },
+    { label: "Total care", addon: 40, text: "total care" },
+  ],
+  services: [
+    { name: "Lawn mowing", minScope: 0 },
+    { name: "Edging & trimming", minScope: 0 },
+    { name: "Driveway blowout", minScope: 0 },
+    { name: "Weed control", minScope: 0 },
+    { name: "Garden bed care", minScope: 1 },
+    { name: "Yard haul-off", minScope: 2 },
+    { name: "Front yard service", minScope: 2 },
+  ],
+};
+
+app.get("/api/plan-config", async (_req, res) => {
+  if (!pool) return res.json(DEFAULT_PLAN_CONFIG);
+  try {
+    const { rows } = await pool.query(
+      "SELECT value FROM site_config WHERE key = 'plan_config' LIMIT 1"
+    );
+    res.json(rows[0] ? rows[0].value : DEFAULT_PLAN_CONFIG);
+  } catch (err) {
+    console.error("[api] GET /api/plan-config error:", err.message);
+    res.json(DEFAULT_PLAN_CONFIG);
+  }
+});
+
+app.put("/api/plan-config", requireAuth, async (req, res) => {
+  if (!pool) return res.status(500).json({ error: "No database pool" });
+  try {
+    const config = req.body;
+    if (!config.frequencies || !config.scopes || !config.services) {
+      return res.status(400).json({ error: "Missing frequencies, scopes, or services" });
+    }
+    await pool.query(
+      `INSERT INTO site_config (key, value, updated_at)
+       VALUES ('plan_config', $1::jsonb, NOW())
+       ON CONFLICT (key) DO UPDATE SET value = $1::jsonb, updated_at = NOW()`,
+      [JSON.stringify(config)]
+    );
+    res.json({ success: true, config });
+  } catch (err) {
+    console.error("[api] PUT /api/plan-config error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Public: list published posts

@@ -1,5 +1,6 @@
 import { Phone } from "lucide-react";
-import { FREQ, SCOPE, ALL_SERVICES, calcPrice } from "../lib/quote";
+import type { FreqOption, ScopeOption, ServiceItem } from "../lib/quote";
+import { DEFAULT_FREQ, DEFAULT_SCOPE, DEFAULT_SERVICES, calcPrice } from "../lib/quote";
 
 interface Props {
   frequency: number;
@@ -8,41 +9,52 @@ interface Props {
   setFrequency: (v: number) => void;
   setScope: (v: number) => void;
   setInteracted: (v: boolean) => void;
+  frequencies?: FreqOption[];
+  scopes?: ScopeOption[];
+  services?: ServiceItem[];
+  compact?: boolean;
 }
 
-export function QuoteBuilder({ frequency, scope, interacted, setFrequency, setScope, setInteracted }: Props) {
-  const price = calcPrice(frequency, scope);
+export function QuoteBuilder({
+  frequency, scope, interacted, setFrequency, setScope, setInteracted,
+  frequencies, scopes, services, compact,
+}: Props) {
+  const FREQ = frequencies || DEFAULT_FREQ;
+  const SCOPE = scopes || DEFAULT_SCOPE;
+  const ALL_SERVICES = services || DEFAULT_SERVICES;
+
+  const price = calcPrice(frequency, scope, FREQ, SCOPE);
   const isIOS = typeof navigator !== "undefined" && /iPad|iPhone|iPod/.test(navigator.userAgent);
   const sep = isIOS ? "&" : "?";
-  const msgBody = `Hey, I'm interested in the ${SCOPE[scope].text} ${FREQ[frequency].text} plan ($${price}/mo). Can you get me on the schedule?`;
+  const msgBody = `Hey, I'm interested in the ${SCOPE[scope]?.text || "basic"} ${FREQ[frequency]?.text || "monthly"} plan ($${price}/mo). Can you get me on the schedule?`;
   const smsHref = `sms:9168472095${sep}body=${encodeURIComponent(msgBody)}`;
 
   const handleFreq = (i: number) => { setFrequency(i); setInteracted(true); };
   const handleScope = (i: number) => { setScope(i); setInteracted(true); };
 
   const btnLabel = interacted
-    ? `Text us about the ${FREQ[frequency].text} ${SCOPE[scope].text} plan, $${price}/mo`
+    ? `Text us about the ${FREQ[frequency]?.text || ""} ${SCOPE[scope]?.text || ""} plan, $${price}/mo`
     : "Text us to get started";
 
   return (
-    <div className="bg-white rounded-3xl overflow-hidden w-full max-w-[540px] mx-auto shadow-[0_2px_40px_rgba(0,0,0,0.08)] border border-black/[0.04]">
+    <div className={`bg-white rounded-3xl overflow-hidden w-full ${compact ? "max-w-[440px]" : "max-w-[540px]"} mx-auto shadow-[0_2px_40px_rgba(0,0,0,0.08)] border border-black/[0.04]`}>
 
-      <div className="px-6 pt-10 pb-8 text-center">
+      <div className={`px-6 ${compact ? "pt-7 pb-5" : "pt-10 pb-8"} text-center`}>
         <p className="text-[#8e8e93] text-[13px] font-medium tracking-wide uppercase mb-4">Build your plan</p>
         <div className="text-[#1a1a1a]">
-          <span className="text-[64px] font-bold leading-none tracking-tight">
-            ${interacted ? price : 45}
+          <span className={`${compact ? "text-[52px]" : "text-[64px]"} font-bold leading-none tracking-tight`}>
+            ${interacted ? price : FREQ[0]?.price ?? 45}
           </span>
           <span className="text-[22px] font-normal text-[#8e8e93]">/mo</span>
         </div>
         <p className="text-[#8e8e93] text-[14px] mt-2">
           {interacted
-            ? `${FREQ[frequency].label} · ${SCOPE[scope].label}`
+            ? `${FREQ[frequency]?.label || ""} · ${SCOPE[scope]?.label || ""}`
             : "Monthly yard service · El Dorado Hills"}
         </p>
       </div>
 
-      <div className="px-6 pb-8 space-y-7">
+      <div className={`px-6 ${compact ? "pb-6 space-y-5" : "pb-8 space-y-7"}`}>
 
         <div>
           <p className="text-[12px] font-semibold text-[#8e8e93] uppercase tracking-wider mb-3">How often</p>
@@ -58,7 +70,7 @@ export function QuoteBuilder({ frequency, scope, interacted, setFrequency, setSc
                 }`}
               >
                 {f.label}
-                {"recommended" in f && f.recommended && frequency !== i && (
+                {f.recommended && frequency !== i && (
                   <span className="absolute -top-2 left-1/2 -translate-x-1/2 text-[9px] bg-[#006837] text-white px-1.5 py-0.5 rounded-full font-semibold leading-none whitespace-nowrap">
                     Popular
                   </span>

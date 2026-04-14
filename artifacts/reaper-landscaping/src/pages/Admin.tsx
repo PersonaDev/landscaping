@@ -4,8 +4,10 @@ import StarterKit from "@tiptap/starter-kit";
 import { Helmet } from "react-helmet-async";
 import {
   LogOut, Plus, Edit2, Trash2, Eye, EyeOff,
-  Bold, Italic, List, ListOrdered, Heading2, Undo, Redo, Save, X
+  Bold, Italic, List, ListOrdered, Heading2, Undo, Redo, Save, X,
+  DollarSign, ChevronUp, ChevronDown, Grip
 } from "lucide-react";
+import type { PlanConfig, FreqOption, ScopeOption, ServiceItem } from "../lib/quote";
 
 interface Post {
   id: number;
@@ -327,12 +329,298 @@ function PostEditor({
   );
 }
 
+function PlanConfigEditor({ token }: { token: string }) {
+  const [config, setConfig] = useState<PlanConfig | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch("/api/plan-config")
+      .then((r) => r.json())
+      .then((data) => setConfig(data))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  async function save() {
+    if (!config) return;
+    setSaving(true);
+    setError("");
+    setSaved(false);
+    try {
+      const r = await fetch("/api/plan-config", {
+        method: "PUT",
+        headers: authHeaders(token),
+        body: JSON.stringify(config),
+      });
+      if (!r.ok) {
+        const data = await r.json();
+        throw new Error(data.error || "Save failed");
+      }
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  function updateFreq(index: number, field: keyof FreqOption, value: any) {
+    if (!config) return;
+    const updated = [...config.frequencies];
+    updated[index] = { ...updated[index], [field]: field === "price" ? Number(value) || 0 : value };
+    setConfig({ ...config, frequencies: updated });
+  }
+
+  function addFreq() {
+    if (!config) return;
+    setConfig({ ...config, frequencies: [...config.frequencies, { label: "", price: 0, text: "" }] });
+  }
+
+  function removeFreq(index: number) {
+    if (!config) return;
+    setConfig({ ...config, frequencies: config.frequencies.filter((_, i) => i !== index) });
+  }
+
+  function updateScope(index: number, field: keyof ScopeOption, value: any) {
+    if (!config) return;
+    const updated = [...config.scopes];
+    updated[index] = { ...updated[index], [field]: field === "addon" ? Number(value) || 0 : value };
+    setConfig({ ...config, scopes: updated });
+  }
+
+  function addScope() {
+    if (!config) return;
+    setConfig({ ...config, scopes: [...config.scopes, { label: "", addon: 0, text: "" }] });
+  }
+
+  function removeScope(index: number) {
+    if (!config) return;
+    setConfig({ ...config, scopes: config.scopes.filter((_, i) => i !== index) });
+  }
+
+  function updateService(index: number, field: keyof ServiceItem, value: any) {
+    if (!config) return;
+    const updated = [...config.services];
+    updated[index] = { ...updated[index], [field]: field === "minScope" ? Number(value) || 0 : value };
+    setConfig({ ...config, services: updated });
+  }
+
+  function addService() {
+    if (!config) return;
+    setConfig({ ...config, services: [...config.services, { name: "", minScope: 0 }] });
+  }
+
+  function removeService(index: number) {
+    if (!config) return;
+    setConfig({ ...config, services: config.services.filter((_, i) => i !== index) });
+  }
+
+  function moveService(index: number, dir: -1 | 1) {
+    if (!config) return;
+    const newIndex = index + dir;
+    if (newIndex < 0 || newIndex >= config.services.length) return;
+    const updated = [...config.services];
+    [updated[index], updated[newIndex]] = [updated[newIndex], updated[index]];
+    setConfig({ ...config, services: updated });
+  }
+
+  if (loading) return <div className="py-10 text-center text-stone-400">Loading plan config...</div>;
+  if (!config) return <div className="py-10 text-center text-red-500">Failed to load config</div>;
+
+  const scopeLabels = config.scopes.map((s) => s.label || `Tier ${config.scopes.indexOf(s)}`);
+
+  return (
+    <div className="space-y-8">
+      {error && (
+        <div className="p-3 bg-red-50 border border-red-100 rounded-xl text-red-600 text-sm">{error}</div>
+      )}
+
+      <div className="bg-white rounded-2xl border border-stone-100 p-6">
+        <h3 className="font-bold text-[#111111] text-[15px] mb-4 flex items-center gap-2">
+          <DollarSign className="w-4 h-4 text-[#006837]" />
+          Frequency Options
+        </h3>
+        <div className="space-y-3">
+          {config.frequencies.map((f, i) => (
+            <div key={i} className="flex items-center gap-3 p-3 bg-stone-50 rounded-xl">
+              <div className="flex-1 grid grid-cols-3 gap-2">
+                <input
+                  value={f.label}
+                  onChange={(e) => updateFreq(i, "label", e.target.value)}
+                  placeholder="Label"
+                  className="border border-stone-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
+                />
+                <input
+                  type="number"
+                  value={f.price}
+                  onChange={(e) => updateFreq(i, "price", e.target.value)}
+                  placeholder="Price"
+                  className="border border-stone-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
+                />
+                <input
+                  value={f.text}
+                  onChange={(e) => updateFreq(i, "text", e.target.value)}
+                  placeholder="SMS text"
+                  className="border border-stone-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
+                />
+              </div>
+              <label className="flex items-center gap-1.5 text-xs text-stone-500 whitespace-nowrap">
+                <input
+                  type="checkbox"
+                  checked={!!f.recommended}
+                  onChange={(e) => updateFreq(i, "recommended", e.target.checked)}
+                  className="accent-[#006837]"
+                />
+                Popular
+              </label>
+              <button
+                onClick={() => removeFreq(i)}
+                className="p-1.5 text-stone-400 hover:text-red-500 transition-colors"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+        <button
+          onClick={addFreq}
+          className="mt-3 flex items-center gap-1.5 text-[#006837] text-sm font-medium hover:underline"
+        >
+          <Plus className="w-4 h-4" /> Add frequency
+        </button>
+      </div>
+
+      <div className="bg-white rounded-2xl border border-stone-100 p-6">
+        <h3 className="font-bold text-[#111111] text-[15px] mb-4 flex items-center gap-2">
+          <DollarSign className="w-4 h-4 text-[#006837]" />
+          Service Levels
+        </h3>
+        <div className="space-y-3">
+          {config.scopes.map((s, i) => (
+            <div key={i} className="flex items-center gap-3 p-3 bg-stone-50 rounded-xl">
+              <div className="flex-1 grid grid-cols-3 gap-2">
+                <input
+                  value={s.label}
+                  onChange={(e) => updateScope(i, "label", e.target.value)}
+                  placeholder="Label"
+                  className="border border-stone-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
+                />
+                <input
+                  type="number"
+                  value={s.addon}
+                  onChange={(e) => updateScope(i, "addon", e.target.value)}
+                  placeholder="Add-on $"
+                  className="border border-stone-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
+                />
+                <input
+                  value={s.text}
+                  onChange={(e) => updateScope(i, "text", e.target.value)}
+                  placeholder="SMS text"
+                  className="border border-stone-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
+                />
+              </div>
+              <button
+                onClick={() => removeScope(i)}
+                className="p-1.5 text-stone-400 hover:text-red-500 transition-colors"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+        <button
+          onClick={addScope}
+          className="mt-3 flex items-center gap-1.5 text-[#006837] text-sm font-medium hover:underline"
+        >
+          <Plus className="w-4 h-4" /> Add service level
+        </button>
+      </div>
+
+      <div className="bg-white rounded-2xl border border-stone-100 p-6">
+        <h3 className="font-bold text-[#111111] text-[15px] mb-1 flex items-center gap-2">
+          <DollarSign className="w-4 h-4 text-[#006837]" />
+          Services Included
+        </h3>
+        <p className="text-stone-400 text-xs mb-4">Min scope = minimum service level to include (0 = {scopeLabels[0] || "Basic"}, 1 = {scopeLabels[1] || "Full"}, 2 = {scopeLabels[2] || "Total"})</p>
+        <div className="space-y-2">
+          {config.services.map((svc, i) => (
+            <div key={i} className="flex items-center gap-2 p-3 bg-stone-50 rounded-xl">
+              <div className="flex flex-col gap-0.5 shrink-0">
+                <button
+                  onClick={() => moveService(i, -1)}
+                  disabled={i === 0}
+                  className="p-0.5 text-stone-400 hover:text-stone-600 disabled:opacity-30"
+                >
+                  <ChevronUp className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  onClick={() => moveService(i, 1)}
+                  disabled={i === config.services.length - 1}
+                  className="p-0.5 text-stone-400 hover:text-stone-600 disabled:opacity-30"
+                >
+                  <ChevronDown className="w-3.5 h-3.5" />
+                </button>
+              </div>
+              <input
+                value={svc.name}
+                onChange={(e) => updateService(i, "name", e.target.value)}
+                placeholder="Service name"
+                className="flex-1 border border-stone-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
+              />
+              <select
+                value={svc.minScope}
+                onChange={(e) => updateService(i, "minScope", e.target.value)}
+                className="border border-stone-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent bg-white"
+              >
+                {config.scopes.map((s, si) => (
+                  <option key={si} value={si}>{s.label || `Tier ${si}`}</option>
+                ))}
+              </select>
+              <button
+                onClick={() => removeService(i)}
+                className="p-1.5 text-stone-400 hover:text-red-500 transition-colors"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+        <button
+          onClick={addService}
+          className="mt-3 flex items-center gap-1.5 text-[#006837] text-sm font-medium hover:underline"
+        >
+          <Plus className="w-4 h-4" /> Add service
+        </button>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <button
+          onClick={save}
+          disabled={saving}
+          className="flex items-center gap-2 bg-[#006837] text-white text-sm font-semibold px-5 py-3 rounded-xl hover:bg-[#005030] transition-colors disabled:opacity-60"
+        >
+          <Save className="w-4 h-4" />
+          {saving ? "Saving..." : "Save Plan Config"}
+        </button>
+        {saved && <span className="text-green-600 text-sm font-medium">Saved!</span>}
+      </div>
+    </div>
+  );
+}
+
+type AdminTab = "posts" | "plan";
+
 export default function Admin() {
   const [token, setToken] = useToken();
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState<Post | null | undefined>(undefined);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [tab, setTab] = useState<AdminTab>("posts");
 
   const fetchPosts = useCallback(async (t: string) => {
     setLoading(true);
@@ -415,84 +703,114 @@ export default function Admin() {
 
         <main className="max-w-4xl mx-auto px-5 py-10">
 
-          <div className="flex items-center justify-between mb-8">
-            <h1 className="font-sans text-2xl font-bold text-[#111111]">Posts</h1>
-            <button
-              onClick={() => setEditing(null)}
-              className="flex items-center gap-2 bg-[#006837] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#005030] transition-colors"
-            >
-              <Plus className="w-4 h-4" /> New post
-            </button>
+          <div className="flex items-center gap-1 mb-8 bg-stone-100 rounded-xl p-1 w-fit">
+            {([["posts", "Blog Posts"], ["plan", "Plan Builder"]] as const).map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => setTab(key)}
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
+                  tab === key
+                    ? "bg-white text-[#111111] shadow-sm"
+                    : "text-stone-500 hover:text-stone-700"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </div>
 
-          {loading && (
-            <div className="space-y-3">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="h-16 bg-white rounded-xl animate-pulse" />
-              ))}
-            </div>
-          )}
+          {tab === "posts" && (
+            <>
+              <div className="flex items-center justify-between mb-8">
+                <h1 className="font-sans text-2xl font-bold text-[#111111]">Posts</h1>
+                <button
+                  onClick={() => setEditing(null)}
+                  className="flex items-center gap-2 bg-[#006837] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#005030] transition-colors"
+                >
+                  <Plus className="w-4 h-4" /> New post
+                </button>
+              </div>
 
-          {!loading && posts.length === 0 && (
-            <div className="text-center py-20 bg-white rounded-2xl border border-stone-100">
-              <p className="text-stone-400 text-[15px] mb-4">No posts yet</p>
-              <button
-                onClick={() => setEditing(null)}
-                className="inline-flex items-center gap-2 bg-[#006837] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#005030] transition-colors"
-              >
-                <Plus className="w-4 h-4" /> Write your first post
-              </button>
-            </div>
-          )}
-
-          {!loading && posts.length > 0 && (
-            <div className="bg-white rounded-2xl border border-stone-100 overflow-hidden divide-y divide-stone-50">
-              {posts.map((post) => (
-                <div key={post.id} className="flex items-center gap-4 px-5 py-4 hover:bg-stone-50 transition-colors">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <span
-                        className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
-                          post.published ? "bg-green-100 text-green-700" : "bg-stone-100 text-stone-500"
-                        }`}
-                      >
-                        {post.published ? "Live" : "Draft"}
-                      </span>
-                    </div>
-                    <p className="font-medium text-[#111111] text-[15px] truncate">{post.title}</p>
-                    <p className="text-stone-400 text-[12px] mt-0.5">{formatDate(post.createdAt)}</p>
-                  </div>
-                  <div className="flex items-center gap-1 shrink-0">
-                    <button
-                      onClick={() => togglePublish(post)}
-                      title={post.published ? "Unpublish" : "Publish"}
-                      className="p-2 text-stone-400 hover:text-[#006837] transition-colors rounded-lg hover:bg-stone-100"
-                    >
-                      {post.published ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                    <button
-                      onClick={() => setEditing(post)}
-                      title="Edit"
-                      className="p-2 text-stone-400 hover:text-[#006837] transition-colors rounded-lg hover:bg-stone-100"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => {
-                        if (confirm(`Delete "${post.title}"? This cannot be undone.`)) {
-                          deletePost(post.slug);
-                        }
-                      }}
-                      disabled={deleting === post.slug}
-                      title="Delete"
-                      className="p-2 text-stone-400 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50 disabled:opacity-40"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
+              {loading && (
+                <div className="space-y-3">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="h-16 bg-white rounded-xl animate-pulse" />
+                  ))}
                 </div>
-              ))}
-            </div>
+              )}
+
+              {!loading && posts.length === 0 && (
+                <div className="text-center py-20 bg-white rounded-2xl border border-stone-100">
+                  <p className="text-stone-400 text-[15px] mb-4">No posts yet</p>
+                  <button
+                    onClick={() => setEditing(null)}
+                    className="inline-flex items-center gap-2 bg-[#006837] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#005030] transition-colors"
+                  >
+                    <Plus className="w-4 h-4" /> Write your first post
+                  </button>
+                </div>
+              )}
+
+              {!loading && posts.length > 0 && (
+                <div className="bg-white rounded-2xl border border-stone-100 overflow-hidden divide-y divide-stone-50">
+                  {posts.map((post) => (
+                    <div key={post.id} className="flex items-center gap-4 px-5 py-4 hover:bg-stone-50 transition-colors">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span
+                            className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
+                              post.published ? "bg-green-100 text-green-700" : "bg-stone-100 text-stone-500"
+                            }`}
+                          >
+                            {post.published ? "Live" : "Draft"}
+                          </span>
+                        </div>
+                        <p className="font-medium text-[#111111] text-[15px] truncate">{post.title}</p>
+                        <p className="text-stone-400 text-[12px] mt-0.5">{formatDate(post.createdAt)}</p>
+                      </div>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <button
+                          onClick={() => togglePublish(post)}
+                          title={post.published ? "Unpublish" : "Publish"}
+                          className="p-2 text-stone-400 hover:text-[#006837] transition-colors rounded-lg hover:bg-stone-100"
+                        >
+                          {post.published ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                        <button
+                          onClick={() => setEditing(post)}
+                          title="Edit"
+                          className="p-2 text-stone-400 hover:text-[#006837] transition-colors rounded-lg hover:bg-stone-100"
+                        >
+                          <Edit2 className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (confirm(`Delete "${post.title}"? This cannot be undone.`)) {
+                              deletePost(post.slug);
+                            }
+                          }}
+                          disabled={deleting === post.slug}
+                          title="Delete"
+                          className="p-2 text-stone-400 hover:text-red-500 transition-colors rounded-lg hover:bg-red-50 disabled:opacity-40"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+
+          {tab === "plan" && (
+            <>
+              <div className="mb-8">
+                <h1 className="font-sans text-2xl font-bold text-[#111111]">Plan Builder Config</h1>
+                <p className="text-stone-500 text-sm mt-1">Edit pricing, service levels, and what's included in each plan.</p>
+              </div>
+              <PlanConfigEditor token={token} />
+            </>
           )}
         </main>
       </div>

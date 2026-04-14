@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { Phone, MessageSquare, MapPin, ChevronRight } from "lucide-react";
 import { SiteHeader } from "../components/SiteHeader";
 import { BeforeAfter } from "../components/BeforeAfter";
 import { QuoteBuilder } from "../components/QuoteBuilder";
 import { MobileSMSBar } from "../components/MobileSMSBar";
 import { FAQAccordion } from "../components/FAQAccordion";
-import { lazy, Suspense } from "react";
+import { usePlanConfig } from "../hooks/usePlanConfig";
 const ServiceAreaMap = lazy(() => import("../components/ServiceAreaMap").then(m => ({ default: m.ServiceAreaMap })));
 import { SEO } from "../components/SEO";
 
@@ -61,6 +61,7 @@ export default function Home() {
   const [frequency, setFrequency] = useState(1);
   const [scope, setScope] = useState(0);
   const [quoteInteracted, setQuoteInteracted] = useState(false);
+  const { config } = usePlanConfig();
 
   return (
     <>
@@ -87,54 +88,71 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/45" aria-hidden="true" />
 
           <div className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-8 py-24">
-            <div className="max-w-[600px]">
-              <p className="text-[#fbb03b] text-xs font-bold tracking-[0.2em] uppercase flex items-center gap-1.5 mb-6">
-                <MapPin className="w-3.5 h-3.5" />
-                El Dorado Hills &amp; Greater Sacramento
-              </p>
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
+              <div className="max-w-[540px]">
+                <p className="text-[#fbb03b] text-xs font-bold tracking-[0.2em] uppercase flex items-center gap-1.5 mb-6">
+                  <MapPin className="w-3.5 h-3.5" />
+                  El Dorado Hills &amp; Greater Sacramento
+                </p>
 
-              <h1 className="text-white leading-none mb-6">
-                <span className="block text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">Your yard,</span>
-                <span
-                  className="block text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight"
-                  style={{ color: "#f17c52" }}
-                >
-                  handled.
-                </span>
-              </h1>
+                <h1 className="text-white leading-none mb-6">
+                  <span className="block text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">Your yard,</span>
+                  <span
+                    className="block text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight"
+                    style={{ color: "#f17c52" }}
+                  >
+                    handled.
+                  </span>
+                </h1>
 
-              <p className="text-white/75 text-[16px] leading-relaxed max-w-[420px] mb-8">
-                Service starting at $45/mo. No contracts, no portals, call or text and we'll get you on the schedule.
-              </p>
+                <p className="text-white/75 text-[16px] leading-relaxed max-w-[420px] mb-8">
+                  Service starting at $45/mo. No contracts, no portals, call or text and we'll get you on the schedule.
+                </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 mb-8">
-                <a
-                  href={PHONE_LINK}
-                  className="flex items-center justify-center gap-2 bg-[#006837] hover:bg-[#005030] active:scale-95 text-white font-bold px-6 py-4 rounded-xl text-[16px] transition-all"
-                >
-                  <Phone className="w-5 h-5" />
-                  Call {PHONE}
-                </a>
-                <a
-                  href={SMS_DEFAULT}
-                  className="flex items-center justify-center gap-2 text-white font-bold px-6 py-4 rounded-xl text-[16px] transition-all"
-                  style={{ background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.25)" }}
-                >
-                  <MessageSquare className="w-5 h-5" />
-                  Send a Text
-                </a>
+                <div className="flex flex-col sm:flex-row gap-3 mb-8">
+                  <a
+                    href={PHONE_LINK}
+                    className="flex items-center justify-center gap-2 bg-[#006837] hover:bg-[#005030] active:scale-95 text-white font-bold px-6 py-4 rounded-xl text-[16px] transition-all"
+                  >
+                    <Phone className="w-5 h-5" />
+                    Call {PHONE}
+                  </a>
+                  <a
+                    href={SMS_DEFAULT}
+                    className="flex items-center justify-center gap-2 text-white font-bold px-6 py-4 rounded-xl text-[16px] transition-all"
+                    style={{ background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.25)" }}
+                  >
+                    <MessageSquare className="w-5 h-5" />
+                    Send a Text
+                  </a>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {TRUST_PILLS.map((pill) => (
+                    <span
+                      key={pill}
+                      className="text-white/85 text-xs font-medium px-3 py-1.5 rounded-full"
+                      style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)" }}
+                    >
+                      {pill}
+                    </span>
+                  ))}
+                </div>
               </div>
 
-              <div className="flex flex-wrap gap-2">
-                {TRUST_PILLS.map((pill) => (
-                  <span
-                    key={pill}
-                    className="text-white/85 text-xs font-medium px-3 py-1.5 rounded-full"
-                    style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)" }}
-                  >
-                    {pill}
-                  </span>
-                ))}
+              <div className="hidden lg:block w-full max-w-[440px] shrink-0">
+                <QuoteBuilder
+                  frequency={frequency}
+                  scope={scope}
+                  interacted={quoteInteracted}
+                  setFrequency={setFrequency}
+                  setScope={setScope}
+                  setInteracted={setQuoteInteracted}
+                  frequencies={config.frequencies}
+                  scopes={config.scopes}
+                  services={config.services}
+                  compact
+                />
               </div>
             </div>
           </div>
@@ -253,8 +271,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── QUOTE BUILDER ─────────────────────────────────────── */}
-        <section id="pricing" className="py-20 px-5 sm:px-8" style={{ background: "#f5f3ee" }}>
+        {/* ── QUOTE BUILDER (mobile/tablet only, hidden on lg+ where it's in hero) ── */}
+        <section id="pricing" className="py-20 px-5 sm:px-8 lg:py-20" style={{ background: "#f5f3ee" }}>
           <div className="max-w-6xl mx-auto">
             <h2
               className="font-bold tracking-tight text-[#1a1a1a] mb-3"
@@ -272,6 +290,9 @@ export default function Home() {
               setFrequency={setFrequency}
               setScope={setScope}
               setInteracted={setQuoteInteracted}
+              frequencies={config.frequencies}
+              scopes={config.scopes}
+              services={config.services}
             />
           </div>
         </section>
