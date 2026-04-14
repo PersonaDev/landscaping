@@ -95,7 +95,7 @@ Generated React Query hooks and fetch client from the OpenAPI spec (e.g. `useHea
 
 React + Vite marketing website for **EDH Landscaping** (formerly Reaper Landscaping), a lawn care company in El Dorado Hills, CA.
 
-**Brand:** EDH Landscaping · Phone: (916) 847-2095 · Color: #1a5c30 · Fonts: Playfair Display (headings) + DM Sans (body)
+**Brand:** EDH Landscaping · Phone: (916) 847-2095 · Color: #006837 · Font: DM Sans (all headings + body, no serif)
 
 **Pages:**
 - `/` — Main single-page marketing site (all sections below in order)
@@ -103,27 +103,38 @@ React + Vite marketing website for **EDH Landscaping** (formerly Reaper Landscap
 - `/services` — Services detail page (legacy, may be updated)
 
 **Main page sections (Home.tsx):**
-1. Hero — full-viewport, photo placeholder, "Your yard, handled." headline, Call/Text CTAs, 4 trust pills
+1. Hero — full-viewport, hero.webp background, "Your yard, handled." headline, Call/Text CTAs, 4 trust pills. **Desktop (lg+): QuoteBuilder shown on right side of hero over the image**
 2. Trust bar — horizontal scroll strip of 5 credibility signals
-3. Before/After gallery — 3 draggable slider components (`BeforeAfter.tsx`) with photo placeholders
+3. Before/After gallery — 3 draggable slider components (`BeforeAfter.tsx`) with real photos
 4. Reviews — 3 cards (Barbara M., Gary & Linda T., Richard K.)
-5. Interactive Quote Builder (`QuoteBuilder.tsx`) — frequency × scope pricing widget, lifted state to Home
+5. Interactive Quote Builder (`QuoteBuilder.tsx`) — frequency × scope pricing widget, shown in standalone section on mobile (always visible on desktop in hero)
 6. How It Works — 3 numbered steps
-7. Crew section — crew photo placeholder + copy
-8. Service area — city chips + map placeholder
+7. Crew section — crew photo + copy
+8. Service area — city chips + Leaflet map with service area polygon
 9. FAQ accordion (`FAQAccordion.tsx`) — one open at a time, smooth CSS grid transition
 10. Final CTA — dark green section
-11. Footer — dark (#111810), hidden SEO backlinks (greywhale.dev, bluedentist.greywhale.dev)
+11. Footer — dark (#111111), hidden SEO backlinks (greywhale.dev, bluedentist.greywhale.dev)
 
 **Key components:**
 - `SiteHeader.tsx` — sticky nav; desktop: nav links + Call/Text buttons; mobile: Call button only (no hamburger)
 - `BeforeAfter.tsx` — drag-to-compare slider using clipPath + mouse/touch events
-- `QuoteBuilder.tsx` — pricing card; receives frequency/scope state from Home; frequency [monthly=$45, biweekly=$60, weekly=$90], scope [basic=+$0, full=+$20, total=+$40]
-- `MobileSMSBar.tsx` — fixed bottom bar (mobile only, sm:hidden); syncs with quote builder state; animates in after first scroll + 1.5s delay
+- `QuoteBuilder.tsx` — pricing card; receives frequency/scope state + optional dynamic config from API; frequency [monthly=$45, biweekly=$60, weekly=$90], scope [basic=+$0, full=+$20, total=+$40]; supports `compact` prop for hero placement
+- `MobileSMSBar.tsx` — fixed bottom bar (mobile only, sm:hidden); syncs with quote builder state; shows instantly on load
 - `FAQAccordion.tsx` — CSS grid-template-rows transition for smooth expand/collapse
 - `LawnIcon.tsx` — SVG leaf icon used in header logo
 - `SEO.tsx` — accepts optional title/description props; LocalBusiness structured data
-- `lib/quote.ts` — shared constants and helpers (FREQ, SCOPE, ALL_SERVICES, calcPrice, buildSMS)
+- `lib/quote.ts` — shared constants, types (PlanConfig, FreqOption, ScopeOption, ServiceItem), and helpers (calcPrice, buildSMS); supports dynamic config from API
+- `hooks/usePlanConfig.ts` — fetches plan config from `/api/plan-config`; falls back to hardcoded defaults
+
+**Admin CMS (`/admin`):**
+- Blog post CRUD (existing)
+- **Plan Builder Config** — edit frequencies (label, price, SMS text, "popular" badge), service levels (label, addon price), and included services (name, minimum scope tier). Tab navigation between Blog Posts and Plan Builder. Config stored in `site_config` table as JSONB.
+
+**API endpoints (Vercel serverless `api/handler.js`):**
+- `GET /api/plan-config` — public, returns plan config (frequencies, scopes, services) from DB or defaults
+- `PUT /api/plan-config` — admin auth required, saves plan config to `site_config` table
+- Blog CRUD: GET/POST/PUT/DELETE `/api/posts`, GET `/api/posts/all` (admin)
+- `POST /api/auth/login` — admin password auth, returns JWT
 
 **SMS construction:** `buildSMS()` in `lib/quote.ts` detects iOS vs Android to set `&` or `?` body separator; uses `encodeURIComponent` on body.
 
