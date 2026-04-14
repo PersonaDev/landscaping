@@ -33,39 +33,43 @@ export function QuoteBuilder({
   const handleScope = (i: number) => { setScope(i); setInteracted(true); };
 
   const btnLabel = interacted
-    ? `Text us about the ${FREQ[frequency]?.text || ""} ${SCOPE[scope]?.text || ""} plan, $${price}/mo`
+    ? `Text us — ${FREQ[frequency]?.text || ""} ${SCOPE[scope]?.text || ""}, $${price}/mo`
     : "Text us to get started";
 
-  return (
-    <div className={`bg-white rounded-3xl overflow-hidden w-full ${compact ? "max-w-[440px]" : "max-w-[540px]"} mx-auto shadow-[0_2px_40px_rgba(0,0,0,0.08)] border border-black/[0.04]`}>
+  const cardBg = compact
+    ? "bg-white/70 backdrop-blur-xl backdrop-saturate-150 border-white/40"
+    : "bg-white border-black/[0.04]";
 
-      <div className={`px-6 ${compact ? "pt-7 pb-5" : "pt-10 pb-8"} text-center`}>
-        <p className="text-[#8e8e93] text-[13px] font-medium tracking-wide uppercase mb-4">Build your plan</p>
-        <div className="text-[#1a1a1a]">
-          <span className={`${compact ? "text-[52px]" : "text-[64px]"} font-bold leading-none tracking-tight`}>
+  return (
+    <div className={`rounded-3xl overflow-hidden w-full ${compact ? "max-w-[440px]" : "max-w-[540px]"} mx-auto shadow-[0_2px_40px_rgba(0,0,0,0.12)] border ${cardBg}`}>
+
+      <div className={`px-6 ${compact ? "pt-6 pb-4" : "pt-10 pb-8"} text-center`}>
+        <p className={`${compact ? "text-[#6b7280]" : "text-[#8e8e93]"} text-[13px] font-medium tracking-wide uppercase mb-3`}>Build your plan</p>
+        <div className={compact ? "text-[#1a1a1a]" : "text-[#1a1a1a]"}>
+          <span className={`${compact ? "text-[48px]" : "text-[64px]"} font-bold leading-none tracking-tight`}>
             ${interacted ? price : FREQ[0]?.price ?? 45}
           </span>
-          <span className="text-[22px] font-normal text-[#8e8e93]">/mo</span>
+          <span className={`${compact ? "text-[20px]" : "text-[22px]"} font-normal text-[#8e8e93]`}>/mo</span>
         </div>
-        <p className="text-[#8e8e93] text-[14px] mt-2">
+        <p className="text-[#8e8e93] text-[13px] mt-1.5">
           {interacted
             ? `${FREQ[frequency]?.label || ""} · ${SCOPE[scope]?.label || ""}`
             : "Monthly yard service · El Dorado Hills"}
         </p>
       </div>
 
-      <div className={`px-6 ${compact ? "pb-6 space-y-5" : "pb-8 space-y-7"}`}>
+      <div className={`px-6 ${compact ? "pb-5 space-y-4" : "pb-8 space-y-7"}`}>
 
         <div>
-          <p className="text-[12px] font-semibold text-[#8e8e93] uppercase tracking-wider mb-3">How often</p>
-          <div className="flex bg-[#f2f2f7] rounded-[12px] p-1">
+          <p className={`text-[12px] font-semibold text-[#8e8e93] uppercase tracking-wider ${compact ? "mb-2" : "mb-3"}`}>How often</p>
+          <div className={`flex ${compact ? "bg-black/[0.06]" : "bg-[#f2f2f7]"} rounded-[10px] p-1`}>
             {FREQ.map((f, i) => (
               <button
                 key={i}
                 onClick={() => handleFreq(i)}
-                className={`flex-1 py-2.5 text-[14px] font-medium rounded-[10px] transition-all duration-200 relative ${
+                className={`flex-1 py-2 text-[13px] font-medium rounded-[8px] transition-all duration-200 relative ${
                   frequency === i
-                    ? "bg-white text-[#1a1a1a] shadow-[0_1px_4px_rgba(0,0,0,0.08)]"
+                    ? `bg-white text-[#1a1a1a] shadow-[0_1px_4px_rgba(0,0,0,0.1)]`
                     : "text-[#8e8e93]"
                 }`}
               >
@@ -81,21 +85,21 @@ export function QuoteBuilder({
         </div>
 
         <div>
-          <p className="text-[12px] font-semibold text-[#8e8e93] uppercase tracking-wider mb-3">Service level</p>
-          <div className="flex bg-[#f2f2f7] rounded-[12px] p-1">
+          <p className={`text-[12px] font-semibold text-[#8e8e93] uppercase tracking-wider ${compact ? "mb-2" : "mb-3"}`}>Service level</p>
+          <div className={`flex ${compact ? "bg-black/[0.06]" : "bg-[#f2f2f7]"} rounded-[10px] p-1`}>
             {SCOPE.map((s, i) => (
               <button
                 key={i}
                 onClick={() => handleScope(i)}
-                className={`flex-1 py-2.5 text-[14px] font-medium rounded-[10px] transition-all duration-200 ${
+                className={`flex-1 py-2 text-[13px] font-medium rounded-[8px] transition-all duration-200 ${
                   scope === i
-                    ? "bg-white text-[#1a1a1a] shadow-[0_1px_4px_rgba(0,0,0,0.08)]"
+                    ? "bg-white text-[#1a1a1a] shadow-[0_1px_4px_rgba(0,0,0,0.1)]"
                     : "text-[#8e8e93]"
                 }`}
               >
                 <span className="block">{s.label}</span>
                 {i > 0 && (
-                  <span className="text-[11px] text-[#8e8e93]">+${s.addon}</span>
+                  <span className="text-[10px] text-[#8e8e93]">+${s.addon}</span>
                 )}
               </button>
             ))}
@@ -103,54 +107,85 @@ export function QuoteBuilder({
         </div>
 
         <div>
-          <p className="text-[12px] font-semibold text-[#8e8e93] uppercase tracking-wider mb-3">What's included</p>
-          <div className="space-y-0">
-            {ALL_SERVICES.map((svc, i) => {
-              const included = svc.minScope <= scope;
-              return (
-                <div
-                  key={i}
-                  className="flex items-center gap-3 py-2.5 border-b border-[#f2f2f7] last:border-0 transition-opacity"
-                  style={{ opacity: included ? 1 : 0.35 }}
-                >
+          <p className={`text-[12px] font-semibold text-[#8e8e93] uppercase tracking-wider ${compact ? "mb-2" : "mb-3"}`}>Included</p>
+          {compact ? (
+            <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
+              {ALL_SERVICES.map((svc, i) => {
+                const included = svc.minScope <= scope;
+                return (
                   <div
-                    className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
-                    style={{ background: included ? "#006837" : "#e5e5ea" }}
+                    key={i}
+                    className="flex items-center gap-2 transition-opacity"
+                    style={{ opacity: included ? 1 : 0.3 }}
                   >
-                    {included && (
-                      <svg className="w-3 h-3 text-white" viewBox="0 0 16 16" fill="none">
-                        <path d="M3 8.5L6.5 12L13 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    )}
+                    <div
+                      className="w-4 h-4 rounded-full flex items-center justify-center shrink-0"
+                      style={{ background: included ? "#006837" : "#d1d5db" }}
+                    >
+                      {included && (
+                        <svg className="w-2.5 h-2.5 text-white" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8.5L6.5 12L13 4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      )}
+                    </div>
+                    <span className={`text-[13px] leading-tight ${included ? "text-[#1a1a1a]" : "text-[#c7c7cc]"}`}>
+                      {svc.name}
+                    </span>
                   </div>
-                  <span className={`text-[15px] ${included ? "text-[#1a1a1a]" : "text-[#c7c7cc]"}`}>
-                    {svc.name}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="space-y-0">
+              {ALL_SERVICES.map((svc, i) => {
+                const included = svc.minScope <= scope;
+                return (
+                  <div
+                    key={i}
+                    className="flex items-center gap-3 py-2.5 border-b border-[#f2f2f7] last:border-0 transition-opacity"
+                    style={{ opacity: included ? 1 : 0.35 }}
+                  >
+                    <div
+                      className="w-5 h-5 rounded-full flex items-center justify-center shrink-0"
+                      style={{ background: included ? "#006837" : "#e5e5ea" }}
+                    >
+                      {included && (
+                        <svg className="w-3 h-3 text-white" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8.5L6.5 12L13 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      )}
+                    </div>
+                    <span className={`text-[15px] ${included ? "text-[#1a1a1a]" : "text-[#c7c7cc]"}`}>
+                      {svc.name}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
-        <div className="pt-1">
+        <div className={compact ? "pt-0" : "pt-1"}>
           <a
             href={smsHref}
-            className="block w-full bg-[#006837] hover:bg-[#005030] active:scale-[0.98] text-white text-center font-semibold py-4 rounded-[14px] transition-all text-[16px]"
+            className={`block w-full bg-[#006837] hover:bg-[#005030] active:scale-[0.98] text-white text-center font-semibold ${compact ? "py-3.5 rounded-[12px] text-[15px]" : "py-4 rounded-[14px] text-[16px]"} transition-all`}
           >
             {btnLabel}
           </a>
-          <p className="text-center mt-3">
+          <p className="text-center mt-2.5">
             <a
               href="tel:9168472095"
-              className="text-[#006837] text-[14px] hover:underline inline-flex items-center gap-1"
+              className={`${compact ? "text-[#4a4a4a]" : "text-[#006837]"} text-[13px] hover:underline inline-flex items-center gap-1`}
             >
               <Phone className="w-3.5 h-3.5" />
               Or call (916) 847-2095
             </a>
           </p>
-          <p className="text-center text-[12px] text-[#8e8e93] mt-2">
-            No payment until your first visit. No contracts. Cancel anytime.
-          </p>
+          {!compact && (
+            <p className="text-center text-[12px] text-[#8e8e93] mt-2">
+              No payment until your first visit. No contracts. Cancel anytime.
+            </p>
+          )}
         </div>
       </div>
     </div>
