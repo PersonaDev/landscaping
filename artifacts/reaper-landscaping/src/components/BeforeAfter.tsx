@@ -33,6 +33,10 @@ export function BeforeAfter({ beforeSrc, afterSrc, beforeAlt = "Before", afterAl
         src={beforeSrc}
         alt={beforeAlt}
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        width={800}
+        height={600}
+        loading="lazy"
+        decoding="async"
         draggable={false}
       />
 
@@ -44,6 +48,10 @@ export function BeforeAfter({ beforeSrc, afterSrc, beforeAlt = "Before", afterAl
           src={afterSrc}
           alt={afterAlt}
           className="absolute inset-0 w-full h-full object-cover"
+          width={800}
+          height={600}
+          loading="lazy"
+          decoding="async"
           draggable={false}
         />
       </div>

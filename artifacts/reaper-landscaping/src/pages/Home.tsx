@@ -9,12 +9,12 @@ import { usePlanConfig } from "../hooks/usePlanConfig";
 const ServiceAreaMap = lazy(() => import("../components/ServiceAreaMap").then(m => ({ default: m.ServiceAreaMap })));
 import { SEO } from "../components/SEO";
 
-import afterFront from "@assets/IMG_2564_1775597571204.jpeg";
-import beforeFront from "@assets/IMG_2565_1775597571204.jpeg";
-import afterSide from "@assets/30BC9125-6DD8-4E4E-B3F1-2814AA97F0B1_1775597571203.jpeg";
-import beforeSide from "@assets/IMG_2665_1775597571202.jpeg";
-import afterWalk from "@assets/IMG_2630_1775597571203.jpeg";
-import beforeWalk from "@assets/IMG_2656_1775597571203.jpeg";
+const afterFront = "/images/after-front.webp";
+const beforeFront = "/images/before-front.webp";
+const afterSide = "/images/after-side.webp";
+const beforeSide = "/images/before-side.webp";
+const afterWalk = "/images/after-walk.webp";
+const beforeWalk = "/images/before-walk.webp";
 
 const PHONE = "(916) 847-2095";
 const PHONE_LINK = "tel:9168472095";
@@ -81,6 +81,8 @@ export default function Home() {
             src="/hero.webp"
             alt="El Dorado Hills hillside yard serviced by EDH Landscaping"
             className="absolute inset-0 w-full h-full object-cover"
+            width={1600}
+            height={900}
             fetchPriority="high"
             decoding="sync"
             aria-hidden="true"
@@ -349,6 +351,10 @@ export default function Home() {
               src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=800&q=80"
               alt="EDH Landscaping crew at work"
               className="rounded-2xl object-cover w-full"
+              width={800}
+              height={600}
+              loading="lazy"
+              decoding="async"
               style={{ aspectRatio: "4/3" }}
             />
 

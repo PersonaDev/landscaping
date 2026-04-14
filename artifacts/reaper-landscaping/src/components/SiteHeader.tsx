@@ -29,7 +29,7 @@ export function SiteHeader() {
 
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 shrink-0" aria-label="EDH Landscaping - home">
-          <img src="/logo.svg" alt="EDH" className="h-8 w-auto" />
+          <img src="/logo.svg" alt="EDH" className="h-8 w-auto" width={48} height={32} />
           <span className="font-black text-[#111111] text-[17px] tracking-tight leading-none">Landscaping</span>
         </Link>
 
