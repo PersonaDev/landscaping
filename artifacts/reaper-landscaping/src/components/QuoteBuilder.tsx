@@ -37,7 +37,7 @@ export function QuoteBuilder({
     : "Text us to get started";
 
   const cardBg = compact
-    ? "bg-white/70 backdrop-blur-xl backdrop-saturate-150 border-white/40"
+    ? "bg-white/85 backdrop-blur-2xl backdrop-saturate-150 border-white/60"
     : "bg-white border-black/[0.04]";
 
   return (
