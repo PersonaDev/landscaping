@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
+
+const PlusIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+);
+const MinusIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/></svg>
+);
 
 interface FAQItem {
   q: string;
@@ -49,7 +55,7 @@ export function FAQAccordion() {
               {item.q}
             </span>
             <span className="shrink-0 text-[#006837]">
-              {open === i ? <Minus className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+              {open === i ? <MinusIcon className="w-5 h-5" /> : <PlusIcon className="w-5 h-5" />}
             </span>
           </button>
           <div className={`faq-answer ${open === i ? "open" : ""}`}>

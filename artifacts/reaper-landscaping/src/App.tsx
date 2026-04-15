@@ -1,11 +1,21 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { HelmetProvider } from "react-helmet-async";
-import { Analytics } from "@vercel/analytics/react";
 import Home from "@/pages/Home";
+
+function DeferredAnalytics() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const id = requestIdleCallback(() => setShow(true));
+    return () => cancelIdleCallback(id);
+  }, []);
+  if (!show) return null;
+  const Analytics = lazy(() => import("@vercel/analytics/react").then(m => ({ default: m.Analytics })));
+  return <Suspense fallback={null}><Analytics /></Suspense>;
+}
 const Testimonials = lazy(() => import("@/pages/Testimonials"));
 const ServicesPage = lazy(() => import("@/pages/ServicesPage"));
 const BlogIndex = lazy(() => import("@/pages/BlogIndex"));
@@ -49,7 +59,7 @@ function App() {
           <Toaster />
         </TooltipProvider>
       </QueryClientProvider>
-      <Analytics />
+      <DeferredAnalytics />
     </HelmetProvider>
   );
 }

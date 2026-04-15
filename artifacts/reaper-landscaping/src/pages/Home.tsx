@@ -1,5 +1,16 @@
 import { useState, lazy, Suspense } from "react";
-import { Phone, MessageSquare, MapPin, ChevronRight } from "lucide-react";
+const PhoneIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+);
+const MessageIcon = ({ className = "w-5 h-5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+);
+const MapPinIcon = ({ className = "w-3.5 h-3.5" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+);
+const ChevronRightIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+);
 import { SiteHeader } from "../components/SiteHeader";
 import { BeforeAfter } from "../components/BeforeAfter";
 import { QuoteBuilder } from "../components/QuoteBuilder";
@@ -93,7 +104,7 @@ export default function Home() {
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-10">
               <div className="max-w-[540px]">
                 <p className="text-[#fbb03b] text-xs font-bold tracking-[0.2em] uppercase flex items-center gap-1.5 mb-6">
-                  <MapPin className="w-3.5 h-3.5" />
+                  <MapPinIcon className="w-3.5 h-3.5" />
                   El Dorado Hills &amp; Greater Sacramento
                 </p>
 
@@ -116,7 +127,7 @@ export default function Home() {
                     href={PHONE_LINK}
                     className="flex items-center justify-center gap-2 bg-[#006837] hover:bg-[#005030] active:scale-95 text-white font-bold px-6 py-4 rounded-xl text-[16px] transition-all"
                   >
-                    <Phone className="w-5 h-5" />
+                    <PhoneIcon className="w-5 h-5" />
                     Call {PHONE}
                   </a>
                   <a
@@ -124,7 +135,7 @@ export default function Home() {
                     className="flex items-center justify-center gap-2 text-white font-bold px-6 py-4 rounded-xl text-[16px] transition-all"
                     style={{ background: "rgba(0,0,0,0.35)", border: "1px solid rgba(255,255,255,0.25)" }}
                   >
-                    <MessageSquare className="w-5 h-5" />
+                    <MessageIcon className="w-5 h-5" />
                     Send a Text
                   </a>
                 </div>
@@ -267,7 +278,7 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="text-[#006837] text-sm font-medium hover:underline inline-flex items-center gap-1"
               >
-                See all reviews on Google <ChevronRight className="w-4 h-4" />
+                See all reviews on Google <ChevronRightIcon className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -385,7 +396,7 @@ export default function Home() {
                 href={SMS_DEFAULT}
                 className="inline-flex items-center gap-1.5 text-[#006837] font-semibold text-[15px] hover:underline"
               >
-                Get on the schedule <ChevronRight className="w-4 h-4" />
+                Get on the schedule <ChevronRightIcon className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -461,7 +472,7 @@ export default function Home() {
                 href={PHONE_LINK}
                 className="flex items-center justify-center gap-2 bg-[#fbb03b] hover:bg-[#e6a020] active:scale-95 text-[#111111] font-bold px-8 py-4 rounded-xl text-[16px] transition-all"
               >
-                <Phone className="w-5 h-5" />
+                <PhoneIcon className="w-5 h-5" />
                 Call {PHONE}
               </a>
               <a
@@ -469,7 +480,7 @@ export default function Home() {
                 className="flex items-center justify-center gap-2 text-white font-bold px-8 py-4 rounded-xl text-[16px] transition-all"
                 style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.25)" }}
               >
-                <MessageSquare className="w-5 h-5" />
+                <MessageIcon className="w-5 h-5" />
                 Send a Text
               </a>
             </div>
