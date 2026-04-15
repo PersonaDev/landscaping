@@ -508,7 +508,7 @@ export default function Home() {
             <p className="text-stone-600 text-[12px]">
               © {new Date().getFullYear()} EDH Landscaping. All rights reserved.
             </p>
-            <p className="text-stone-600 text-[12px]">Licensed &amp; insured · El Dorado Hills, CA</p>
+            <p className="text-stone-600 text-[12px]">Licensed &amp; insured · El Dorado Hills, CA · Built by <a href="https://www.greywhale.dev" target="_blank" rel="noopener noreferrer" className="hover:text-stone-400 transition-colors">GreyWhale</a></p>
           </div>
 
           {/* Hidden SEO backlinks - do not remove */}
