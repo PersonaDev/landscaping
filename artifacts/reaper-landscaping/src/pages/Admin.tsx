@@ -34,35 +34,21 @@ function formatDate(d: string) {
   return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
-const TOKEN_KEY = "edh_admin_token";
+const LEGACY_TOKEN_KEY = "edh_admin_token";
 
-function useToken() {
-  const [token, setTokenState] = useState<string | null>(() => {
-    if (typeof window === "undefined") return null;
-    const sessionToken = sessionStorage.getItem(TOKEN_KEY);
-    if (sessionToken) return sessionToken;
-    const legacy = localStorage.getItem(TOKEN_KEY);
-    if (legacy) {
-      sessionStorage.setItem(TOKEN_KEY, legacy);
-      localStorage.removeItem(TOKEN_KEY);
-      return legacy;
-    }
-    return null;
-  });
-  const setToken = (t: string | null) => {
-    if (t) sessionStorage.setItem(TOKEN_KEY, t);
-    else sessionStorage.removeItem(TOKEN_KEY);
-    if (typeof window !== "undefined") localStorage.removeItem(TOKEN_KEY);
-    setTokenState(t);
-  };
-  return [token, setToken] as const;
+function clearLegacyToken() {
+  if (typeof window === "undefined") return;
+  try {
+    sessionStorage.removeItem(LEGACY_TOKEN_KEY);
+    localStorage.removeItem(LEGACY_TOKEN_KEY);
+  } catch {
+    // ignore
+  }
 }
 
-function authHeaders(token: string) {
-  return { "Content-Type": "application/json", Authorization: `Bearer ${token}` };
-}
+const jsonHeaders = { "Content-Type": "application/json" } as const;
 
-function LoginScreen({ onLogin }: { onLogin: (token: string) => void }) {
+function LoginScreen({ onLogin }: { onLogin: () => void }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -74,12 +60,13 @@ function LoginScreen({ onLogin }: { onLogin: (token: string) => void }) {
     try {
       const r = await fetch("/api/auth/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: jsonHeaders,
+        credentials: "same-origin",
         body: JSON.stringify({ password }),
       });
       const data = await r.json();
       if (!r.ok) throw new Error(data.error ?? "Login failed");
-      onLogin(data.token);
+      onLogin();
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -136,12 +123,10 @@ function ToolbarButton({
 }
 
 function PostEditor({
-  token,
   initial,
   onSave,
   onCancel,
 }: {
-  token: string;
   initial?: Post | null;
   onSave: () => void;
   onCancel: () => void;
@@ -191,7 +176,8 @@ function PostEditor({
       const url = initial ? `/api/posts/${initial.slug}` : "/api/posts";
       const r = await fetch(url, {
         method,
-        headers: authHeaders(token),
+        headers: jsonHeaders,
+        credentials: "same-origin",
         body: JSON.stringify(body),
       });
       const data = await r.json();
@@ -341,7 +327,7 @@ function PostEditor({
   );
 }
 
-function PlanConfigEditor({ token }: { token: string }) {
+function PlanConfigEditor() {
   const [config, setConfig] = useState<PlanConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -364,7 +350,8 @@ function PlanConfigEditor({ token }: { token: string }) {
     try {
       const r = await fetch("/api/plan-config", {
         method: "PUT",
-        headers: authHeaders(token),
+        headers: jsonHeaders,
+        credentials: "same-origin",
         body: JSON.stringify(config),
       });
       if (!r.ok) {
@@ -627,18 +614,18 @@ function PlanConfigEditor({ token }: { token: string }) {
 type AdminTab = "posts" | "plan";
 
 export default function Admin() {
-  const [token, setToken] = useToken();
+  const [authState, setAuthState] = useState<"loading" | "in" | "out">("loading");
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState<Post | null | undefined>(undefined);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [tab, setTab] = useState<AdminTab>("posts");
 
-  const fetchPosts = useCallback(async (t: string) => {
+  const fetchPosts = useCallback(async () => {
     setLoading(true);
     try {
-      const r = await fetch("/api/posts/all", { headers: { Authorization: `Bearer ${t}` } });
-      if (r.status === 401) { setToken(null); return; }
+      const r = await fetch("/api/posts/all", { credentials: "same-origin" });
+      if (r.status === 401) { setAuthState("out"); return; }
       const data = await r.json();
       setPosts(Array.isArray(data) ? data : []);
     } finally {
@@ -647,40 +634,67 @@ export default function Admin() {
   }, []);
 
   useEffect(() => {
-    if (token) fetchPosts(token);
-  }, [token]);
+    clearLegacyToken();
+    let cancelled = false;
+    (async () => {
+      try {
+        const r = await fetch("/api/auth/me", { credentials: "same-origin" });
+        if (cancelled) return;
+        setAuthState(r.ok ? "in" : "out");
+      } catch {
+        if (!cancelled) setAuthState("out");
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
+    if (authState === "in") fetchPosts();
+  }, [authState, fetchPosts]);
 
   async function togglePublish(post: Post) {
-    if (!token) return;
     await fetch(`/api/posts/${post.slug}`, {
       method: "PUT",
-      headers: authHeaders(token),
+      headers: jsonHeaders,
+      credentials: "same-origin",
       body: JSON.stringify({ published: !post.published }),
     });
-    fetchPosts(token);
+    fetchPosts();
   }
 
   async function deletePost(slug: string) {
-    if (!token) return;
     setDeleting(slug);
     try {
-      await fetch(`/api/posts/${slug}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
-      fetchPosts(token);
+      await fetch(`/api/posts/${slug}`, { method: "DELETE", credentials: "same-origin" });
+      fetchPosts();
     } finally {
       setDeleting(null);
     }
   }
 
-  if (!token) {
-    return <LoginScreen onLogin={(t) => setToken(t)} />;
+  async function logout() {
+    try {
+      await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
+    } catch {
+      // ignore — clear UI state anyway
+    }
+    setAuthState("out");
+    setPosts([]);
+  }
+
+  if (authState === "loading") {
+    return <div className="min-h-screen bg-[#f5f3ee]" />;
+  }
+
+  if (authState === "out") {
+    return <LoginScreen onLogin={() => setAuthState("in")} />;
   }
 
   if (editing !== undefined) {
     return (
       <PostEditor
-        token={token}
         initial={editing ?? null}
-        onSave={() => { setEditing(undefined); fetchPosts(token); }}
+        onSave={() => { setEditing(undefined); fetchPosts(); }}
         onCancel={() => setEditing(undefined)}
       />
     );
@@ -705,7 +719,7 @@ export default function Admin() {
               </div>
             </div>
             <button
-              onClick={() => setToken(null)}
+              onClick={logout}
               className="flex items-center gap-1.5 text-stone-500 text-sm hover:text-stone-700 transition-colors"
             >
               <LogOut className="w-4 h-4" /> Sign out
@@ -821,7 +835,7 @@ export default function Admin() {
                 <h1 className="font-sans text-2xl font-bold text-[#111111]">Plan Builder Config</h1>
                 <p className="text-stone-500 text-sm mt-1">Edit pricing, service levels, and what's included in each plan.</p>
               </div>
-              <PlanConfigEditor token={token} />
+              <PlanConfigEditor />
             </>
           )}
         </main>

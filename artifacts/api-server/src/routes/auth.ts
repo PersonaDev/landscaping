@@ -1,5 +1,11 @@
 import { Router } from "express";
-import { verifyPassword, signToken } from "../lib/auth.js";
+import {
+  verifyPassword,
+  signToken,
+  setSessionCookie,
+  clearSessionCookie,
+  requireAuth,
+} from "../lib/auth.js";
 
 const router = Router();
 
@@ -72,7 +78,17 @@ router.post("/auth/login", (req, res) => {
   }
 
   attempts.delete(ip);
-  res.json({ token: signToken() });
+  setSessionCookie(req, res, signToken());
+  res.json({ ok: true });
+});
+
+router.post("/auth/logout", (req, res) => {
+  clearSessionCookie(req, res);
+  res.json({ ok: true });
+});
+
+router.get("/auth/me", requireAuth, (_req, res) => {
+  res.json({ authenticated: true });
 });
 
 export default router;
