@@ -80,23 +80,84 @@ ensureSchema().catch((err) => console.error("[db] ensureSchema failed:", err.mes
 // ── Auth ──────────────────────────────────────────────────────────────────────
 const JWT_SECRET = process.env.JWT_SECRET || "change-me-in-production";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin";
+const SESSION_COOKIE_NAME = "admin_session";
+const SESSION_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 
 function signToken() {
   return jwt.sign({ role: "admin" }, JWT_SECRET, { expiresIn: "7d" });
 }
 
+function parseCookies(req) {
+  const header = req.headers.cookie;
+  if (!header) return {};
+  const out = {};
+  for (const part of header.split(";")) {
+    const idx = part.indexOf("=");
+    if (idx < 0) continue;
+    const k = part.slice(0, idx).trim();
+    const v = part.slice(idx + 1).trim();
+    if (k) out[k] = decodeURIComponent(v);
+  }
+  return out;
+}
+
+function isHttps(req) {
+  if (req.secure) return true;
+  const xfp = req.headers["x-forwarded-proto"];
+  if (typeof xfp === "string" && xfp.split(",")[0].trim() === "https") return true;
+  return false;
+}
+
+function setSessionCookie(req, res, token) {
+  const parts = [
+    `${SESSION_COOKIE_NAME}=${encodeURIComponent(token)}`,
+    "Path=/",
+    "HttpOnly",
+    "SameSite=Strict",
+    `Max-Age=${Math.floor(SESSION_MAX_AGE_MS / 1000)}`,
+  ];
+  if (isHttps(req)) parts.push("Secure");
+  res.setHeader("Set-Cookie", parts.join("; "));
+}
+
+function clearSessionCookie(req, res) {
+  const parts = [
+    `${SESSION_COOKIE_NAME}=`,
+    "Path=/",
+    "HttpOnly",
+    "SameSite=Strict",
+    "Max-Age=0",
+  ];
+  if (isHttps(req)) parts.push("Secure");
+  res.setHeader("Set-Cookie", parts.join("; "));
+}
+
 function requireAuth(req, res, next) {
-  const header = req.headers.authorization;
-  if (!header || !header.startsWith("Bearer ")) {
+  const cookies = parseCookies(req);
+  const token = cookies[SESSION_COOKIE_NAME];
+  if (!token) {
+    // Backward-compat: still accept Bearer token in case anything depends on it
+    const header = req.headers.authorization;
+    if (header && header.startsWith("Bearer ")) {
+      try {
+        jwt.verify(header.slice(7), JWT_SECRET);
+        return next();
+      } catch {
+        return res.status(401).json({ error: "Invalid or expired token" });
+      }
+    }
     return res.status(401).json({ error: "Unauthorized" });
   }
   try {
-    jwt.verify(header.slice(7), JWT_SECRET);
+    jwt.verify(token, JWT_SECRET);
     next();
   } catch {
     res.status(401).json({ error: "Invalid or expired token" });
   }
 }
+
+// trust the single Vercel edge proxy so req.secure / req.ip are correct
+app.set("trust proxy", 1);
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 
@@ -134,7 +195,45 @@ app.post("/api/auth/login", (req, res) => {
   if (!password || password !== ADMIN_PASSWORD) {
     return res.status(401).json({ error: "Invalid password" });
   }
-  res.json({ token: signToken() });
+  // 2FA is not yet provisioned in production; if it ever is, this endpoint
+  // would also check req.body.code. For now login succeeds with password only.
+  setSessionCookie(req, res, signToken());
+  res.json({ ok: true });
+});
+
+app.get("/api/auth/me", (req, res) => {
+  const cookies = parseCookies(req);
+  const token = cookies[SESSION_COOKIE_NAME];
+  if (!token) return res.status(401).json({ error: "Unauthorized" });
+  try {
+    jwt.verify(token, JWT_SECRET);
+    res.json({ ok: true });
+  } catch {
+    res.status(401).json({ error: "Invalid or expired token" });
+  }
+});
+
+app.post("/api/auth/logout", (req, res) => {
+  clearSessionCookie(req, res);
+  res.json({ ok: true });
+});
+
+// 2FA is not configured in production. Return a stable "disabled" response
+// so the admin Security tab renders without errors.
+app.get("/api/auth/2fa/status", requireAuth, (_req, res) => {
+  res.json({ enabled: false, pending: false, remainingRecoveryCodes: 0 });
+});
+
+app.post("/api/auth/2fa/setup", requireAuth, (_req, res) => {
+  res.status(501).json({ error: "2FA enrollment is not available on this deployment yet." });
+});
+
+app.post("/api/auth/2fa/enable", requireAuth, (_req, res) => {
+  res.status(501).json({ error: "2FA enrollment is not available on this deployment yet." });
+});
+
+app.post("/api/auth/2fa/disable", requireAuth, (_req, res) => {
+  res.status(501).json({ error: "2FA is not enabled on this deployment." });
 });
 
 // ── Plan config ──────────────────────────────────────────────────────────────
