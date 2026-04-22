@@ -5,7 +5,8 @@ import { Helmet } from "react-helmet-async";
 import {
   LogOut, Plus, Edit2, Trash2, Eye, EyeOff,
   Bold, Italic, List, ListOrdered, Heading2, Undo, Redo, Save, X,
-  DollarSign, ChevronUp, ChevronDown, Grip
+  DollarSign, ChevronUp, ChevronDown, Grip,
+  ShieldCheck, ShieldAlert, KeyRound, Download, Copy, Check
 } from "lucide-react";
 import type { PlanConfig, FreqOption, ScopeOption, ServiceItem } from "../lib/quote";
 
@@ -50,6 +51,8 @@ const jsonHeaders = { "Content-Type": "application/json" } as const;
 
 function LoginScreen({ onLogin }: { onLogin: () => void }) {
   const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
+  const [needs2fa, setNeeds2fa] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -58,14 +61,23 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
     setLoading(true);
     setError("");
     try {
+      const body: { password: string; code?: string } = { password };
+      if (needs2fa && code.trim()) body.code = code.trim();
       const r = await fetch("/api/auth/login", {
         method: "POST",
         headers: jsonHeaders,
         credentials: "same-origin",
-        body: JSON.stringify({ password }),
+        body: JSON.stringify(body),
       });
       const data = await r.json();
-      if (!r.ok) throw new Error(data.error ?? "Login failed");
+      if (!r.ok) {
+        if (data.requires2fa) {
+          setNeeds2fa(true);
+          if (needs2fa) setError(data.error ?? "Invalid code");
+          return;
+        }
+        throw new Error(data.error ?? "Login failed");
+      }
       onLogin();
     } catch (err: any) {
       setError(err.message);
@@ -91,16 +103,43 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             autoComplete="current-password"
-            className="w-full min-h-[44px] border border-stone-200 rounded-xl px-4 py-3 text-base outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
+            disabled={needs2fa}
+            className="w-full min-h-[44px] border border-stone-200 rounded-xl px-4 py-3 text-base outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent disabled:bg-stone-50 disabled:text-stone-500"
           />
+          {needs2fa && (
+            <div>
+              <input
+                type="text"
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                placeholder="6-digit code or recovery code"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                autoFocus
+                className="w-full min-h-[44px] border border-stone-200 rounded-xl px-4 py-3 text-base outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent font-mono tracking-wider"
+              />
+              <p className="text-xs text-stone-500 mt-1.5">
+                Enter the code from your authenticator app, or one of your recovery codes.
+              </p>
+            </div>
+          )}
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
             type="submit"
             disabled={loading}
             className="w-full min-h-[44px] bg-[#006837] text-white font-semibold py-3 rounded-xl text-sm hover:bg-[#005030] transition-colors disabled:opacity-60"
           >
-            {loading ? "Signing in…" : "Sign In"}
+            {loading ? "Signing in…" : needs2fa ? "Verify & Sign In" : "Sign In"}
           </button>
+          {needs2fa && (
+            <button
+              type="button"
+              onClick={() => { setNeeds2fa(false); setCode(""); setError(""); }}
+              className="w-full text-xs text-stone-500 hover:text-stone-700"
+            >
+              Use a different password
+            </button>
+          )}
         </form>
       </div>
     </div>
@@ -611,7 +650,289 @@ function PlanConfigEditor() {
   );
 }
 
-type AdminTab = "posts" | "plan";
+function TwoFactorSettings() {
+  const [status, setStatus] = useState<{ enabled: boolean; pending: boolean; remainingRecoveryCodes: number } | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const [setup, setSetup] = useState<{ secret: string; otpauthUrl: string; qrDataUrl: string } | null>(null);
+  const [enrollCode, setEnrollCode] = useState("");
+  const [recoveryCodes, setRecoveryCodes] = useState<string[] | null>(null);
+  const [disablePassword, setDisablePassword] = useState("");
+  const [showDisable, setShowDisable] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const refresh = useCallback(async () => {
+    setLoading(true);
+    try {
+      const r = await fetch("/api/auth/2fa/status", { credentials: "same-origin" });
+      if (r.ok) setStatus(await r.json());
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  async function startSetup() {
+    setBusy(true);
+    setError("");
+    try {
+      const r = await fetch("/api/auth/2fa/setup", { method: "POST", credentials: "same-origin" });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error ?? "Setup failed");
+      setSetup(data);
+      setRecoveryCodes(null);
+      setEnrollCode("");
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function confirmSetup() {
+    setBusy(true);
+    setError("");
+    try {
+      const r = await fetch("/api/auth/2fa/enable", {
+        method: "POST",
+        headers: jsonHeaders,
+        credentials: "same-origin",
+        body: JSON.stringify({ code: enrollCode.trim() }),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error ?? "Could not enable two-factor auth");
+      setRecoveryCodes(data.recoveryCodes);
+      setSetup(null);
+      setEnrollCode("");
+      await refresh();
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function disable() {
+    setBusy(true);
+    setError("");
+    try {
+      const r = await fetch("/api/auth/2fa/disable", {
+        method: "POST",
+        headers: jsonHeaders,
+        credentials: "same-origin",
+        body: JSON.stringify({ password: disablePassword }),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error ?? "Could not disable two-factor auth");
+      setShowDisable(false);
+      setDisablePassword("");
+      setRecoveryCodes(null);
+      await refresh();
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function downloadCodes() {
+    if (!recoveryCodes) return;
+    const blob = new Blob(
+      [
+        "EDH Landscaping Admin — Two-Factor Recovery Codes\n",
+        "Keep these codes somewhere safe. Each one can be used once if you lose access to your authenticator.\n\n",
+        recoveryCodes.join("\n") + "\n",
+      ],
+      { type: "text/plain" },
+    );
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "edh-admin-recovery-codes.txt";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  async function copyCodes() {
+    if (!recoveryCodes) return;
+    try {
+      await navigator.clipboard.writeText(recoveryCodes.join("\n"));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // ignore
+    }
+  }
+
+  if (loading) {
+    return <div className="py-10 text-center text-stone-400">Loading…</div>;
+  }
+
+  return (
+    <div className="space-y-6">
+      {error && (
+        <div className="p-3 bg-red-50 border border-red-100 rounded-xl text-red-600 text-sm">{error}</div>
+      )}
+
+      <div className="bg-white rounded-2xl border border-stone-100 p-6">
+        <div className="flex items-start gap-3 mb-4">
+          {status?.enabled ? (
+            <ShieldCheck className="w-5 h-5 text-[#006837] mt-0.5" />
+          ) : (
+            <ShieldAlert className="w-5 h-5 text-amber-500 mt-0.5" />
+          )}
+          <div className="flex-1">
+            <h3 className="font-bold text-[#111111] text-[15px]">Two-Factor Authentication</h3>
+            <p className="text-stone-500 text-sm mt-1">
+              {status?.enabled
+                ? "Two-factor authentication is on. You'll be asked for a 6-digit code at every sign in."
+                : "Add an extra layer of protection. You'll need an authenticator app like Google Authenticator or 1Password."}
+            </p>
+            {status?.enabled && (
+              <p className="text-stone-400 text-xs mt-2">
+                {status.remainingRecoveryCodes} recovery code{status.remainingRecoveryCodes === 1 ? "" : "s"} remaining.
+              </p>
+            )}
+          </div>
+        </div>
+
+        {!status?.enabled && !setup && !recoveryCodes && (
+          <button
+            onClick={startSetup}
+            disabled={busy}
+            className="flex items-center gap-2 bg-[#006837] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#005030] transition-colors disabled:opacity-60"
+          >
+            <KeyRound className="w-4 h-4" />
+            {busy ? "Starting…" : "Set up two-factor"}
+          </button>
+        )}
+
+        {setup && (
+          <div className="space-y-4 mt-2">
+            <div className="text-sm text-stone-700">
+              Scan this QR code with your authenticator app, then enter the 6-digit code it shows to confirm.
+            </div>
+            <div className="flex flex-col sm:flex-row gap-5 items-start">
+              <img src={setup.qrDataUrl} alt="TOTP QR code" className="w-44 h-44 border border-stone-200 rounded-xl bg-white p-2" />
+              <div className="flex-1 min-w-0 space-y-2">
+                <div>
+                  <p className="text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1">Manual entry key</p>
+                  <p className="font-mono text-sm bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 break-all">{setup.secret}</p>
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-stone-500 uppercase tracking-wider mb-1">Verification code</label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="123456"
+                    value={enrollCode}
+                    onChange={(e) => setEnrollCode(e.target.value)}
+                    className="w-full sm:w-48 border border-stone-200 rounded-lg px-3 py-2 text-base font-mono tracking-wider outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
+                  />
+                </div>
+                <div className="flex gap-2 pt-1">
+                  <button
+                    onClick={confirmSetup}
+                    disabled={busy || !/^\d{6}$/.test(enrollCode.trim())}
+                    className="bg-[#006837] text-white text-sm font-semibold px-4 py-2 rounded-xl hover:bg-[#005030] transition-colors disabled:opacity-60"
+                  >
+                    {busy ? "Verifying…" : "Verify & enable"}
+                  </button>
+                  <button
+                    onClick={() => { setSetup(null); setEnrollCode(""); setError(""); }}
+                    className="text-stone-500 text-sm px-3 py-2 hover:text-stone-700"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {recoveryCodes && (
+          <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+            <p className="text-sm font-semibold text-amber-900 mb-1">Save your recovery codes</p>
+            <p className="text-xs text-amber-800 mb-3">
+              Store these somewhere safe. Each code can be used once to sign in if you lose your authenticator. They will not be shown again.
+            </p>
+            <div className="grid grid-cols-2 gap-2 mb-3">
+              {recoveryCodes.map((c) => (
+                <code key={c} className="font-mono text-sm bg-white border border-amber-200 rounded px-2 py-1 text-center">{c}</code>
+              ))}
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={downloadCodes}
+                className="flex items-center gap-1.5 bg-[#006837] text-white text-sm font-semibold px-3 py-2 rounded-lg hover:bg-[#005030] transition-colors"
+              >
+                <Download className="w-4 h-4" /> Download
+              </button>
+              <button
+                onClick={copyCodes}
+                className="flex items-center gap-1.5 border border-stone-200 text-stone-700 text-sm font-medium px-3 py-2 rounded-lg hover:bg-stone-50 transition-colors"
+              >
+                {copied ? <Check className="w-4 h-4 text-green-600" /> : <Copy className="w-4 h-4" />}
+                {copied ? "Copied" : "Copy"}
+              </button>
+              <button
+                onClick={() => setRecoveryCodes(null)}
+                className="text-stone-500 text-sm px-3 py-2 hover:text-stone-700 ml-auto"
+              >
+                I've saved them
+              </button>
+            </div>
+          </div>
+        )}
+
+        {status?.enabled && !showDisable && (
+          <button
+            onClick={() => setShowDisable(true)}
+            className="mt-4 text-red-600 text-sm font-medium hover:underline"
+          >
+            Disable two-factor authentication
+          </button>
+        )}
+
+        {status?.enabled && showDisable && (
+          <div className="mt-4 p-4 bg-red-50 border border-red-100 rounded-xl space-y-3">
+            <p className="text-sm text-red-800">
+              Re-enter your admin password to confirm disabling two-factor authentication.
+            </p>
+            <input
+              type="password"
+              placeholder="Admin password"
+              value={disablePassword}
+              onChange={(e) => setDisablePassword(e.target.value)}
+              className="w-full border border-red-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent"
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={disable}
+                disabled={busy || !disablePassword}
+                className="bg-red-600 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-60"
+              >
+                {busy ? "Disabling…" : "Disable"}
+              </button>
+              <button
+                onClick={() => { setShowDisable(false); setDisablePassword(""); setError(""); }}
+                className="text-stone-500 text-sm px-3 py-2 hover:text-stone-700"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+type AdminTab = "posts" | "plan" | "security";
 
 export default function Admin() {
   const [authState, setAuthState] = useState<"loading" | "in" | "out">("loading");
@@ -730,7 +1051,7 @@ export default function Admin() {
         <main className="max-w-4xl mx-auto px-5 py-10">
 
           <div className="flex items-center gap-1 mb-6 sm:mb-8 bg-stone-100 rounded-xl p-1 w-full sm:w-fit overflow-x-auto">
-            {([["posts", "Blog Posts"], ["plan", "Plan Builder"]] as const).map(([key, label]) => (
+            {([["posts", "Blog Posts"], ["plan", "Plan Builder"], ["security", "Security"]] as const).map(([key, label]) => (
               <button
                 key={key}
                 onClick={() => setTab(key)}
@@ -836,6 +1157,16 @@ export default function Admin() {
                 <p className="text-stone-500 text-sm mt-1">Edit pricing, service levels, and what's included in each plan.</p>
               </div>
               <PlanConfigEditor />
+            </>
+          )}
+
+          {tab === "security" && (
+            <>
+              <div className="mb-8">
+                <h1 className="font-sans text-2xl font-bold text-[#111111]">Security</h1>
+                <p className="text-stone-500 text-sm mt-1">Manage admin sign-in protections.</p>
+              </div>
+              <TwoFactorSettings />
             </>
           )}
         </main>
