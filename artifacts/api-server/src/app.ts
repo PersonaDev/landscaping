@@ -8,6 +8,13 @@ import { logger } from "./lib/logger";
 
 const app: Express = express();
 
+// The API server always runs behind a single reverse proxy (Replit's
+// edge in dev, the deployment edge in prod). Trusting one hop lets
+// Express derive req.ip from X-Forwarded-For without letting clients
+// spoof the value (an attacker-supplied X-Forwarded-For entry sits to
+// the left of the proxy-appended real IP, so it is ignored).
+app.set("trust proxy", 1);
+
 app.use(
   pinoHttp({
     logger,

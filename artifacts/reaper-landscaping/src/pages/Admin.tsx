@@ -37,10 +37,22 @@ function formatDate(d: string) {
 const TOKEN_KEY = "edh_admin_token";
 
 function useToken() {
-  const [token, setTokenState] = useState<string | null>(() => localStorage.getItem(TOKEN_KEY));
+  const [token, setTokenState] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    const sessionToken = sessionStorage.getItem(TOKEN_KEY);
+    if (sessionToken) return sessionToken;
+    const legacy = localStorage.getItem(TOKEN_KEY);
+    if (legacy) {
+      sessionStorage.setItem(TOKEN_KEY, legacy);
+      localStorage.removeItem(TOKEN_KEY);
+      return legacy;
+    }
+    return null;
+  });
   const setToken = (t: string | null) => {
-    if (t) localStorage.setItem(TOKEN_KEY, t);
-    else localStorage.removeItem(TOKEN_KEY);
+    if (t) sessionStorage.setItem(TOKEN_KEY, t);
+    else sessionStorage.removeItem(TOKEN_KEY);
+    if (typeof window !== "undefined") localStorage.removeItem(TOKEN_KEY);
     setTokenState(t);
   };
   return [token, setToken] as const;
@@ -91,14 +103,14 @@ function LoginScreen({ onLogin }: { onLogin: (token: string) => void }) {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-stone-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
-            autoFocus
+            autoComplete="current-password"
+            className="w-full min-h-[44px] border border-stone-200 rounded-xl px-4 py-3 text-base outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#006837] text-white font-semibold py-3 rounded-xl text-sm hover:bg-[#005030] transition-colors disabled:opacity-60"
+            className="w-full min-h-[44px] bg-[#006837] text-white font-semibold py-3 rounded-xl text-sm hover:bg-[#005030] transition-colors disabled:opacity-60"
           >
             {loading ? "Signing in…" : "Sign In"}
           </button>
@@ -148,7 +160,7 @@ function PostEditor({
     content: initial?.body ?? "",
     editorProps: {
       attributes: {
-        class: "min-h-[300px] outline-none prose prose-stone max-w-none",
+        class: "min-h-[200px] sm:min-h-[300px] outline-none prose prose-stone max-w-none",
       },
     },
   });
@@ -194,22 +206,22 @@ function PostEditor({
 
   return (
     <div className="fixed inset-0 bg-white z-50 overflow-y-auto">
-      <div className="max-w-3xl mx-auto px-5 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="font-sans text-xl font-bold text-[#111111]">
+      <div className="max-w-3xl mx-auto px-4 sm:px-5 py-6 sm:py-8">
+        <div className="flex items-center justify-between gap-3 mb-6 sm:mb-8 flex-wrap">
+          <h2 className="font-sans text-lg sm:text-xl font-bold text-[#111111]">
             {initial ? "Edit Post" : "New Post"}
           </h2>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={onCancel}
-              className="flex items-center gap-1.5 text-stone-500 text-sm hover:text-stone-700 transition-colors"
+              className="flex items-center justify-center gap-1.5 min-h-[44px] px-3 text-stone-500 text-sm hover:text-stone-700 transition-colors"
             >
-              <X className="w-4 h-4" /> Cancel
+              <X className="w-4 h-4" /> <span className="hidden sm:inline">Cancel</span>
             </button>
             <button
               onClick={save}
               disabled={saving}
-              className="flex items-center gap-1.5 bg-[#006837] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#005030] transition-colors disabled:opacity-60"
+              className="flex items-center gap-1.5 min-h-[44px] bg-[#006837] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#005030] transition-colors disabled:opacity-60"
             >
               <Save className="w-4 h-4" />
               {saving ? "Saving…" : "Save"}
@@ -447,7 +459,7 @@ function PlanConfigEditor({ token }: { token: string }) {
         <div className="space-y-3">
           {config.frequencies.map((f, i) => (
             <div key={i} className="flex items-center gap-3 p-3 bg-stone-50 rounded-xl">
-              <div className="flex-1 grid grid-cols-3 gap-2">
+              <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <input
                   value={f.label}
                   onChange={(e) => updateFreq(i, "label", e.target.value)}
@@ -502,7 +514,7 @@ function PlanConfigEditor({ token }: { token: string }) {
         <div className="space-y-3">
           {config.scopes.map((s, i) => (
             <div key={i} className="flex items-center gap-3 p-3 bg-stone-50 rounded-xl">
-              <div className="flex-1 grid grid-cols-3 gap-2">
+              <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <input
                   value={s.label}
                   onChange={(e) => updateScope(i, "label", e.target.value)}
@@ -548,7 +560,7 @@ function PlanConfigEditor({ token }: { token: string }) {
         <p className="text-stone-400 text-xs mb-4">Min scope = minimum service level to include (0 = {scopeLabels[0] || "Basic"}, 1 = {scopeLabels[1] || "Full"}, 2 = {scopeLabels[2] || "Total"})</p>
         <div className="space-y-2">
           {config.services.map((svc, i) => (
-            <div key={i} className="flex items-center gap-2 p-3 bg-stone-50 rounded-xl">
+            <div key={i} className="flex flex-wrap items-center gap-2 p-3 bg-stone-50 rounded-xl">
               <div className="flex flex-col gap-0.5 shrink-0">
                 <button
                   onClick={() => moveService(i, -1)}
@@ -569,7 +581,7 @@ function PlanConfigEditor({ token }: { token: string }) {
                 value={svc.name}
                 onChange={(e) => updateService(i, "name", e.target.value)}
                 placeholder="Service name"
-                className="flex-1 border border-stone-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
+                className="flex-1 min-w-[160px] border border-stone-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent"
               />
               <select
                 value={svc.minScope}
@@ -703,12 +715,12 @@ export default function Admin() {
 
         <main className="max-w-4xl mx-auto px-5 py-10">
 
-          <div className="flex items-center gap-1 mb-8 bg-stone-100 rounded-xl p-1 w-fit">
+          <div className="flex items-center gap-1 mb-6 sm:mb-8 bg-stone-100 rounded-xl p-1 w-full sm:w-fit overflow-x-auto">
             {([["posts", "Blog Posts"], ["plan", "Plan Builder"]] as const).map(([key, label]) => (
               <button
                 key={key}
                 onClick={() => setTab(key)}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${
+                className={`flex-1 sm:flex-none min-h-[40px] px-4 py-2 text-sm font-medium rounded-lg transition-all ${
                   tab === key
                     ? "bg-white text-[#111111] shadow-sm"
                     : "text-stone-500 hover:text-stone-700"
@@ -721,11 +733,11 @@ export default function Admin() {
 
           {tab === "posts" && (
             <>
-              <div className="flex items-center justify-between mb-8">
-                <h1 className="font-sans text-2xl font-bold text-[#111111]">Posts</h1>
+              <div className="flex items-center justify-between gap-3 mb-6 sm:mb-8 flex-wrap">
+                <h1 className="font-sans text-xl sm:text-2xl font-bold text-[#111111]">Posts</h1>
                 <button
                   onClick={() => setEditing(null)}
-                  className="flex items-center gap-2 bg-[#006837] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#005030] transition-colors"
+                  className="flex items-center gap-2 min-h-[44px] bg-[#006837] text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-[#005030] transition-colors"
                 >
                   <Plus className="w-4 h-4" /> New post
                 </button>
