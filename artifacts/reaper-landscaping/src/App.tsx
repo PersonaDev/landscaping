@@ -6,14 +6,21 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { HelmetProvider } from "react-helmet-async";
 import Home from "@/pages/Home";
 
+const Analytics = lazy(() => import("@vercel/analytics/react").then(m => ({ default: m.Analytics })));
 function DeferredAnalytics() {
   const [show, setShow] = useState(false);
   useEffect(() => {
-    const id = requestIdleCallback(() => setShow(true));
-    return () => cancelIdleCallback(id);
+    const w = window as any;
+    if (typeof w.requestIdleCallback === "function") {
+      const id = w.requestIdleCallback(() => setShow(true));
+      return () => {
+        if (typeof w.cancelIdleCallback === "function") w.cancelIdleCallback(id);
+      };
+    }
+    const id = window.setTimeout(() => setShow(true), 1500);
+    return () => window.clearTimeout(id);
   }, []);
   if (!show) return null;
-  const Analytics = lazy(() => import("@vercel/analytics/react").then(m => ({ default: m.Analytics })));
   return <Suspense fallback={null}><Analytics /></Suspense>;
 }
 const Testimonials = lazy(() => import("@/pages/Testimonials"));
