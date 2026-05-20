@@ -192,8 +192,34 @@ export default function Home() {
           </div>
         </div>
 
+        {/* ── QUOTE BUILDER (mobile/tablet only, hidden on lg+ where it's in hero) ── */}
+        <section id="pricing" className="py-20 px-5 sm:px-8 lg:py-20" style={{ background: "#f5f3ee" }}>
+          <div className="max-w-6xl mx-auto">
+            <h2
+              className="font-bold tracking-tight text-[#1a1a1a] mb-3"
+              style={{ fontSize: "clamp(32px, 5vw, 48px)", lineHeight: 1.1 }}
+            >
+              Pick your <span className="text-[#006837]">plan.</span>
+            </h2>
+            <p className="text-[#6b7280] text-[17px] mb-10 max-w-md mx-auto">
+              Choose your frequency and coverage. Price updates live, text us to lock it in.
+            </p>
+            <QuoteBuilder
+              frequency={frequency}
+              scope={scope}
+              interacted={quoteInteracted}
+              setFrequency={setFrequency}
+              setScope={setScope}
+              setInteracted={setQuoteInteracted}
+              frequencies={config.frequencies}
+              scopes={config.scopes}
+              services={config.services}
+            />
+          </div>
+        </section>
+
         {/* ── BEFORE / AFTER GALLERY ────────────────────────────── */}
-        <section id="services" className="py-20 px-5 sm:px-8" style={{ background: "#f5f3ee" }}>
+        <section id="services" className="py-20 px-5 sm:px-8 bg-white">
           <div className="max-w-6xl mx-auto">
             <h2
               className="font-bold tracking-tight text-[#1a1a1a] mb-3"
@@ -281,32 +307,6 @@ export default function Home() {
                 See all reviews on Google <ChevronRightIcon className="w-4 h-4" />
               </a>
             </div>
-          </div>
-        </section>
-
-        {/* ── QUOTE BUILDER (mobile/tablet only, hidden on lg+ where it's in hero) ── */}
-        <section id="pricing" className="py-20 px-5 sm:px-8 lg:py-20" style={{ background: "#f5f3ee" }}>
-          <div className="max-w-6xl mx-auto">
-            <h2
-              className="font-bold tracking-tight text-[#1a1a1a] mb-3"
-              style={{ fontSize: "clamp(32px, 5vw, 48px)", lineHeight: 1.1 }}
-            >
-              Pick your <span className="text-[#006837]">plan.</span>
-            </h2>
-            <p className="text-[#6b7280] text-[17px] mb-10 max-w-md mx-auto">
-              Choose your frequency and coverage. Price updates live, text us to lock it in.
-            </p>
-            <QuoteBuilder
-              frequency={frequency}
-              scope={scope}
-              interacted={quoteInteracted}
-              setFrequency={setFrequency}
-              setScope={setScope}
-              setInteracted={setQuoteInteracted}
-              frequencies={config.frequencies}
-              scopes={config.scopes}
-              services={config.services}
-            />
           </div>
         </section>
 
