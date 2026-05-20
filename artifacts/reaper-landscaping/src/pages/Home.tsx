@@ -172,7 +172,7 @@ export default function Home() {
         </section>
 
         {/* ── TRUST BAR ─────────────────────────────────────────── */}
-        <div className="bg-white border-b border-stone-100 overflow-x-auto">
+        <div className="border-b border-stone-100 overflow-x-auto" style={{ background: "#f5f3ee" }}>
           <div className="flex items-center whitespace-nowrap min-w-max md:min-w-0 md:justify-center gap-0 px-5">
             {[
               "★★★★★ 5-star rated on Google",
