@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Phone, MessageSquare, CheckCircle2, ArrowRight } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
+import { SEO } from "@/components/SEO";
 
 const PHONE_LINK = "tel:9168472095";
 const SMS_LINK = "sms:9168472095";
@@ -153,6 +154,11 @@ function FadeUp({ children, delay = 0, className = "" }: { children: React.React
 export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-white font-sans text-[#1a1208] md:pb-0 pb-24">
+      <SEO
+        title="Lawn Care & Landscaping Services | El Dorado Hills"
+        description="Lawn mowing, edging, yard cleanup, sprinkler repair, mulch, shrub trimming, weed control, and more in El Dorado Hills and nearby communities."
+        path="/services"
+      />
       <SiteHeader />
 
       <main>

@@ -9,23 +9,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ── Startup env dump ──────────────────────────────────────────────────────────
-const ENV_KEYS = [
-  "DATA_DATABASE_URL", "DATA_POSTGRES_URL", "DATA_PGHOST",
-  "DATABASE_URL", "DATA_URL", "POSTGRES_URL", "POSTGRES_URL_NON_POOLING",
-  "DATABASE_URL_UNPOOLED", "PGHOST", "PGPORT", "PGUSER", "PGDATABASE",
-  "ADMIN_PASSWORD", "JWT_SECRET",
-];
-console.log("[startup] env var presence check:");
-for (const k of ENV_KEYS) {
-  const v = process.env[k];
-  if (v) {
-    console.log(`  ${k} = SET (${v.length} chars, starts: ${v.slice(0, 20)}...)`);
-  } else {
-    console.log(`  ${k} = NOT SET`);
-  }
-}
-
 // ── DB ────────────────────────────────────────────────────────────────────────
 const connStr =
   process.env.DATA_DATABASE_URL ||
@@ -35,10 +18,9 @@ const connStr =
   process.env.DATA_URL ||
   process.env.DATABASE_URL_UNPOOLED;
 
-console.log("[db] resolved connStr:", connStr ? `SET (${connStr.length} chars, starts: ${connStr.slice(0, 30)}...)` : "NOT SET — all DB env vars are missing");
-
 let pool;
 try {
+  if (!connStr) throw new Error("No database connection string is configured");
   pool = new Pool({
     connectionString: connStr,
     ssl: (connStr || "").includes("localhost") ? false : { rejectUnauthorized: false },
@@ -78,12 +60,13 @@ async function ensureSchema() {
 ensureSchema().catch((err) => console.error("[db] ensureSchema failed:", err.message, err.stack));
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
-const JWT_SECRET = process.env.JWT_SECRET || "change-me-in-production";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin";
+const JWT_SECRET = process.env.JWT_SECRET;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const SESSION_COOKIE_NAME = "admin_session";
 const SESSION_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 
 function signToken() {
+  if (!JWT_SECRET) throw new Error("JWT_SECRET is not configured");
   return jwt.sign({ role: "admin" }, JWT_SECRET, { expiresIn: "7d" });
 }
 
@@ -133,6 +116,9 @@ function clearSessionCookie(req, res) {
 }
 
 function requireAuth(req, res, next) {
+  if (!JWT_SECRET) {
+    return res.status(503).json({ error: "Admin authentication is not configured" });
+  }
   const cookies = parseCookies(req);
   const token = cookies[SESSION_COOKIE_NAME];
   if (!token) {
@@ -163,34 +149,10 @@ app.set("trust proxy", 1);
 
 app.get("/api/healthz", (_req, res) => res.json({ status: "ok" }));
 
-// Debug endpoint — shows env presence and tests DB connectivity
-app.get("/api/debug", async (_req, res) => {
-  const envReport = {};
-  for (const k of ENV_KEYS) {
-    const v = process.env[k];
-    envReport[k] = v ? `SET (${v.length} chars)` : "NOT SET";
-  }
-  envReport._connStrResolved = connStr
-    ? `${connStr.slice(0, 35)}...`
-    : "NONE";
-
-  let dbTest = "not attempted";
-  if (pool) {
-    try {
-      const t0 = Date.now();
-      await pool.query("SELECT 1");
-      dbTest = `ok (${Date.now() - t0}ms)`;
-    } catch (err) {
-      dbTest = `FAILED: ${err.message}`;
-    }
-  } else {
-    dbTest = "FAILED: no pool";
-  }
-
-  res.json({ env: envReport, db: dbTest });
-});
-
 app.post("/api/auth/login", (req, res) => {
+  if (!ADMIN_PASSWORD || !JWT_SECRET) {
+    return res.status(503).json({ error: "Admin authentication is not configured" });
+  }
   const { password } = req.body;
   if (!password || password !== ADMIN_PASSWORD) {
     return res.status(401).json({ error: "Invalid password" });
@@ -202,6 +164,9 @@ app.post("/api/auth/login", (req, res) => {
 });
 
 app.get("/api/auth/me", (req, res) => {
+  if (!JWT_SECRET) {
+    return res.status(503).json({ error: "Admin authentication is not configured" });
+  }
   const cookies = parseCookies(req);
   const token = cookies[SESSION_COOKIE_NAME];
   if (!token) return res.status(401).json({ error: "Unauthorized" });

@@ -34,7 +34,7 @@ const devPlugins = !isProduction
     ]
   : [];
 
-export default defineConfig({
+export default defineConfig(({ isSsrBuild }) => ({
   base: basePath,
   plugins: [react(), tailwindcss(), ...devPlugins, ...replitPlugins],
   resolve: {
@@ -50,13 +50,17 @@ export default defineConfig({
     emptyOutDir: true,
     target: "es2020",
     cssMinify: true,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          react: ["react", "react-dom"],
-        },
-      },
-    },
+    ...(!isSsrBuild
+      ? {
+          rollupOptions: {
+            output: {
+              manualChunks: {
+                react: ["react", "react-dom"],
+              },
+            },
+          },
+        }
+      : {}),
   },
   server: {
     port,
@@ -78,4 +82,4 @@ export default defineConfig({
     host: "0.0.0.0",
     allowedHosts: true,
   },
-});
+}));

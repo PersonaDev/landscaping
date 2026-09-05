@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Star, Phone, MessageSquare, Quote } from "lucide-react";
 import { SiteHeader } from "@/components/SiteHeader";
+import { SEO } from "@/components/SEO";
 
 const PHONE_LINK = "tel:9168472095";
 const SMS_LINK = "sms:9168472095";
@@ -104,6 +105,11 @@ const stagger = {
 export default function Testimonials() {
   return (
     <div className="min-h-screen bg-white font-sans text-[#1a1208] md:pb-0 pb-24">
+      <SEO
+        title="Customer Reviews | EDH Landscaping"
+        description="Read what homeowners in El Dorado Hills, Folsom, Granite Bay, Rocklin, and Roseville say about EDH Landscaping lawn care."
+        path="/testimonials"
+      />
       <SiteHeader />
 
       <main>

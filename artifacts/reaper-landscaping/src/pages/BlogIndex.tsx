@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import { Helmet } from "react-helmet-async";
 import { SiteHeader } from "../components/SiteHeader";
+import { SEO } from "../components/SEO";
 import { Calendar, ArrowRight } from "lucide-react";
 
 interface PostCard {
@@ -38,13 +38,11 @@ export default function BlogIndex() {
 
   return (
     <>
-      <Helmet>
-        <title>Blog | EDH Landscaping - El Dorado Hills Lawn Tips & Updates</title>
-        <meta
-          name="description"
-          content="Lawn care tips, seasonal advice, and updates from EDH Landscaping serving El Dorado Hills, Folsom, Granite Bay, and greater Sacramento."
-        />
-      </Helmet>
+      <SEO
+        title="El Dorado Hills Lawn Care Blog | EDH Landscaping"
+        description="Local lawn care tips, seasonal yard advice, and landscaping updates for homeowners in El Dorado Hills and nearby communities."
+        path="/blog"
+      />
       <SiteHeader />
 
       <main className="max-w-3xl mx-auto px-5 sm:px-8 py-20">

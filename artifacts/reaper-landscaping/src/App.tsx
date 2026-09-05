@@ -5,6 +5,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { HelmetProvider } from "react-helmet-async";
 import Home from "@/pages/Home";
+import Testimonials from "@/pages/Testimonials";
+import ServicesPage from "@/pages/ServicesPage";
+import BlogIndex from "@/pages/BlogIndex";
 
 const Analytics = lazy(() => import("@vercel/analytics/react").then(m => ({ default: m.Analytics })));
 function DeferredAnalytics() {
@@ -23,9 +26,6 @@ function DeferredAnalytics() {
   if (!show) return null;
   return <Suspense fallback={null}><Analytics /></Suspense>;
 }
-const Testimonials = lazy(() => import("@/pages/Testimonials"));
-const ServicesPage = lazy(() => import("@/pages/ServicesPage"));
-const BlogIndex = lazy(() => import("@/pages/BlogIndex"));
 const BlogPost = lazy(() => import("@/pages/BlogPost"));
 const Admin = lazy(() => import("@/pages/Admin"));
 const NotFound = lazy(() => import("@/pages/not-found"));
@@ -55,12 +55,20 @@ function Router() {
   );
 }
 
-function App() {
+interface AppProps {
+  ssrPath?: string;
+  helmetContext?: Record<string, unknown>;
+}
+
+function App({ ssrPath, helmetContext }: AppProps) {
   return (
-    <HelmetProvider>
+    <HelmetProvider context={helmetContext}>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+          <WouterRouter
+            base={import.meta.env.BASE_URL.replace(/\/$/, "")}
+            {...(ssrPath ? { ssrPath } : {})}
+          >
             <Router />
           </WouterRouter>
           <Toaster />

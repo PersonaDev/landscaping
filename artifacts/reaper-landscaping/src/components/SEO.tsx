@@ -1,42 +1,67 @@
 import { Helmet } from "react-helmet-async";
+import { FAQ_ITEMS } from "./FAQAccordion";
+
+export const SITE_URL = "https://www.edhlandscaping.com";
 
 interface SEOProps {
   title?: string;
   description?: string;
+  path?: string;
+  pageType?: "website" | "article";
+  image?: string;
+  includeFaq?: boolean;
+  noIndex?: boolean;
+  article?: {
+    publishedAt?: string | null;
+    modifiedAt?: string | null;
+  };
 }
 
-export function SEO({ title, description }: SEOProps) {
-  const siteUrl = "https://landscaping.greywhale.dev";
-  const defaultTitle = "EDH Landscaping | El Dorado Hills Lawn Care | $45/mo";
-  const defaultDesc =
-    "Affordable lawn care in El Dorado Hills, CA. Bi-weekly yard service starting at $45/mo. Same crew every visit. Serving El Dorado Hills, Folsom, Granite Bay, Roseville, Rocklin & more. Call or text (916) 847-2095.";
+const DEFAULT_TITLE = "EDH Landscaping | El Dorado Hills Lawn Care";
+const DEFAULT_DESCRIPTION =
+  "Reliable lawn care and yard maintenance in El Dorado Hills, Folsom, and nearby communities. Recurring service starts at $45 per month. Call or text (916) 847-2095.";
 
-  const resolvedTitle = title ?? defaultTitle;
-  const resolvedDesc = description ?? defaultDesc;
-  const ogImage = `${siteUrl}/og-image.svg`;
+const SERVICE_AREAS = [
+  "El Dorado Hills",
+  "Folsom",
+  "Granite Bay",
+  "Roseville",
+  "Rocklin",
+  "Sacramento",
+  "Cameron Park",
+  "Shingle Springs",
+];
 
-  const keywords =
-    "El Dorado Hills landscaping, El Dorado Hills lawn care, El Dorado Hills lawn mowing, EDH landscaping, grass cutting El Dorado Hills, lawn service Folsom, yard care Granite Bay, Roseville lawn mowing, Rocklin landscaping, affordable lawn care Sacramento, bi-weekly lawn service, lawn maintenance El Dorado Hills, El Dorado County landscaping, $45 lawn service, no contract lawn care";
+function normalizePath(path: string) {
+  if (!path || path === "/") return "/";
+  return `/${path.replace(/^\/+|\/+$/g, "")}`;
+}
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+export function SEO({
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESCRIPTION,
+  path = "/",
+  pageType = "website",
+  image = "/opengraph.jpg",
+  includeFaq = false,
+  noIndex = false,
+  article,
+}: SEOProps) {
+  const canonicalPath = normalizePath(path);
+  const canonicalUrl = `${SITE_URL}${canonicalPath === "/" ? "" : canonicalPath}`;
+  const imageUrl = image.startsWith("http") ? image : `${SITE_URL}${image}`;
+
+  const business = {
+    "@type": ["HomeAndConstructionBusiness", "LocalBusiness"],
+    "@id": `${SITE_URL}/#business`,
     name: "EDH Landscaping",
-    url: siteUrl,
-    description: resolvedDesc,
-    telephone: "+19168472095",
+    alternateName: "El Dorado Hills Landscaping",
+    url: SITE_URL,
+    description: DEFAULT_DESCRIPTION,
+    telephone: "+1-916-847-2095",
     priceRange: "$",
-    image: ogImage,
-    areaServed: [
-      "El Dorado Hills, CA",
-      "Folsom, CA",
-      "Granite Bay, CA",
-      "Roseville, CA",
-      "Rocklin, CA",
-      "Sacramento, CA",
-      "Cameron Park, CA",
-      "Shingle Springs, CA",
-    ],
+    image: imageUrl,
+    logo: `${SITE_URL}/logo.svg`,
     address: {
       "@type": "PostalAddress",
       addressLocality: "El Dorado Hills",
@@ -44,75 +69,123 @@ export function SEO({ title, description }: SEOProps) {
       postalCode: "95762",
       addressCountry: "US",
     },
+    areaServed: SERVICE_AREAS.map((name) => ({
+      "@type": "City",
+      name: `${name}, CA`,
+    })),
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: "+1-916-847-2095",
+      contactType: "customer service",
+      areaServed: "US-CA",
+      availableLanguage: "English",
+    },
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: "Landscaping Services",
+      name: "Lawn care and yard maintenance services",
       itemListElement: [
-        {
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: "Bi-Weekly Yard Service",
-            description: "Bi-weekly yard maintenance starting at $45/month. No contracts.",
-          },
-          price: "45",
-          priceCurrency: "USD",
+        "Recurring lawn mowing",
+        "Edging and trimming",
+        "Yard cleanup",
+        "Weed control",
+        "Garden bed care",
+        "Shrub trimming",
+        "Sprinkler and drip repair",
+        "Mulch installation",
+      ].map((name) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name,
+          provider: { "@id": `${SITE_URL}/#business` },
+          areaServed: "El Dorado Hills and Greater Sacramento, California",
         },
-      ],
+      })),
     },
-    serviceType: [
-      "Lawn Mowing",
-      "Edging & Trimming",
-      "Weed Control",
-      "Garden Bed Care",
-      "Yard Cleanup",
-      "Driveway Blowout",
-    ],
-    sameAs: [
-      "https://greywhale.dev",
-    ],
+  };
+
+  const webpage = {
+    "@type": pageType === "article" ? "Article" : "WebPage",
+    "@id": `${canonicalUrl}#webpage`,
+    url: canonicalUrl,
+    name: title,
+    description,
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    about: { "@id": `${SITE_URL}/#business` },
+    primaryImageOfPage: { "@id": `${canonicalUrl}#primaryimage` },
+    ...(pageType === "article" && article?.publishedAt
+      ? { datePublished: article.publishedAt }
+      : {}),
+    ...(pageType === "article" && article?.modifiedAt
+      ? { dateModified: article.modifiedAt }
+      : {}),
+  };
+
+  const graph: Record<string, unknown>[] = [
+    business,
+    {
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: "EDH Landscaping",
+      publisher: { "@id": `${SITE_URL}/#business` },
+      inLanguage: "en-US",
+    },
+    {
+      "@type": "ImageObject",
+      "@id": `${canonicalUrl}#primaryimage`,
+      url: imageUrl,
+      contentUrl: imageUrl,
+      caption: "EDH Landscaping lawn care in El Dorado Hills, California",
+    },
+    webpage,
+  ];
+
+  if (includeFaq) {
+    graph.push({
+      "@type": "FAQPage",
+      "@id": `${canonicalUrl}#faq`,
+      mainEntity: FAQ_ITEMS.map(({ q, a }) => ({
+        "@type": "Question",
+        name: q,
+        acceptedAnswer: { "@type": "Answer", text: a },
+      })),
+    });
+  }
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": graph,
   };
 
   return (
     <Helmet>
       <html lang="en" />
-      <title>{resolvedTitle}</title>
-      <meta name="description" content={resolvedDesc} />
-      <meta name="keywords" content={keywords} />
-      <meta name="robots" content="index, follow" />
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta name="robots" content={noIndex ? "noindex, nofollow" : "index, follow, max-image-preview:large"} />
       <meta name="geo.region" content="US-CA" />
       <meta name="geo.placename" content="El Dorado Hills" />
-      <meta name="geo.position" content="38.6879;-121.0533" />
-      <meta name="ICBM" content="38.6879, -121.0533" />
-      <link rel="canonical" href={siteUrl} />
-      <link rel="icon" type="image/png" href="/favicon.png" />
-      <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+      <link rel="canonical" href={canonicalUrl} />
 
-      {/* Open Graph */}
-      <meta property="og:type" content="website" />
-      <meta property="og:url" content={siteUrl} />
-      <meta property="og:title" content={resolvedTitle} />
-      <meta property="og:description" content={resolvedDesc} />
+      <meta property="og:type" content={pageType} />
+      <meta property="og:url" content={canonicalUrl} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
       <meta property="og:site_name" content="EDH Landscaping" />
       <meta property="og:locale" content="en_US" />
-      <meta property="og:image" content={ogImage} />
+      <meta property="og:image" content={imageUrl} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
-      <meta property="og:image:alt" content="EDH Landscaping - El Dorado Hills lawn care starting at $45/mo" />
+      <meta property="og:image:alt" content="EDH Landscaping lawn care in El Dorado Hills" />
 
-      {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={resolvedTitle} />
-      <meta name="twitter:description" content={resolvedDesc} />
-      <meta name="twitter:image" content={ogImage} />
-      <meta name="twitter:image:alt" content="EDH Landscaping - El Dorado Hills lawn care starting at $45/mo" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={imageUrl} />
+      <meta name="twitter:image:alt" content="EDH Landscaping lawn care in El Dorado Hills" />
 
-      {/* Viewport */}
-      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
       <meta name="theme-color" content="#006837" />
-
-      {/* Structured Data */}
       <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
     </Helmet>
   );

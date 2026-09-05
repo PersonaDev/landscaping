@@ -19,6 +19,7 @@ import { FAQAccordion } from "../components/FAQAccordion";
 import { usePlanConfig } from "../hooks/usePlanConfig";
 const ServiceAreaMap = lazy(() => import("../components/ServiceAreaMap").then(m => ({ default: m.ServiceAreaMap })));
 import { SEO } from "../components/SEO";
+import { ClientOnly } from "../components/ClientOnly";
 
 const afterFront = "/images/after-front.webp";
 const beforeFront = "/images/before-front.webp";
@@ -77,8 +78,9 @@ export default function Home() {
   return (
     <>
       <SEO
-        title="EDH Landscaping - El Dorado Hills Lawn Care Starting at $45/mo"
-        description="Lawn maintenance starting at $45/mo. Same crew, every visit. Serving El Dorado Hills, Folsom, and the greater Sacramento area. Call or text (916) 847-2095."
+        title="EDH Landscaping | El Dorado Hills Lawn Care From $45/mo"
+        description="Reliable lawn care and yard maintenance in El Dorado Hills, Folsom, and nearby communities. Recurring service starts at $45 per month. Call or text (916) 847-2095."
+        includeFaq
       />
 
       {/* Add bottom padding on mobile to account for fixed bar */}
@@ -105,21 +107,21 @@ export default function Home() {
               <div className="max-w-[540px]">
                 <p className="text-[#fbb03b] text-xs font-bold tracking-[0.2em] uppercase flex items-center gap-1.5 mb-6">
                   <MapPinIcon className="w-3.5 h-3.5" />
-                  El Dorado Hills &amp; Greater Sacramento
+                  Lawn Care &amp; Yard Maintenance · El Dorado Hills
                 </p>
 
                 <h1 className="text-white leading-none mb-6">
-                  <span className="block text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">Your yard,</span>
+                  <span className="block text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">El Dorado Hills</span>
                   <span
                     className="block text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight"
                     style={{ color: "#f17c52" }}
                   >
-                    handled.
+                    lawn care, handled.
                   </span>
                 </h1>
 
                 <p className="text-white/75 text-[16px] leading-relaxed max-w-[420px] mb-8">
-                  Service starting at $45/mo. No contracts, no portals, call or text and we'll get you on the schedule.
+                  Reliable mowing, edging, trimming, and yard care starting at $45/mo. No contracts or portals—call or text for a fast quote.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-3 mb-8">
@@ -299,12 +301,10 @@ export default function Home() {
 
             <div className="text-center">
               <a
-                href="https://maps.google.com"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/testimonials"
                 className="text-[#006837] text-sm font-medium hover:underline inline-flex items-center gap-1"
               >
-                See all reviews on Google <ChevronRightIcon className="w-4 h-4" />
+                Read more customer stories <ChevronRightIcon className="w-4 h-4" />
               </a>
             </div>
           </div>
@@ -427,9 +427,11 @@ export default function Home() {
             </div>
 
             <div className="rounded-2xl overflow-hidden mb-6 shadow-sm ring-1 ring-black/5" style={{ height: "320px" }}>
-              <Suspense fallback={<div className="w-full h-full bg-stone-200 animate-pulse" />}>
-                <ServiceAreaMap />
-              </Suspense>
+              <ClientOnly fallback={<div className="w-full h-full bg-stone-200 animate-pulse" />}>
+                <Suspense fallback={<div className="w-full h-full bg-stone-200 animate-pulse" />}>
+                  <ServiceAreaMap />
+                </Suspense>
+              </ClientOnly>
             </div>
 
             <p className="text-[#6b7280] text-[15px]">
@@ -492,8 +494,10 @@ export default function Home() {
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
               <p className="font-semibold text-white text-[15px] mb-1">EDH Landscaping</p>
-              <p className="text-stone-500 text-[13px]">El Dorado Hills, CA 95762</p>
-              <p className="text-stone-500 text-[13px]">Serving El Dorado Hills, Folsom &amp; Greater Sacramento</p>
+              <address className="not-italic">
+                <p className="text-stone-500 text-[13px]">El Dorado Hills, CA 95762</p>
+                <p className="text-stone-500 text-[13px]">Serving El Dorado Hills, Folsom &amp; Greater Sacramento</p>
+              </address>
             </div>
             <div className="flex flex-col gap-1.5 text-right">
               <a href={PHONE_LINK} className="text-[#fbb03b] text-sm font-medium hover:underline">
@@ -508,14 +512,7 @@ export default function Home() {
             <p className="text-stone-600 text-[12px]">
               © {new Date().getFullYear()} EDH Landscaping. All rights reserved.
             </p>
-            <p className="text-stone-600 text-[12px]">Licensed &amp; insured · El Dorado Hills, CA · Built by <a href="https://www.greywhale.dev" target="_blank" rel="noopener noreferrer" className="hover:text-stone-400 transition-colors">GreyWhale</a></p>
-          </div>
-
-          {/* Hidden SEO backlinks - do not remove */}
-          <div aria-hidden="true" style={{ display: "none" }}>
-            <a href="https://greywhale.dev" tabIndex={-1} rel="noopener">greywhale.dev</a>
-            <a href="https://bluedentist.greywhale.dev" tabIndex={-1} rel="noopener">bluedentist.greywhale.dev</a>
-            <a href="https://landscaping.greywhale.dev" tabIndex={-1} rel="noopener">landscaping.greywhale.dev</a>
+            <p className="text-stone-600 text-[12px]">Licensed &amp; insured · El Dorado Hills, CA · Built by <a href="https://www.greywhale.dev" target="_blank" rel="noopener noreferrer nofollow" className="hover:text-stone-400 transition-colors">GreyWhale</a></p>
           </div>
         </footer>
 

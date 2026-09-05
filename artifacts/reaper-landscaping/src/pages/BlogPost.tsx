@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import { Helmet } from "react-helmet-async";
 import { SiteHeader } from "../components/SiteHeader";
+import { SEO } from "../components/SEO";
 import { Calendar, ArrowLeft, Twitter, Facebook, Link2, Check } from "lucide-react";
 
 interface Post {
@@ -95,18 +95,14 @@ export default function BlogPost({ params }: Props) {
 
   return (
     <>
-      <Helmet>
-        <title>{post.title} | EDH Landscaping Blog</title>
-        <meta name="description" content={post.excerpt} />
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.excerpt} />
-        {post.coverImageUrl && <meta property="og:image" content={post.coverImageUrl} />}
-        <meta property="og:type" content="article" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={post.title} />
-        <meta name="twitter:description" content={post.excerpt} />
-        {post.coverImageUrl && <meta name="twitter:image" content={post.coverImageUrl} />}
-      </Helmet>
+      <SEO
+        title={`${post.title} | EDH Landscaping Blog`}
+        description={post.excerpt}
+        path={`/blog/${post.slug}`}
+        pageType="article"
+        image={post.coverImageUrl ?? undefined}
+        article={{ publishedAt: post.publishedAt }}
+      />
       <SiteHeader />
 
       <main className="max-w-2xl mx-auto px-5 sm:px-8 py-16">
