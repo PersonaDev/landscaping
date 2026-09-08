@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { useEffect, useState } from "react";
 import { FAQ_ITEMS } from "./FAQAccordion";
 
 export const SITE_URL = "https://www.edhlandscaping.com";
@@ -11,6 +12,11 @@ interface SEOProps {
   image?: string;
   includeFaq?: boolean;
   noIndex?: boolean;
+  service?: {
+    name: string;
+    description: string;
+    serviceTypes: string[];
+  };
   article?: {
     publishedAt?: string | null;
     modifiedAt?: string | null;
@@ -45,6 +51,7 @@ export function SEO({
   image = "/opengraph.jpg",
   includeFaq = false,
   noIndex = false,
+  service,
   article,
 }: SEOProps) {
   const canonicalPath = normalizePath(path);
@@ -92,6 +99,8 @@ export function SEO({
         "Shrub trimming",
         "Sprinkler and drip repair",
         "Mulch installation",
+        "Commercial grounds maintenance",
+        "HOA common-area landscape maintenance",
       ].map((name) => ({
         "@type": "Offer",
         itemOffered: {
@@ -115,6 +124,13 @@ export function SEO({
     primaryImageOfPage: { "@id": `${canonicalUrl}#primaryimage` },
     ...(pageType === "article" && article?.publishedAt
       ? { datePublished: article.publishedAt }
+      : {}),
+    ...(pageType === "article"
+      ? {
+          headline: title,
+          author: { "@id": `${SITE_URL}/#business` },
+          publisher: { "@id": `${SITE_URL}/#business` },
+        }
       : {}),
     ...(pageType === "article" && article?.modifiedAt
       ? { dateModified: article.modifiedAt }
@@ -153,10 +169,45 @@ export function SEO({
     });
   }
 
+  if (service) {
+    graph.push({
+      "@type": "Service",
+      "@id": `${canonicalUrl}#service`,
+      name: service.name,
+      description: service.description,
+      serviceType: service.serviceTypes,
+      provider: { "@id": `${SITE_URL}/#business` },
+      areaServed: SERVICE_AREAS.map((name) => ({
+        "@type": "City",
+        name: `${name}, CA`,
+      })),
+      url: canonicalUrl,
+    });
+  }
+
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": graph,
   };
+  const structuredDataJson = JSON.stringify(structuredData);
+  const isBrowser = typeof document !== "undefined";
+  const [clientReady, setClientReady] = useState(false);
+
+  useEffect(() => {
+    setClientReady(true);
+    const existing = document.querySelector<HTMLScriptElement>(
+      "script[data-edh-seo]",
+    );
+    const script = existing ?? document.createElement("script");
+    script.type = "application/ld+json";
+    script.dataset.edhSeo = "true";
+    script.textContent = structuredDataJson;
+    if (!existing) document.head.appendChild(script);
+  }, [structuredDataJson]);
+
+  // React 19 hoists Helmet metadata. During hydration, wait one tick so the
+  // client matches the prerendered app body; then Helmet can manage the head.
+  if (isBrowser && !clientReady) return null;
 
   return (
     <Helmet>
@@ -186,7 +237,11 @@ export function SEO({
       <meta name="twitter:image:alt" content="EDH Landscaping lawn care in El Dorado Hills" />
 
       <meta name="theme-color" content="#006837" />
-      <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
+      {!isBrowser && (
+        <script type="application/ld+json" data-edh-seo="true">
+          {structuredDataJson}
+        </script>
+      )}
     </Helmet>
   );
 }

@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const { Pool } = require("pg");
+const scheduledPosts = require("./scheduled-posts");
 
 const app = express();
 app.use(cors());
@@ -55,9 +56,40 @@ async function ensureSchema() {
       updated_at TIMESTAMP NOT NULL DEFAULT NOW()
     )
   `);
+  await pool.query(
+    `INSERT INTO posts
+      (title, slug, excerpt, body, cover_image_url, published, published_at)
+     SELECT title, slug, excerpt, body, cover_image_url, true, published_at::timestamp
+     FROM jsonb_to_recordset($1::jsonb) AS seed(
+       title text, slug text, excerpt text, body text,
+       cover_image_url text, published_at text
+     )
+     ON CONFLICT (slug) DO NOTHING`,
+    [
+      JSON.stringify(
+        scheduledPosts.map((post) => ({
+          title: post.title,
+          slug: post.slug,
+          excerpt: post.excerpt,
+          body: post.body,
+          cover_image_url: post.coverImageUrl,
+          published_at: post.publishedAt,
+        })),
+      ),
+    ],
+  );
   console.log("[db] schema ready");
 }
-ensureSchema().catch((err) => console.error("[db] ensureSchema failed:", err.message, err.stack));
+const schemaReady = ensureSchema();
+app.use(async (_req, res, next) => {
+  try {
+    await schemaReady;
+    next();
+  } catch (err) {
+    console.error("[db] ensureSchema failed:", err.message, err.stack);
+    res.status(500).json({ error: "Database setup failed" });
+  }
+});
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -266,7 +298,9 @@ app.get("/api/posts", async (_req, res) => {
     const { rows } = await pool.query(
       `SELECT id, title, slug, excerpt, cover_image_url AS "coverImageUrl",
               published_at AS "publishedAt", created_at AS "createdAt"
-       FROM posts WHERE published = true ORDER BY published_at DESC`
+       FROM posts
+       WHERE published = true AND (published_at IS NULL OR published_at <= NOW())
+       ORDER BY published_at DESC`
     );
     console.log("[api] GET /api/posts — returned", rows.length, "rows");
     res.json(rows);
@@ -303,7 +337,10 @@ app.get("/api/posts/:slug", async (req, res) => {
       `SELECT id, title, slug, excerpt, body, cover_image_url AS "coverImageUrl",
               published, published_at AS "publishedAt",
               created_at AS "createdAt", updated_at AS "updatedAt"
-       FROM posts WHERE slug = $1 AND published = true LIMIT 1`,
+       FROM posts
+       WHERE slug = $1 AND published = true
+         AND (published_at IS NULL OR published_at <= NOW())
+       LIMIT 1`,
       [req.params.slug]
     );
     if (!rows[0]) return res.status(404).json({ error: "Post not found" });
@@ -318,8 +355,12 @@ app.get("/api/posts/:slug", async (req, res) => {
 app.post("/api/posts", requireAuth, async (req, res) => {
   console.log("[api] POST /api/posts — body keys:", Object.keys(req.body));
   if (!pool) return res.status(500).json({ error: "No database pool — check env vars" });
-  const { title, slug, excerpt, body, coverImageUrl, published } = req.body;
+  const { title, slug, excerpt, body, coverImageUrl, published, publishedAt } = req.body;
   if (!title || !slug) return res.status(400).json({ error: "Title and slug are required" });
+  const requestedPublishDate = parsePublishDate(publishedAt);
+  if (published && publishedAt && !requestedPublishDate) {
+    return res.status(400).json({ error: "Publish date must be valid" });
+  }
   try {
     const { rows } = await pool.query(
       `INSERT INTO posts (title, slug, excerpt, body, cover_image_url, published, published_at)
@@ -329,7 +370,7 @@ app.post("/api/posts", requireAuth, async (req, res) => {
                  published_at AS "publishedAt",
                  created_at AS "createdAt", updated_at AS "updatedAt"`,
       [title, slug, excerpt || "", body || "", coverImageUrl || null,
-       !!published, published ? new Date() : null]
+       !!published, published ? (requestedPublishDate || new Date()) : null]
     );
     res.status(201).json(rows[0]);
   } catch (err) {
@@ -342,7 +383,11 @@ app.post("/api/posts", requireAuth, async (req, res) => {
 // Admin: update post
 app.put("/api/posts/:slug", requireAuth, async (req, res) => {
   if (!pool) return res.status(500).json({ error: "No database pool — check env vars" });
-  const { title, slug: newSlug, excerpt, body, coverImageUrl, published } = req.body;
+  const { title, slug: newSlug, excerpt, body, coverImageUrl, published, publishedAt } = req.body;
+  const requestedPublishDate = parsePublishDate(publishedAt);
+  if (publishedAt && !requestedPublishDate) {
+    return res.status(400).json({ error: "Publish date must be valid" });
+  }
   try {
     const { rows: existing } = await pool.query(
       "SELECT * FROM posts WHERE slug = $1 LIMIT 1", [req.params.slug]
@@ -350,7 +395,11 @@ app.put("/api/posts/:slug", requireAuth, async (req, res) => {
     if (!existing[0]) return res.status(404).json({ error: "Post not found" });
     const post = existing[0];
     const nowPublished = published !== undefined ? !!published : post.published;
-    const publishedAt = (!post.published && nowPublished) ? new Date() : post.published_at;
+    const nextPublishedAt = !nowPublished
+      ? null
+      : requestedPublishDate
+        ? requestedPublishDate
+        : (!post.published ? new Date() : post.published_at);
     const { rows } = await pool.query(
       `UPDATE posts SET
          title = $1, slug = $2, excerpt = $3, body = $4,
@@ -362,7 +411,7 @@ app.put("/api/posts/:slug", requireAuth, async (req, res) => {
                  created_at AS "createdAt", updated_at AS "updatedAt"`,
       [title ?? post.title, newSlug ?? post.slug, excerpt ?? post.excerpt,
        body ?? post.body, coverImageUrl !== undefined ? coverImageUrl : post.cover_image_url,
-       nowPublished, publishedAt, req.params.slug]
+       nowPublished, nextPublishedAt, req.params.slug]
     );
     res.json(rows[0]);
   } catch (err) {
@@ -383,6 +432,76 @@ app.delete("/api/posts/:slug", requireAuth, async (req, res) => {
   } catch (err) {
     console.error("[api] DELETE /api/posts/:slug error:", err.message);
     res.status(500).json({ error: err.message });
+  }
+});
+
+function escapeXml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");
+}
+
+function parsePublishDate(value) {
+  if (!value) return null;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+async function publicPostLinks() {
+  if (!pool) return [];
+  const { rows } = await pool.query(
+    `SELECT title, slug, excerpt, published_at AS "publishedAt"
+     FROM posts
+     WHERE published = true AND (published_at IS NULL OR published_at <= NOW())
+     ORDER BY published_at DESC`,
+  );
+  return rows;
+}
+
+app.get("/api/sitemap.xml", async (_req, res) => {
+  try {
+    const posts = await publicPostLinks();
+    const staticUrls = ["", "/services", "/commercial-hoa", "/testimonials", "/blog"];
+    const urls = [
+      ...staticUrls.map((path) => `<url><loc>https://www.edhlandscaping.com${path}</loc></url>`),
+      ...posts.map((post) =>
+        `<url><loc>https://www.edhlandscaping.com/blog/${escapeXml(post.slug)}</loc>` +
+        `${post.publishedAt ? `<lastmod>${new Date(post.publishedAt).toISOString()}</lastmod>` : ""}</url>`,
+      ),
+    ].join("");
+    res.type("application/xml").send(
+      `<?xml version="1.0" encoding="UTF-8"?>` +
+      `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`,
+    );
+  } catch (err) {
+    console.error("[api] sitemap error:", err.message);
+    res.status(500).type("text/plain").send("Unable to build sitemap");
+  }
+});
+
+app.get("/api/feed.xml", async (_req, res) => {
+  try {
+    const posts = await publicPostLinks();
+    const items = posts.map((post) => {
+      const url = `https://www.edhlandscaping.com/blog/${encodeURIComponent(post.slug)}`;
+      return `<item><title>${escapeXml(post.title)}</title><link>${url}</link>` +
+        `<guid isPermaLink="true">${url}</guid>` +
+        `<description>${escapeXml(post.excerpt)}</description>` +
+        `${post.publishedAt ? `<pubDate>${new Date(post.publishedAt).toUTCString()}</pubDate>` : ""}</item>`;
+    }).join("");
+    res.type("application/rss+xml").send(
+      `<?xml version="1.0" encoding="UTF-8"?>` +
+      `<rss version="2.0"><channel><title>EDH Landscaping Blog</title>` +
+      `<link>https://www.edhlandscaping.com/blog</link>` +
+      `<description>Local lawn care, landscaping, commercial property, and HOA maintenance guidance.</description>` +
+      `<lastBuildDate>${new Date().toUTCString()}</lastBuildDate>${items}</channel></rss>`,
+    );
+  } catch (err) {
+    console.error("[api] feed error:", err.message);
+    res.status(500).type("text/plain").send("Unable to build feed");
   }
 });
 

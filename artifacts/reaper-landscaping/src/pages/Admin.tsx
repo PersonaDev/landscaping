@@ -6,7 +6,7 @@ import {
   LogOut, Plus, Edit2, Trash2, Eye, EyeOff,
   Bold, Italic, List, ListOrdered, Heading2, Undo, Redo, Save, X,
   DollarSign, ChevronUp, ChevronDown, Grip,
-  ShieldCheck, ShieldAlert, KeyRound, Download, Copy, Check
+  ShieldCheck, ShieldAlert, KeyRound, Download, Copy, Check, Clock3
 } from "lucide-react";
 import type { PlanConfig, FreqOption, ScopeOption, ServiceItem } from "../lib/quote";
 
@@ -33,6 +33,20 @@ function slugify(str: string) {
 
 function formatDate(d: string) {
   return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
+function toLocalDateTime(d?: string | null) {
+  const date = d ? new Date(d) : new Date();
+  const offset = date.getTimezoneOffset() * 60_000;
+  return new Date(date.getTime() - offset).toISOString().slice(0, 16);
+}
+
+function isScheduled(post: Pick<Post, "published" | "publishedAt">) {
+  return Boolean(
+    post.published &&
+      post.publishedAt &&
+      new Date(post.publishedAt).getTime() > Date.now(),
+  );
 }
 
 const LEGACY_TOKEN_KEY = "edh_admin_token";
@@ -175,6 +189,9 @@ function PostEditor({
   const [excerpt, setExcerpt] = useState(initial?.excerpt ?? "");
   const [coverImageUrl, setCoverImageUrl] = useState(initial?.coverImageUrl ?? "");
   const [published, setPublished] = useState(initial?.published ?? false);
+  const [publishedAt, setPublishedAt] = useState(
+    toLocalDateTime(initial?.publishedAt),
+  );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [slugEdited, setSlugEdited] = useState(!!initial);
@@ -200,6 +217,10 @@ function PostEditor({
       setError("Title and slug are required");
       return;
     }
+    if (published && Number.isNaN(new Date(publishedAt).getTime())) {
+      setError("Choose a valid publish date and time");
+      return;
+    }
     setSaving(true);
     setError("");
     try {
@@ -210,6 +231,7 @@ function PostEditor({
         body: editor?.getHTML() ?? "",
         coverImageUrl: coverImageUrl.trim() || null,
         published,
+        publishedAt: published ? new Date(publishedAt).toISOString() : null,
       };
       const method = initial ? "PUT" : "POST";
       const url = initial ? `/api/posts/${initial.slug}` : "/api/posts";
@@ -357,9 +379,30 @@ function PostEditor({
               />
             </button>
             <span className="text-sm text-stone-700 font-medium">
-              {published ? "Published" : "Draft"}
+              {published
+                ? new Date(publishedAt).getTime() > Date.now()
+                  ? "Scheduled"
+                  : "Published"
+                : "Draft"}
             </span>
           </div>
+          {published && (
+            <div className="rounded-xl border border-stone-200 bg-stone-50 p-4">
+              <label className="flex items-center gap-2 text-xs font-semibold text-stone-600 uppercase tracking-wider mb-2">
+                <Clock3 className="w-4 h-4" /> Publish date and time
+              </label>
+              <input
+                type="datetime-local"
+                value={publishedAt}
+                onChange={(e) => setPublishedAt(e.target.value)}
+                required
+                className="w-full min-h-[44px] border border-stone-200 rounded-xl px-4 py-3 text-base outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent bg-white"
+              />
+              <p className="text-xs text-stone-500 mt-2">
+                A future date stays hidden until that moment, then publishes automatically.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -1106,14 +1149,22 @@ export default function Admin() {
                         <div className="flex items-center gap-2 mb-0.5">
                           <span
                             className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
-                              post.published ? "bg-green-100 text-green-700" : "bg-stone-100 text-stone-500"
+                              isScheduled(post)
+                                ? "bg-amber-100 text-amber-700"
+                                : post.published
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-stone-100 text-stone-500"
                             }`}
                           >
-                            {post.published ? "Live" : "Draft"}
+                            {isScheduled(post) ? "Scheduled" : post.published ? "Live" : "Draft"}
                           </span>
                         </div>
                         <p className="font-medium text-[#111111] text-[15px] truncate">{post.title}</p>
-                        <p className="text-stone-400 text-[12px] mt-0.5">{formatDate(post.createdAt)}</p>
+                        <p className="text-stone-400 text-[12px] mt-0.5">
+                          {isScheduled(post) && post.publishedAt
+                            ? `Publishes ${formatDate(post.publishedAt)}`
+                            : `Created ${formatDate(post.createdAt)}`}
+                        </p>
                       </div>
                       <div className="flex items-center gap-1 shrink-0">
                         <button

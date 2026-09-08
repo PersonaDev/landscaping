@@ -7,7 +7,7 @@ const publicDir = resolve(projectDir, "dist/public");
 const template = await readFile(resolve(publicDir, "index.html"), "utf8");
 const { render } = await import("../dist/server/entry-server.js");
 
-const routes = ["/", "/services", "/testimonials", "/blog"];
+const routes = ["/", "/services", "/testimonials", "/blog", "/commercial-hoa"];
 
 for (const route of routes) {
   const { appHtml, head } = render(route);

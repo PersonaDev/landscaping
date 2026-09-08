@@ -20,7 +20,7 @@ Business type: Service-area landscaping and lawn care company
 - Fertilization and overseeding
 - Sod installation
 
-Recurring service starts at $45 per month. Availability, exact pricing, and whether a property is in the current route should be confirmed by calling or texting the company.
+Residential recurring service starts at $45 per month. Commercial and HOA properties receive custom quotes; residential packages and promotions do not apply. Confirm scope, price, and availability by calling or texting the company.
 
 ## Service area
 
@@ -30,6 +30,7 @@ EDH Landscaping serves El Dorado Hills, Folsom, Granite Bay, Roseville, Rocklin,
 
 - Home and quote options: https://www.edhlandscaping.com/
 - Services: https://www.edhlandscaping.com/services
+- Commercial and HOA grounds maintenance: https://www.edhlandscaping.com/commercial-hoa
 - Customer stories: https://www.edhlandscaping.com/testimonials
 - Local lawn care articles: https://www.edhlandscaping.com/blog
 

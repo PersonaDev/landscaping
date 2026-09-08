@@ -47,14 +47,11 @@ export default function BlogIndex() {
 
       <main className="max-w-3xl mx-auto px-5 sm:px-8 py-20">
         <header className="mb-14">
-          <p className="text-[#006837] text-[13px] font-semibold uppercase tracking-widest mb-3">
-            EDH Landscaping
-          </p>
           <h1 className="font-sans text-[40px] sm:text-[52px] font-bold text-[#111111] leading-tight">
-            Lawn Care Blog
+            Blog
           </h1>
           <p className="mt-4 text-[#6b7280] text-[17px] leading-relaxed">
-            Seasonal tips, yard advice, and local landscaping updates for El Dorado Hills homeowners.
+            Practical lawn care and landscaping advice for local homes, commercial properties, and HOAs.
           </p>
         </header>
 
@@ -118,7 +115,7 @@ export default function BlogIndex() {
 
       <footer className="border-t border-stone-100 py-10 text-center">
         <p className="text-stone-400 text-[13px]">
-          &copy; {new Date().getFullYear()} EDH Landscaping ·{" "}
+          &copy; {new Date().getFullYear()} EDH Landscaping. {" "}
           <a href="tel:9168472095" className="hover:text-[#006837]">
             (916) 847-2095
           </a>

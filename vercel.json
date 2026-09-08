@@ -29,7 +29,7 @@
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
     },
     {
-      "source": "/api/:path*",
+      "source": "/api/((?!sitemap\\.xml|feed\\.xml).*)",
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
     },
     {
@@ -43,6 +43,7 @@
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/handler" },
     { "source": "/services", "destination": "/services/index.html" },
+    { "source": "/commercial-hoa", "destination": "/commercial-hoa/index.html" },
     { "source": "/testimonials", "destination": "/testimonials/index.html" },
     { "source": "/blog", "destination": "/blog/index.html" },
     { "source": "/((?!api).*)", "destination": "/index.html" }

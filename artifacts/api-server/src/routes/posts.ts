@@ -1,9 +1,15 @@
 import { Router } from "express";
 import { db, postsTable } from "@workspace/db";
-import { eq, desc } from "drizzle-orm";
+import { and, desc, eq, isNull, lte, or } from "drizzle-orm";
 import { requireAuth } from "../lib/auth.js";
 
 const router = Router();
+
+function parsePublishDate(value?: string | null) {
+  if (!value) return null;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
 
 router.get("/posts", async (_req, res) => {
   try {
@@ -18,7 +24,12 @@ router.get("/posts", async (_req, res) => {
         createdAt: postsTable.createdAt,
       })
       .from(postsTable)
-      .where(eq(postsTable.published, true))
+      .where(
+        and(
+          eq(postsTable.published, true),
+          or(isNull(postsTable.publishedAt), lte(postsTable.publishedAt, new Date())),
+        ),
+      )
       .orderBy(desc(postsTable.publishedAt));
     res.json(posts);
   } catch (err) {
@@ -43,9 +54,15 @@ router.get("/posts/:slug", async (req, res) => {
     const [post] = await db
       .select()
       .from(postsTable)
-      .where(eq(postsTable.slug, req.params.slug))
+      .where(
+        and(
+          eq(postsTable.slug, req.params.slug),
+          eq(postsTable.published, true),
+          or(isNull(postsTable.publishedAt), lte(postsTable.publishedAt, new Date())),
+        ),
+      )
       .limit(1);
-    if (!post || !post.published) {
+    if (!post) {
       res.status(404).json({ error: "Post not found" });
       return;
     }
@@ -57,17 +74,24 @@ router.get("/posts/:slug", async (req, res) => {
 
 router.post("/posts", requireAuth, async (req, res) => {
   try {
-    const { title, slug, excerpt, body, coverImageUrl, published } = req.body as {
+    const { title, slug, excerpt, body, coverImageUrl, published, publishedAt } = req.body as {
       title: string;
       slug: string;
       excerpt: string;
       body: string;
       coverImageUrl?: string;
       published: boolean;
+      publishedAt?: string | null;
     };
 
     if (!title || !slug) {
       res.status(400).json({ error: "Title and slug are required" });
+      return;
+    }
+
+    const requestedPublishDate = parsePublishDate(publishedAt);
+    if (published && publishedAt && !requestedPublishDate) {
+      res.status(400).json({ error: "Publish date must be valid" });
       return;
     }
 
@@ -80,7 +104,9 @@ router.post("/posts", requireAuth, async (req, res) => {
         body: body ?? "",
         coverImageUrl: coverImageUrl ?? null,
         published: published ?? false,
-        publishedAt: published ? new Date() : null,
+        publishedAt: published
+          ? (requestedPublishDate ?? new Date())
+          : null,
       })
       .returning();
 
@@ -96,13 +122,14 @@ router.post("/posts", requireAuth, async (req, res) => {
 
 router.put("/posts/:slug", requireAuth, async (req, res) => {
   try {
-    const { title, slug: newSlug, excerpt, body, coverImageUrl, published } = req.body as {
+    const { title, slug: newSlug, excerpt, body, coverImageUrl, published, publishedAt } = req.body as {
       title?: string;
       slug?: string;
       excerpt?: string;
       body?: string;
       coverImageUrl?: string | null;
       published?: boolean;
+      publishedAt?: string | null;
     };
 
     const [existing] = await db
@@ -118,6 +145,11 @@ router.put("/posts/:slug", requireAuth, async (req, res) => {
 
     const wasPublished = existing.published;
     const nowPublished = published ?? existing.published;
+    const requestedPublishDate = parsePublishDate(publishedAt);
+    if (publishedAt && !requestedPublishDate) {
+      res.status(400).json({ error: "Publish date must be valid" });
+      return;
+    }
 
     const [updated] = await db
       .update(postsTable)
@@ -128,7 +160,11 @@ router.put("/posts/:slug", requireAuth, async (req, res) => {
         body: body ?? existing.body,
         coverImageUrl: coverImageUrl !== undefined ? coverImageUrl : existing.coverImageUrl,
         published: nowPublished,
-        publishedAt: !wasPublished && nowPublished ? new Date() : existing.publishedAt,
+        publishedAt: !nowPublished
+          ? null
+          : requestedPublishDate
+            ? requestedPublishDate
+            : (!wasPublished ? new Date() : existing.publishedAt),
         updatedAt: new Date(),
       })
       .where(eq(postsTable.slug, req.params.slug))

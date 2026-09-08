@@ -4,7 +4,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { HelmetProvider } from "react-helmet-async";
-import Home from "@/pages/Home";
+import Home from "@/pages/HomeRefresh";
+import CommercialHOA from "@/pages/CommercialHOA";
 import Testimonials from "@/pages/Testimonials";
 import ServicesPage from "@/pages/ServicesPage";
 import BlogIndex from "@/pages/BlogIndex";
@@ -44,6 +45,7 @@ function Router() {
     <Suspense fallback={<div className="min-h-screen" />}>
       <Switch>
         <Route path="/" component={Home} />
+        <Route path="/commercial-hoa" component={CommercialHOA} />
         <Route path="/testimonials" component={Testimonials} />
         <Route path="/services" component={ServicesPage} />
         <Route path="/blog" component={BlogIndex} />
