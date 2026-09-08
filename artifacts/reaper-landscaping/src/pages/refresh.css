@@ -1273,10 +1273,15 @@
     align-items: center;
     min-height: 44px;
   }
+  .refresh-footer .refresh-brand {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
   .refresh-map-shell .leaflet-control-zoom a {
-    width: 44px;
-    height: 44px;
-    line-height: 44px;
+    width: 44px !important;
+    height: 44px !important;
+    line-height: 44px !important;
   }
 }
 @media (prefers-reduced-motion: reduce) {
