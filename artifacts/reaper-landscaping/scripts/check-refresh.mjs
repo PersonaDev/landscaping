@@ -19,7 +19,8 @@ for (const route of ["", "services/", "testimonials/", "blog/", "commercial-hoa/
   assert.ok(!/<meta[^>]+name="robots"[^>]+noindex/.test(html), `Indexable: ${route}`);
 }
 const home = await read("dist/public/index.html");
-assert.ok(home.includes("Your quote"), "Quote-first homepage prerendered");
+assert.ok(home.includes("Regular monthly price"), "Discounted homepage pricing prerendered");
+assert.ok(home.includes("Map of the EDH Landscaping service area"), "Service-area map shell prerendered");
 assert.ok(!home.includes("<em>"), "No italic headline emphasis");
 assert.ok(!/field notes/i.test(home), "Blog is labeled plainly");
 assert.ok(home.includes("40.50"), "First-month discount rendered");

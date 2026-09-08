@@ -91,11 +91,13 @@ export function QuoteBuilder({
       <div
         className={`px-6 ${compact ? "pt-6 pb-4" : "pt-10 pb-8"} text-center`}
       >
-        <p
-          className={`${compact ? "text-[#6b7280]" : "text-[#8e8e93]"} text-[13px] font-medium tracking-wide uppercase mb-3`}
-        >
-          {introductoryDiscount ? "Your quote" : "Build your plan"}
-        </p>
+        {!introductoryDiscount && (
+          <p
+            className={`${compact ? "text-[#6b7280]" : "text-[#8e8e93]"} text-[13px] font-medium tracking-wide uppercase mb-3`}
+          >
+            Build your plan
+          </p>
+        )}
         <div className={compact ? "text-[#1a1a1a]" : "text-[#1a1a1a]"}>
           <span
             className={`${compact ? "text-[48px]" : "text-[64px]"} font-bold leading-none tracking-tight`}
@@ -113,9 +115,9 @@ export function QuoteBuilder({
         </p>
         {introductoryDiscount > 0 && (
           <p className="text-[#626b63] text-[13px] mt-2">
-            Then ${price}/mo. First month includes 10% off.
+            Regular monthly price: ${price}
             <br />
-            Residential estimate; subject to confirmation.
+            Residential estimate. We’ll confirm it by text.
           </p>
         )}
       </div>

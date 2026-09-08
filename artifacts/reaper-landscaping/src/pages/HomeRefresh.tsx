@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -12,8 +12,15 @@ import { SEO } from "../components/SEO";
 import { BeforeAfter } from "../components/BeforeAfter";
 import { FAQAccordion } from "../components/FAQAccordion";
 import { QuoteBuilder } from "../components/QuoteBuilder";
+import { ClientOnly } from "../components/ClientOnly";
 import { usePlanConfig } from "../hooks/usePlanConfig";
 import "./refresh.css";
+
+const ServiceAreaMap = lazy(() =>
+  import("../components/ServiceAreaMap").then((module) => ({
+    default: module.ServiceAreaMap,
+  })),
+);
 
 const cities = [
   "El Dorado Hills",
@@ -248,21 +255,27 @@ export default function HomeRefresh() {
           </div>
         </section>
         <section className="refresh-local" id="areas">
-          <div>
+          <div className="refresh-area-copy">
             <h2>Areas we serve</h2>
             <p>El Dorado Hills and nearby communities.</p>
             <a className="refresh-button light" href={phone}>
               Check my service area <ArrowUpRight size={19} />
             </a>
+            <div className="refresh-cities">
+              {cities.map((city, i) => (
+                <span key={city}>
+                  <small>0{i + 1}</small>
+                  {city}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="refresh-cities">
-            {cities.map((city, i) => (
-              <span key={city}>
-                <small>0{i + 1}</small>
-                {city}
-                <ArrowUpRight size={16} />
-              </span>
-            ))}
+          <div className="refresh-map-shell" aria-label="Map of the EDH Landscaping service area">
+            <ClientOnly fallback={<div className="refresh-map-loading" />}>
+              <Suspense fallback={<div className="refresh-map-loading" />}>
+                <ServiceAreaMap />
+              </Suspense>
+            </ClientOnly>
           </div>
         </section>
         <section className="refresh-section refresh-faq" id="contact">
