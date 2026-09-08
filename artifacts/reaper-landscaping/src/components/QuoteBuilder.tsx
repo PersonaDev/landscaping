@@ -53,7 +53,7 @@ export function QuoteBuilder({
   const ALL_SERVICES = services || DEFAULT_SERVICES;
 
   const price = calcPrice(frequency, scope, FREQ, SCOPE);
-  const firstMonth = (price * (1 - introductoryDiscount)).toFixed(2);
+  const firstMonth = Math.floor(price * (1 - introductoryDiscount));
   const [isIOS, setIsIOS] = useState(false);
   useEffect(() => {
     setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent));
@@ -98,6 +98,9 @@ export function QuoteBuilder({
             Build your plan
           </p>
         )}
+        <p className="text-[#626b63] text-[13px] font-semibold mb-2">
+          {`${FREQ[frequency]?.label || ""} · ${SCOPE[scope]?.label || ""}`}
+        </p>
         <div className={compact ? "text-[#1a1a1a]" : "text-[#1a1a1a]"}>
           <span
             className={`${compact ? "text-[48px]" : "text-[64px]"} font-bold leading-none tracking-tight`}
@@ -110,9 +113,6 @@ export function QuoteBuilder({
             {introductoryDiscount ? " first month" : "/mo"}
           </span>
         </div>
-        <p className="text-[#8e8e93] text-[13px] mt-1.5">
-          {`${FREQ[frequency]?.label || ""} · ${SCOPE[scope]?.label || ""}`}
-        </p>
         {introductoryDiscount > 0 && (
           <p className="text-[#626b63] text-[13px] mt-2">
             Regular monthly price: ${price}
