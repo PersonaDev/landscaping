@@ -1,9 +1,10 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import {
   ArrowUpRight,
   ArrowRight,
   Check,
   Phone,
+  MessageCircle,
   Leaf,
   Scissors,
   Sprout,
@@ -14,6 +15,7 @@ import { FAQAccordion } from "../components/FAQAccordion";
 import { QuoteBuilder } from "../components/QuoteBuilder";
 import { ClientOnly } from "../components/ClientOnly";
 import { usePlanConfig } from "../hooks/usePlanConfig";
+import { calcPrice } from "../lib/quote";
 import "./refresh.css";
 
 const ServiceAreaMap = lazy(() =>
@@ -39,7 +41,21 @@ export default function HomeRefresh() {
   const [frequency, setFrequency] = useState(0);
   const [scope, setScope] = useState(0);
   const [interacted, setInteracted] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
   const { config } = usePlanConfig();
+  useEffect(() => {
+    setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent));
+  }, []);
+  const mobilePrice = calcPrice(
+    frequency,
+    scope,
+    config.frequencies,
+    config.scopes,
+  );
+  const mobileFirstMonth = Math.floor(mobilePrice * 0.9);
+  const mobilePlan = `${config.scopes[scope]?.text || "basic"} ${config.frequencies[frequency]?.text || "monthly"}`;
+  const mobileMessage = `Hey, I'm interested in the ${mobilePlan} plan ($${mobileFirstMonth} for the first month with 10% off, then $${mobilePrice}/mo). Can you confirm my quote and availability?`;
+  const mobileSmsHref = `sms:9168472095${isIOS ? "&" : "?"}body=${encodeURIComponent(mobileMessage)}`;
   return (
     <div className="edh-refresh">
       <SEO
@@ -336,8 +352,11 @@ export default function HomeRefresh() {
         <a href={phone}>
           <Phone size={18} /> Call
         </a>
-        <a href="#pricing">
-          Get quote <ArrowUpRight size={18} />
+        <a
+          href={mobileSmsHref}
+          aria-label={`Text us about the ${mobilePlan} plan and claim 10% off`}
+        >
+          <MessageCircle size={18} /> Claim 10% off
         </a>
       </div>
     </div>

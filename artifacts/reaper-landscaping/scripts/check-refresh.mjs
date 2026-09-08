@@ -24,6 +24,7 @@ assert.ok(home.includes("Map of the EDH Landscaping service area"), "Service-are
 assert.ok(!home.includes("<em>"), "No italic headline emphasis");
 assert.ok(!/field notes/i.test(home), "Blog is labeled plainly");
 assert.ok(home.includes("$40"), "Rounded first-month discount rendered");
+assert.ok(home.includes("Claim 10% off"), "Mobile conversion action prerendered");
 assert.ok(home.includes("FAQPage"), "FAQ structured data retained");
 assert.ok(home.includes("LocalBusiness"), "Business entity retained");
 assert.ok(home.includes("https://www.google.com/preferences/source?q=www.edhlandscaping.com"), "Preferred source uses production domain");

@@ -284,7 +284,7 @@ export function QuoteBuilder({
           <p className="text-center mt-2.5">
             <a
               href="tel:9168472095"
-              className={`${compact ? "text-[#4a4a4a]" : "text-[#006837]"} text-[13px] hover:underline inline-flex items-center gap-1`}
+              className={`quote-call-link ${compact ? "text-[#4a4a4a]" : "text-[#006837]"} text-[13px] hover:underline inline-flex items-center gap-1`}
             >
               <PhoneIcon className="w-3.5 h-3.5" />
               Or call (916) 847-2095

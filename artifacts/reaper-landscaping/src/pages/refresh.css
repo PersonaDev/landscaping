@@ -1252,10 +1252,31 @@
     min-height: 45px;
     flex: 1;
   }
+  .refresh-mobile-bar a:first-child {
+    flex: 0.7;
+  }
   .refresh-mobile-bar a + a {
+    flex: 1.3;
     background: #224c34;
     color: white;
     border-radius: 5px;
+    font-weight: 600;
+  }
+  .refresh-header .refresh-brand {
+    min-height: 44px;
+  }
+  .refresh-quote .quote-call-link {
+    min-height: 44px;
+  }
+  .refresh-footer nav a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .refresh-map-shell .leaflet-control-zoom a {
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
