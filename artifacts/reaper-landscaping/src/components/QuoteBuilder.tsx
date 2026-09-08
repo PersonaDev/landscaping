@@ -98,7 +98,7 @@ export function QuoteBuilder({
             Build your plan
           </p>
         )}
-        <p className="text-[#626b63] text-[13px] font-semibold mb-2">
+        <p className="text-[#626b63] text-[13px] font-normal mb-2">
           {`${FREQ[frequency]?.label || ""} · ${SCOPE[scope]?.label || ""}`}
         </p>
         <div className={compact ? "text-[#1a1a1a]" : "text-[#1a1a1a]"}>
