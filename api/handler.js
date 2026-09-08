@@ -257,13 +257,43 @@ const DEFAULT_PLAN_CONFIG = {
   ],
 };
 
+function restoreThreeTierPlan(config) {
+  const scopes = Array.isArray(config?.scopes) ? config.scopes : [];
+  const isSavedTwoTierPlan =
+    scopes.length === 2 &&
+    scopes[0]?.label === "Basic" &&
+    scopes[1]?.label === "Total care" &&
+    Number(scopes[1]?.addon) === 20;
+
+  if (!isSavedTwoTierPlan) return config;
+
+  return {
+    ...config,
+    scopes: [
+      scopes[0],
+      { label: "Full service", addon: 20, text: "full service" },
+      { ...scopes[1], addon: 40 },
+    ],
+  };
+}
+
 app.get("/api/plan-config", async (_req, res) => {
   if (!pool) return res.json(DEFAULT_PLAN_CONFIG);
   try {
     const { rows } = await pool.query(
       "SELECT value FROM site_config WHERE key = 'plan_config' LIMIT 1"
     );
-    res.json(rows[0] ? rows[0].value : DEFAULT_PLAN_CONFIG);
+    const savedConfig = rows[0] ? rows[0].value : DEFAULT_PLAN_CONFIG;
+    const config = restoreThreeTierPlan(savedConfig);
+
+    if (config !== savedConfig) {
+      await pool.query(
+        "UPDATE site_config SET value = $1::jsonb, updated_at = NOW() WHERE key = 'plan_config'",
+        [JSON.stringify(config)],
+      );
+    }
+
+    res.json(config);
   } catch (err) {
     console.error("[api] GET /api/plan-config error:", err.message);
     res.json(DEFAULT_PLAN_CONFIG);
