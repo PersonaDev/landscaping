@@ -468,7 +468,7 @@ app.get("/api/sitemap.xml", async (_req, res) => {
     const urls = [
       ...staticUrls.map((path) => `<url><loc>https://www.edhlandscaping.com${path}</loc></url>`),
       ...posts.map((post) =>
-        `<url><loc>https://www.edhlandscaping.com/blog/${escapeXml(post.slug)}</loc>` +
+        `<url><loc>https://www.edhlandscaping.com/blog/${escapeXml(encodeURIComponent(post.slug))}</loc>` +
         `${post.publishedAt ? `<lastmod>${new Date(post.publishedAt).toISOString()}</lastmod>` : ""}</url>`,
       ),
     ].join("");
