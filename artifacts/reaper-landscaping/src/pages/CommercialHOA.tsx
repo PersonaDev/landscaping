@@ -314,7 +314,7 @@ export default function CommercialHOA() {
         <nav aria-label="Footer navigation">
           <a href="/">Residential lawn care</a>
           <a href="/services">All services</a>
-          <a href="/blog">Blog</a>
+          <a href="/blog">Articles</a>
           <a href="tel:+19168472095">(916) 847-2095</a>
         </nav>
         <p>© {new Date().getFullYear()} EDH Landscaping</p>

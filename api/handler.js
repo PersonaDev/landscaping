@@ -524,7 +524,7 @@ app.get("/api/feed.xml", async (_req, res) => {
     }).join("");
     res.type("application/rss+xml").send(
       `<?xml version="1.0" encoding="UTF-8"?>` +
-      `<rss version="2.0"><channel><title>EDH Landscaping Blog</title>` +
+      `<rss version="2.0"><channel><title>EDH Landscaping Articles</title>` +
       `<link>https://www.edhlandscaping.com/blog</link>` +
       `<description>Local lawn care, landscaping, commercial property, and HOA maintenance guidance.</description>` +
       `<lastBuildDate>${new Date().toUTCString()}</lastBuildDate>${items}</channel></rss>`,

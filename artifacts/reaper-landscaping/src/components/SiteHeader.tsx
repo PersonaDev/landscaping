@@ -54,7 +54,7 @@ export function SiteHeader() {
             href="/blog"
             className="text-[14px] text-stone-500 hover:text-[#006837] font-semibold transition-colors"
           >
-            Blog
+            Articles
           </Link>
         </nav>
 

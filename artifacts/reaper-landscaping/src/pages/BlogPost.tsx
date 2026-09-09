@@ -91,7 +91,7 @@ export default function BlogPost({ params }: Props) {
         <main className="max-w-2xl mx-auto px-5 py-20 text-center">
           <h1 className="font-sans text-3xl font-bold text-[#111111] mb-4">Post not found</h1>
           <Link href="/blog" className="text-[#006837] hover:underline">
-            ← Back to blog
+            ← Back to articles
           </Link>
         </main>
       </>
@@ -101,7 +101,7 @@ export default function BlogPost({ params }: Props) {
   return (
     <>
       <SEO
-        title={`${post.title} | EDH Landscaping Blog`}
+        title={`${post.title} | EDH Landscaping Articles`}
         description={post.excerpt}
         path={`/blog/${post.slug}`}
         pageType="article"
@@ -114,7 +114,7 @@ export default function BlogPost({ params }: Props) {
         <header className="blog-post-masthead">
           <div className="blog-post-masthead-inner">
             <Link href="/blog" className="blog-back-link">
-              <ArrowLeft className="w-4 h-4" /> Blog
+              <ArrowLeft className="w-4 h-4" /> Articles
             </Link>
             <div className="blog-post-meta">
               <Calendar className="w-4 h-4" />

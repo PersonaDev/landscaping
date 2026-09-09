@@ -39,7 +39,7 @@ export default function BlogIndex() {
   return (
     <>
       <SEO
-        title="El Dorado Hills Lawn Care Blog | EDH Landscaping"
+        title="El Dorado Hills Lawn Care Articles | EDH Landscaping"
         description="Local lawn care tips, seasonal yard advice, and landscaping updates for homeowners in El Dorado Hills and nearby communities."
         path="/blog"
       />
@@ -48,7 +48,7 @@ export default function BlogIndex() {
       <main className="max-w-3xl mx-auto px-5 sm:px-8 py-20">
         <header className="mb-14">
           <h1 className="font-sans text-[40px] sm:text-[52px] font-bold text-[#111111] leading-tight">
-            Blog
+            Articles
           </h1>
           <p className="mt-4 text-[#6b7280] text-[17px] leading-relaxed">
             Practical lawn care and landscaping advice for local homes, commercial properties, and HOAs.

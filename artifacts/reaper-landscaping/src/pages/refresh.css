@@ -239,6 +239,9 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
   background: #e9eedf;
 }
 .refresh-commercial h2 {

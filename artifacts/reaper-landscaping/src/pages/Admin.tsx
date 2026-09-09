@@ -108,7 +108,7 @@ function LoginScreen({ onLogin }: { onLogin: () => void }) {
             <span className="text-white text-sm font-bold">E</span>
           </div>
           <h1 className="font-sans text-2xl font-bold text-[#111111]">Admin Login</h1>
-          <p className="text-stone-500 text-sm mt-1">EDH Landscaping blog admin</p>
+          <p className="text-stone-500 text-sm mt-1">EDH Landscaping articles admin</p>
         </div>
         <form onSubmit={submit} className="space-y-4">
           <input
@@ -314,7 +314,7 @@ function PostEditor({
             <textarea
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
-              placeholder="Short summary shown on the blog index…"
+              placeholder="Short summary shown on the articles index…"
               rows={2}
               className="w-full border border-stone-200 rounded-xl px-4 py-3 text-[14px] outline-none focus:ring-2 focus:ring-[#006837] focus:border-transparent resize-none"
             />
@@ -1067,7 +1067,7 @@ export default function Admin() {
   return (
     <>
       <Helmet>
-        <title>Admin | EDH Landscaping Blog</title>
+        <title>Admin | EDH Landscaping Articles</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
       <div className="min-h-screen bg-[#f5f3ee]">
@@ -1079,7 +1079,7 @@ export default function Admin() {
               </div>
               <div>
                 <p className="font-semibold text-[#111111] text-sm leading-none">EDH Landscaping</p>
-                <p className="text-stone-400 text-[11px] leading-none mt-0.5">Blog Admin</p>
+                <p className="text-stone-400 text-[11px] leading-none mt-0.5">Articles Admin</p>
               </div>
             </div>
             <button
@@ -1094,7 +1094,7 @@ export default function Admin() {
         <main className="max-w-4xl mx-auto px-5 py-10">
 
           <div className="flex items-center gap-1 mb-6 sm:mb-8 bg-stone-100 rounded-xl p-1 w-full sm:w-fit overflow-x-auto">
-            {([["posts", "Blog Posts"], ["plan", "Plan Builder"], ["security", "Security"]] as const).map(([key, label]) => (
+            {([["posts", "Articles"], ["plan", "Plan Builder"], ["security", "Security"]] as const).map(([key, label]) => (
               <button
                 key={key}
                 onClick={() => setTab(key)}

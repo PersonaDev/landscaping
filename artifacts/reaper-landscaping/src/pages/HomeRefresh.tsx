@@ -81,7 +81,7 @@ export default function HomeRefresh() {
           <a href="/commercial-hoa">Commercial & HOA</a>
           <a href="#work">Our work</a>
           <a href="#pricing">Your plan</a>
-          <a href="/blog">Blog</a>
+          <a href="/blog">Articles</a>
         </nav>
         <button
           className="refresh-menu-toggle"
@@ -104,7 +104,7 @@ export default function HomeRefresh() {
               ["#work", "Our work"],
               ["#areas", "Service areas"],
               ["#contact", "FAQs"],
-              ["/blog", "Blog"],
+              ["/blog", "Articles"],
             ].map(([href, label]) => (
               <a key={href} href={href} onClick={() => setMenuOpen(false)}>
                 {label}
@@ -302,10 +302,10 @@ export default function HomeRefresh() {
         </section>
         <section className="refresh-notes">
           <div>
-            <h2>Lawn care tips</h2>
+            <h2>Articles</h2>
 
             <a className="refresh-text-link" href="/blog">
-              Visit the lawn care blog <ArrowRight size={18} />
+              Read lawn care articles <ArrowRight size={18} />
             </a>
           </div>
           <div className="refresh-google">
@@ -343,7 +343,7 @@ export default function HomeRefresh() {
           <a href="/services">Services</a>
           <a href="/commercial-hoa">Commercial & HOA</a>
           <a href="/testimonials">Customer stories</a>
-            <a href="/blog">Blog</a>
+            <a href="/blog">Articles</a>
           <a href={phone}>(916) 847-2095</a>
         </nav>
         <p>© {new Date().getFullYear()} EDH Landscaping</p>
